@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: local
+    group:
+      local: local, common, secret
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - local
+  output:
+    ansi:
+      enabled: ALWAYS
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - common
+
+mybatis:
+  mapper-locations:
+    - /mappers/*.xml
