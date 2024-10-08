@@ -1,9 +1,12 @@
 package LacunaMatata.Lacuna.controller;
 
 import LacunaMatata.Lacuna.dto.request.ReqTestDto;
+import LacunaMatata.Lacuna.security.jwt.JwtProvider;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +23,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/test")
 public class TestController {
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
     @ApiOperation(value = "Test API")
     @GetMapping("/test")
-    public ResponseEntity<?> access(ReqTestDto reqDto) {
-        log.info("{}", reqDto);
+    public ResponseEntity<?> access() {
+        String accessToken = jwtProvider.generateAccessToken(1);
+        log.info("{}", accessToken);
+        Claims claims = jwtProvider.getClaim(accessToken);
+        Long userId = ((Integer) claims.get("userId")).longValue();
+        log.info("{}", userId);
         return ResponseEntity.ok().body(null);
     }
 }
