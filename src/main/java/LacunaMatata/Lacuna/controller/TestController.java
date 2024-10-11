@@ -1,7 +1,8 @@
 package LacunaMatata.Lacuna.controller;
 
-import LacunaMatata.Lacuna.dto.request.ReqTestDto;
+import LacunaMatata.Lacuna.dto.request.ReqAccessTokenDto;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
+import LacunaMatata.Lacuna.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,9 @@ public class TestController {
     @Autowired
     private JwtProvider jwtProvider;
 
+    @Autowired
+    private TokenService tokenService;
+
     @ApiOperation(value = "Test API")
     @GetMapping("/test")
     public ResponseEntity<?> access() {
@@ -36,4 +40,16 @@ public class TestController {
         log.info("{}", userId);
         return ResponseEntity.ok().body(null);
     }
+
+//    @ApiOperation(value = "Test API")
+//    @GetMapping("/auth/access")
+//    public ResponseEntity<?> access2(ReqAccessTokenDto dto) {
+//        String accessToken = jwtProvider.generateAccessToken(1);
+//        String bearerToken = "Bearer ".concat(accessToken);
+//        System.out.println(bearerToken);
+//
+//        tokenService.isValidToken(bearerToken);
+//        return ResponseEntity.ok().body(true);
+//    }
+
 }

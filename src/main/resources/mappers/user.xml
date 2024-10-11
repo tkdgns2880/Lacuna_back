@@ -8,7 +8,7 @@
         select
             *
         from
-            user
+            tb_user
         where
             user_id = #{userId}
     </select>

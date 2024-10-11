@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(
-                        "/test/**", // 테스트용
+                        "/test/**",
                         "/auth/**",
                         "/swagger-ui/**",
                         "/v2/api-docs",
