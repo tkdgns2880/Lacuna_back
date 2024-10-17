@@ -1,6 +1,6 @@
 package LacunaMatata.Lacuna.service;
 
-import LacunaMatata.Lacuna.entity.User;
+import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;

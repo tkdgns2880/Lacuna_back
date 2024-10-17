@@ -1,6 +1,6 @@
 package LacunaMatata.Lacuna.repository.user;
 
-import LacunaMatata.Lacuna.entity.User;
+import LacunaMatata.Lacuna.entity.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
