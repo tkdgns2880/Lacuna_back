@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.dto.request;
+package LacunaMatata.Lacuna.dto.request.user.auth;
 
 import lombok.Data;
 

@@ -19,6 +19,6 @@ import lombok.NoArgsConstructor;
 public class UserRole {
     private int roleId;
     private String roleName;
-    private String description;
+    private String roleDescription;
     private String roleImg;
 }

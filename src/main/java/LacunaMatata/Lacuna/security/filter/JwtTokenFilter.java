@@ -48,7 +48,7 @@ public class JwtTokenFilter extends GenericFilter {
         try {
             Claims claims = jwtProvider.getClaim(accessToken);
             int userId = ((Integer) claims.get("userId")).intValue();
-            User user = userMapper.findByUserId(userId);
+            User user = userMapper.findUserByUserId(userId);
             if(user == null) {
                 throw new JwtException("해당 id의 사용자를 찾지 못했습니다");
             }
