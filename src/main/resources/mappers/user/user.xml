@@ -3,8 +3,130 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="LacunaMatata.Lacuna.repository.user.UserMapper">
+    <resultMap id="loginHistoryResultMap" type="LacunaMatata.Lacuna.entity.user.LoginHistory">
+        <id property="loginId" column="login_id" />
+        <result property="loginUserId" column="login_user_id" />
+        <result property="loginTime" column="login_time" />
+        <result property="loginIp" column="login_ip" />
+    </resultMap>
+    <resultMap id="inactiveAccountResultMap" type="LacunaMatata.Lacuna.entity.user.InactiveAccount">
+        <result property="activityUserId" column="activity_user_id" />
+        <result property="lastActiveDate" column="last_active_date" />
+        <result property="inactiveFlag" column="inactive_flag" />
+    </resultMap>
+    <resultMap id="UserResultMap" type="LacunaMatata.Lacuna.entity.user.User">
+        <id property="userId" column="user_id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="name" column="name" />
+        <result property="socialLoginType" column="social_login_type" />
+        <result property="passwordLastChanged" column="password_last_changed" />
+        <result property="createdDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+        <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
+    </resultMap>
+    <resultMap id="userRoleMetsResultMap" type="LacunaMatata.Lacuna.entity.user.UserRoleMet">
+        <id property="userRoleMetId" column="user_role_met_id" />
+        <result property="roleUserId" column="role_user_id" />
+        <result property="roleId" column="role_id" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+        <association property="userRole" resultMap="userRoleResultMap" />
+    </resultMap>
+    <resultMap id="userRoleResultMap" type="LacunaMatata.Lacuna.entity.user.UserRole">
+        <id property="roleId" column="role_id" />
+        <result property="roleName" column="role_name" />
+        <result property="roleDescription" column="role_description" />
+        <result property="roleImg" column="role_img" />
+    </resultMap>
+    <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into tb_user
+        values(
+            default,
+            #{username},
+            #{email},
+            #{password},
+            #{name},
+            default,
+            now(),
+            now(),
+            now()
+        )
+    </insert>
+    <insert id="saveUserOptionalInfo" useGeneratedKeys="true" keyProperty="userOptionId">
+        insert into tb_user_optional_info
+        values(
+            default,
+            #{userId},
+            #{birthDate},
+            #{gender},
+            #{phoneNumber},
+            #{address},
+            default,
+            #{marketingOptIn},
+            #{thirdPartyInfoSharingConsent}
+        )
+    </insert>
+    <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginId">
+        insert into tb_login_history
+        values(
+            default,
+            #{loginUserId},
+            now(),
+            #{loginIp}
+        )
+    </insert>
+    <select id="findLoginHistoryByUserId" resultMap="loginHistoryResultMap">
+        select
+            *
+        from
+            tb_login_history
+        where
+            login_user_id = #{userId}
+    </select>
+    <insert id="saveInactiveAccount" useGeneratedKeys="true" keyProperty="activityUserId">
+        insert into tb_inactive_account
+        values(
+            #{activityUserId},
+            now(),
+            1
+        )
+    </insert>
+    <update id="modifyInactiveAccount">
+        update
+            tb_inactive_account
+        set
+            last_active_date = now()
+        where
+            activity_user_id = #{userId}
+    </update>
+    <update id="changeInactiveFlagDisable">
+        update
+            tb_inactive_account
+        set
+            inactive_flag = 2
+        where
+            activity_user_id = #{userId}
+    </update>
+    <update id="changeInactiveFlagAble">
+        update
+            tb_inactive_account
+        set
+            inactive_flag = 1
+        where
+            activity_user_id = #{userId}
+    </update>
+    <select id="findInactiveAccountByUserId" resultMap="inactiveAccountResultMap">
+        select
+            *
+        from
+            tb_inactive_account
+        where
+            activity_user_id = #{userId}
+    </select>
 
-    <select id="findByUserId" resultType="LacunaMatata.Lacuna.entity.user.User">
+    <select id="findUserByUserId" resultMap="UserResultMap">
         select
             *
         from
@@ -12,4 +134,13 @@
         where
             user_id = #{userId}
     </select>
+    <select id="findUserByUsername" resultMap="UserResultMap">
+        select
+            *
+        from
+            tb_user
+        where
+            username = #{username}
+    </select>
+
 </mapper>

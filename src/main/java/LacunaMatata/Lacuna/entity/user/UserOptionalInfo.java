@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class UserOptionalInfo {
     private int userOptionId;
     private int userId;
-    private LocalDateTime birthDate;
+    private Date birthDate;
     private int gender;
     private String phoneNumber;
     private String address;

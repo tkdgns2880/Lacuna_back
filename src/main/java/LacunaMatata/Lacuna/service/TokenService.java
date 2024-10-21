@@ -29,11 +29,13 @@ public class TokenService {
 
             Claims claims = jwtProvider.getClaim(accessToken);
             int userId = ((Integer) claims.get("userId")).intValue();
-            User user = userMapper.findByUserId(userId);
+            User user = userMapper.findUserByUserId(userId);
 
             if(user == null) {
                 throw new RuntimeException();
             }
+
+
         } catch (RuntimeException e) {
             throw new RuntimeException("유효성 발생");
         }

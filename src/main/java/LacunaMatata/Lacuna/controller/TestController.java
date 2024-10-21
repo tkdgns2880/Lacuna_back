@@ -1,6 +1,5 @@
 package LacunaMatata.Lacuna.controller;
 
-import LacunaMatata.Lacuna.dto.request.ReqAccessTokenDto;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import LacunaMatata.Lacuna.service.TokenService;
 import io.jsonwebtoken.Claims;
