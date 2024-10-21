@@ -1,7 +1,13 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqRegisterMbtiCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryDto;
+import LacunaMatata.Lacuna.service.admin.MbtiManageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /************************************************
  * version: 1.0.4                               *
@@ -14,15 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth/admin/mbti")
 public class MbtiManageController {
 
+    @Autowired
+    private MbtiManageService mbtiManageService;
+
     // MBTI 분류 카테고리 리스트 출력
     @GetMapping("/servey/category")
     public ResponseEntity<?> getMbtiCategoryList() {
-        return ResponseEntity.ok().body(null);
+        List<RespMbtiCategoryDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryList();
+        System.out.println(mbtiCategoryList);
+        return ResponseEntity.ok().body(mbtiCategoryList);
     }
 
     // MBTI 분류 카테고리 등록
     @PostMapping("/servey/category/register")
-    public ResponseEntity<?> registerMbtiCategory() {
+    public ResponseEntity<?> registerMbtiCategory(@RequestBody ReqRegisterMbtiCategoryDto dto) {
+        mbtiManageService.registerMbtiCategory(dto);
         return ResponseEntity.ok().body(null);
     }
 

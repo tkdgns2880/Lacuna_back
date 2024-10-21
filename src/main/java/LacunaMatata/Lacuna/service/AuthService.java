@@ -51,8 +51,9 @@ public class AuthService {
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingOptIn(dto.getMarketingOptIn())
-                .thirdPartyInfoSharingConsent(dto.getThirdPartyInfoSharingConsent())
+                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
+                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
+                .useConditionAgreement(dto.getUseConditionAgreement())
                 .build();
 
         userMapper.saveUserOptionalInfo(userOptionalInfo);

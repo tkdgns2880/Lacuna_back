@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.entity.mbti;
 
+import LacunaMatata.Lacuna.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,6 @@ public class MbtiCategory {
     private String mbtiCategoryImg;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    private User user; // resultMap association 용도
 }
