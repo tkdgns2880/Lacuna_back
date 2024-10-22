@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ConsultingSurveyInfo {
     private int consultingId;
+    private int consultingSurveyUpperCategoryId;
     private int consultingLowerCategoryId;
     private int consultingSurveyRegisterId;
     private String consultingTitle;

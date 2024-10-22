@@ -19,6 +19,7 @@ public class UserOptionalInfo {
     private String phoneNumber;
     private String address;
     private String profileImg;
-    private int marketingOptIn;
-    private int thirdPartyInfoSharingConsent;
+    private int marketingReceiveAgreement;
+    private int thirdPartyInfoSharingAgreement;
+    private int useConditionAgreement;
 }
