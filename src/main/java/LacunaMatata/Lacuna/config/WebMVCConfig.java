@@ -10,7 +10,8 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("/*")  // AWS S3 주소
+                .allowedOriginPatterns("/*")
+                .allowedOrigins("http://localhost:3000")  // AWS S3 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);

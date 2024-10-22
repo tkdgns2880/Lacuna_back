@@ -45,15 +45,33 @@ public class AuthService {
                 .build();
         userMapper.saveUser(user);
         int userId = user.getUserId();
+        int thirdPartyInfoSharingAgreement = 0;
+        int marketingReceiveAgreement = 0;
+        int useConditionAgreement = 0;
+        if(dto.getThirdPartyInfoSharingAgreement() == true) {
+            thirdPartyInfoSharingAgreement = 1;
+        } else {
+            thirdPartyInfoSharingAgreement = 2;
+        }
+        if(dto.getMarketingReceiveAgreement() == true) {
+            marketingReceiveAgreement = 1;
+        } else {
+            marketingReceiveAgreement = 2;
+        }
+        if(dto.getUseConditionAgreement() == true) {
+            useConditionAgreement = 1;
+        } else {
+            useConditionAgreement = 2;
+        }
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
                 .userId(user.getUserId())
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
-                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
-                .useConditionAgreement(dto.getUseConditionAgreement())
+                .marketingReceiveAgreement(marketingReceiveAgreement)
+                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
+                .useConditionAgreement(useConditionAgreement)
                 .build();
 
         userMapper.saveUserOptionalInfo(userOptionalInfo);
