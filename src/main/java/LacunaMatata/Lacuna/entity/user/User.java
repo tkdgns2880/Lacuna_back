@@ -32,11 +32,12 @@ public class User {
     private LocalDateTime updateDate;
     private Set<UserRoleMet> userRoleMets;
 
-    public PrincipalUser toPrincipal() {
+    public PrincipalUser toPrincipal(LocalDateTime lastActiveDate) {
         return PrincipalUser.builder()
                 .id(userId)
                 .username(username)
                 .password(password)
+                .lastActiveDate(lastActiveDate)
                 .userRoleMets(userRoleMets)
                 .build();
     }

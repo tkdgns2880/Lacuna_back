@@ -129,19 +129,57 @@
 
     <select id="findUserByUserId" resultMap="UserResultMap">
         select
-            *
+            u.user_id,
+            u.username,
+            u.email,
+            u.password,
+            u.name,
+            u.social_login_type,
+            u.password_last_changed,
+            u.created_date,
+            u.update_date,
+            urm.user_role_met_id,
+            urm.role_user_id,
+            urm.role_id,
+            urm.create_date,
+            urm.update_date,
+            ur.role_id,
+            ur.role_name,
+            ur.role_description,
+            ur.role_img
         from
-            tb_user
+            tb_user u
+            left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
+            left outer join tb_user_role ur on(urm.role_id = ur.role_id)
         where
-            user_id = #{userId}
+            u.user_id = #{userId}
     </select>
     <select id="findUserByUsername" resultMap="UserResultMap">
         select
-            *
+            u.user_id,
+            u.username,
+            u.email,
+            u.password,
+            u.name,
+            u.social_login_type,
+            u.password_last_changed,
+            u.created_date,
+            u.update_date,
+            urm.user_role_met_id,
+            urm.role_user_id,
+            urm.role_id,
+            urm.create_date,
+            urm.update_date,
+            ur.role_id,
+            ur.role_name,
+            ur.role_description,
+            ur.role_img
         from
-            tb_user
+            tb_user u
+            left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
+            left outer join tb_user_role ur on(urm.role_id = ur.role_id)
         where
-            username = #{username}
+            u.username = #{username}
     </select>
 
 </mapper>

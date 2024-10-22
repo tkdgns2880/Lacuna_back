@@ -2,19 +2,20 @@ package LacunaMatata.Lacuna.service;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
-import LacunaMatata.Lacuna.entity.user.InactiveAccount;
-import LacunaMatata.Lacuna.entity.user.LoginHistory;
-import LacunaMatata.Lacuna.entity.user.User;
-import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
+import LacunaMatata.Lacuna.entity.user.*;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
+import LacunaMatata.Lacuna.repository.user.UserRoleMetMapper;
 import LacunaMatata.Lacuna.security.ip.IpUtils;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /************************************
  * version: 1.0.5                   *
@@ -26,14 +27,12 @@ import java.util.List;
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserMapper userMapper;
+    @Autowired private IpUtils ipUtils;
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    @Autowired private JwtProvider jwtProvider;
 
-    @Autowired
-    private IpUtils ipUtils;
+    @Autowired private UserMapper userMapper;
+    @Autowired private UserRoleMetMapper userRoleMetMapper;
 
     // 일반 회원 가입
     public void signup(ReqGeneralSignupDto dto) {
@@ -73,8 +72,12 @@ public class AuthService {
                 .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
                 .useConditionAgreement(useConditionAgreement)
                 .build();
-
         userMapper.saveUserOptionalInfo(userOptionalInfo);
+
+        UserRoleMet userRoleMet = UserRoleMet.builder()
+                .roleUserId(user.getUserId())
+                .build();
+        userRoleMetMapper.saveUserRoleMat(userRoleMet);
     }
 
     // 일반 로그인
@@ -102,23 +105,20 @@ public class AuthService {
             userMapper.saveInactiveAccount(newInactiveAccount);
         }
 
-        // 휴면 정보를 가지고 왔는데 활성화 시점이 로그인한 시점으로부터 1년이 지난 경우 비활성화로 바꿈
-        if(inactiveAccount.getLastActiveDate().isBefore(LocalDateTime.now().minusYears(1))) {
-            userMapper.changeInactiveFlagDisable(user.getUserId());
+        // 계정 비활성화인 경우
+        if(userMapper.findInactiveAccountByUserId(user.getUserId()).getInactiveFlag() == 2) {
+
         }
 
-        // 비활성화인 경우 오류 뜨게 만들기
-        if(inactiveAccount.getInactiveFlag() == 2) {
-            // 비활성화 풀 수 있게끔 이메일 날리는 요청
-            throw new RuntimeException("비활성 계정");
-        }
-
-        // 로그인 시점이 1년이 지나지 않아 아직 활성화 상태인경우 활성화시점을 오늘로 업데이트 해주기
+        // 로그인 시점이 1년이 지나지 않아 아직 활성화 상태인경우 활성화시점을 오늘로 업데이트 해주기(필터에서 검사함)
         userMapper.modifyInactiveAccount(user.getUserId());
 
         // ip와 토큰 가져오기
         String loginIp = IpUtils.getClientIp(request);
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId());
+        int roleId = user.getUserRoleMets().stream().map(ur -> ur.getRoleId())
+                .max(Comparator.naturalOrder()).orElse(2);
+
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), roleId);
 
         // 로그인 정보에 로그인 시간과 ip 저장하기
         LoginHistory loginHistory = LoginHistory.builder()

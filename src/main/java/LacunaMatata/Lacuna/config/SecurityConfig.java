@@ -28,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+//        http.exceptionHandling().authenticationEntryPoint(InAccountExceptionHandler);
+
         http.authorizeRequests()
                 .antMatchers(
                         "/test/**",

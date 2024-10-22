@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class PrincipalUser implements UserDetails {
     private int id;
     private String username;
     private String password;
+    private LocalDateTime lastActiveDate;
     private Set<UserRoleMet> userRoleMets;
 
     @Override
@@ -32,9 +34,15 @@ public class PrincipalUser implements UserDetails {
                 ur.getUserRole().getRoleName())).collect(Collectors.toSet());
     }
 
+    // 휴면계정 만료시간을 지났는지 확인 => 지났으면 false 반환, 안지났으면 true 반환
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        Boolean isActiveUser = true;
+
+        if(lastActiveDate.isBefore(LocalDateTime.now().minusYears(1))) {
+            isActiveUser = false;
+        }
+        return isActiveUser;
     }
 
     @Override
