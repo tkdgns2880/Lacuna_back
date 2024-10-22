@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 public class LifestyleResult {
     private int lifestyleResultId;
     private int lifestyleResultConsultingUpperCategoryId;
-    private String lifestyleCategoryResultType;
-    private String lifestyleResultTitle;
-    private String lifestyleResultContent;
+    private int lifestyleResultConsultingLowerCategoryId;
+    private String lifestyleResultUnitTitle;
     private int lifestyleResultRegisterId;
-    private int mbtiResultStatus;
+    private int lifestyleResultStatus;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 }
