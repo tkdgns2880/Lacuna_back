@@ -64,8 +64,9 @@
             #{phoneNumber},
             #{address},
             default,
-            #{marketingOptIn},
-            #{thirdPartyInfoSharingConsent}
+            #{marketingReceiveAgreement},
+            #{thirdPartyInfoSharingAgreement},
+            #{useConditionAgreement}
         )
     </insert>
     <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginId">

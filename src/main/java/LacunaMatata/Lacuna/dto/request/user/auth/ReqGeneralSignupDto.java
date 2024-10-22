@@ -15,6 +15,7 @@ public class ReqGeneralSignupDto {
     private int gender;
     private String phoneNumber;
     private String address;
-    private int thirdPartyInfoSharingConsent;
-    private int marketingOptIn;
+    private Boolean marketingReceiveAgreement;
+    private Boolean thirdPartyInfoSharingAgreement;
+    private Boolean useConditionAgreement;
 }
