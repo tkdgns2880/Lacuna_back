@@ -32,7 +32,7 @@ public class TestController {
     @ApiOperation(value = "Test API")
     @GetMapping("/test")
     public ResponseEntity<?> access() {
-        String accessToken = jwtProvider.generateAccessToken(1);
+        String accessToken = jwtProvider.generateAccessToken(1, 2);
         log.info("{}", accessToken);
         Claims claims = jwtProvider.getClaim(accessToken);
         Long userId = ((Integer) claims.get("userId")).longValue();

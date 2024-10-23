@@ -28,6 +28,7 @@ public class User {
     private String name;
     private int socialLoginType;
     private LocalDateTime passwordLastChanged;
+    private LocalDateTime lastLoginDate;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
     private Set<UserRoleMet> userRoleMets;

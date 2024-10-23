@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class LoginHistory {
-    private int loginId;
+    private int loginHistoryId;
     private int loginUserId;
     private LocalDateTime loginTime;
     private String loginIp;

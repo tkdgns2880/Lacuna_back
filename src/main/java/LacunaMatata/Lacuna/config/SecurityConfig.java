@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.config;
 
 
 import LacunaMatata.Lacuna.security.filter.JwtTokenFilter;
+import LacunaMatata.Lacuna.security.handler.InAccountExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
+    @Autowired
+    private InAccountExceptionHandler inAccountExceptionHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().disable();
@@ -28,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.exceptionHandling().authenticationEntryPoint(inAccountExceptionHandler);
+
         http.authorizeRequests()
                 .antMatchers(
                         "/test/**",
@@ -35,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**",
                         "/v2/api-docs",
                         "/swagger-resources/**",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/api/v1/**"
                 )
                 .permitAll()
                 .anyRequest()
