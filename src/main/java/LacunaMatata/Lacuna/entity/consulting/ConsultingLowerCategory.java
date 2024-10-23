@@ -15,7 +15,6 @@ public class ConsultingLowerCategory {
     private int ConsultingLowerCategoryId;
     private int ConsultingUpperCategoryId;
     private String ConsultingLowerCategoryName;
-    private String ConsultingLowerCategoryDescription;
     private int consultingLowerCategoryRegisterId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

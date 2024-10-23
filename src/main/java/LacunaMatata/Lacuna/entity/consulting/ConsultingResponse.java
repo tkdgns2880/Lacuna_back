@@ -15,6 +15,7 @@ public class ConsultingResponse {
     private int consultingResponseId;
     private int consultingResponseUserId;
     private int consultingResponseUpperCategoryId;
+    private int consultingResponseLowerCategoryId;
     private int responseConsultingId;
     private int consultingOptionId;
     private int consultingResponseStatus;
