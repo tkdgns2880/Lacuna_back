@@ -47,8 +47,6 @@ public class JwtTokenFilter extends GenericFilter {
         }
         String accessToken = jwtProvider.removeBearer(bearerAccessToken);
 
-        Boolean isActiveUser = true;
-
         try {
             Claims claims = jwtProvider.getClaim(accessToken);
             int userId = ((Integer) claims.get("userId")).intValue();
@@ -57,17 +55,7 @@ public class JwtTokenFilter extends GenericFilter {
                 throw new JwtException("해당 id의 사용자를 찾지 못했습니다");
             }
 
-            // 아이디와 비밀번호가 일치했을 때 해당 계정이 휴면 상태인지 확인하기 위해 휴면 정보 불러오기
-            InactiveAccount inactiveAccount = userMapper.findInactiveAccountByUserId(user.getUserId());
-
-            PrincipalUser principalUser = user.toPrincipal(inactiveAccount.getLastActiveDate());
-
-            // 휴면만료 검사 결과가 false(휴면 계정 상태)이면 휴면 계정 여부(flag 값)을 2로 수정후 다음 필터에서 오류 발생하게끔
-            if(principalUser.isAccountNonExpired() == false) {
-                userMapper.changeInactiveFlagDisable(userId);
-                filterChain.doFilter(servletRequest, servletResponse);
-                return;
-            }
+            PrincipalUser principalUser = user.toPrincipal();
 
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());

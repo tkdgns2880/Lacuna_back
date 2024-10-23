@@ -28,16 +28,16 @@ public class User {
     private String name;
     private int socialLoginType;
     private LocalDateTime passwordLastChanged;
+    private LocalDateTime lastLoginDate;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
     private Set<UserRoleMet> userRoleMets;
 
-    public PrincipalUser toPrincipal(LocalDateTime lastActiveDate) {
+    public PrincipalUser toPrincipal() {
         return PrincipalUser.builder()
                 .id(userId)
                 .username(username)
                 .password(password)
-                .lastActiveDate(lastActiveDate)
                 .userRoleMets(userRoleMets)
                 .build();
     }

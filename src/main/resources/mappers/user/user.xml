@@ -4,15 +4,10 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="LacunaMatata.Lacuna.repository.user.UserMapper">
     <resultMap id="loginHistoryResultMap" type="LacunaMatata.Lacuna.entity.user.LoginHistory">
-        <id property="loginId" column="login_id" />
+        <id property="loginHistoryId" column="login_history_id" />
         <result property="loginUserId" column="login_user_id" />
         <result property="loginTime" column="login_time" />
         <result property="loginIp" column="login_ip" />
-    </resultMap>
-    <resultMap id="inactiveAccountResultMap" type="LacunaMatata.Lacuna.entity.user.InactiveAccount">
-        <result property="activityUserId" column="activity_user_id" />
-        <result property="lastActiveDate" column="last_active_date" />
-        <result property="inactiveFlag" column="inactive_flag" />
     </resultMap>
     <resultMap id="UserResultMap" type="LacunaMatata.Lacuna.entity.user.User">
         <id property="userId" column="user_id" />
@@ -22,6 +17,7 @@
         <result property="name" column="name" />
         <result property="socialLoginType" column="social_login_type" />
         <result property="passwordLastChanged" column="password_last_changed" />
+        <result property="lastLoginDate" column="last_login_date" />
         <result property="createdDate" column="create_date" />
         <result property="updateDate" column="update_date" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
@@ -51,6 +47,7 @@
             default,
             now(),
             now(),
+            now(),
             now()
         )
     </insert>
@@ -69,7 +66,7 @@
             #{useConditionAgreement}
         )
     </insert>
-    <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginId">
+    <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginHistoryId">
         insert into tb_login_history
         values(
             default,
@@ -78,6 +75,13 @@
             #{loginIp}
         )
     </insert>
+    <update id="modifyLoginDate">
+        update tb_user
+        set
+            last_login_date = now()
+        where
+            user_id = #{userId}
+    </update>
     <select id="findLoginHistoryByUserId" resultMap="loginHistoryResultMap">
         select
             *
@@ -85,46 +89,6 @@
             tb_login_history
         where
             login_user_id = #{userId}
-    </select>
-    <insert id="saveInactiveAccount" useGeneratedKeys="true" keyProperty="activityUserId">
-        insert into tb_inactive_account
-        values(
-            #{activityUserId},
-            now(),
-            1
-        )
-    </insert>
-    <update id="modifyInactiveAccount">
-        update
-            tb_inactive_account
-        set
-            last_active_date = now()
-        where
-            activity_user_id = #{userId}
-    </update>
-    <update id="changeInactiveFlagDisable">
-        update
-            tb_inactive_account
-        set
-            inactive_flag = 2
-        where
-            activity_user_id = #{userId}
-    </update>
-    <update id="changeInactiveFlagAble">
-        update
-            tb_inactive_account
-        set
-            inactive_flag = 1
-        where
-            activity_user_id = #{userId}
-    </update>
-    <select id="findInactiveAccountByUserId" resultMap="inactiveAccountResultMap">
-        select
-            *
-        from
-            tb_inactive_account
-        where
-            activity_user_id = #{userId}
     </select>
 
     <select id="findUserByUserId" resultMap="UserResultMap">
@@ -136,6 +100,7 @@
             u.name,
             u.social_login_type,
             u.password_last_changed,
+            u.last_login_date,
             u.created_date,
             u.update_date,
             urm.user_role_met_id,
@@ -163,6 +128,7 @@
             u.name,
             u.social_login_type,
             u.password_last_changed,
+            u.last_login_date,
             u.created_date,
             u.update_date,
             urm.user_role_met_id,

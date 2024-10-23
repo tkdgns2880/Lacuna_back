@@ -18,10 +18,9 @@ public class InAccountExceptionHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("status", 401);
-        responseData.put("message", "휴면 계정입니다. 계정 인증 후 다시 로그인 해주세요.");
-
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -3,6 +3,7 @@ package LacunaMatata.Lacuna.service;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
 import LacunaMatata.Lacuna.entity.user.*;
+import LacunaMatata.Lacuna.exception.InactiveAccountException;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.repository.user.UserRoleMetMapper;
 import LacunaMatata.Lacuna.security.ip.IpUtils;
@@ -94,24 +95,10 @@ public class AuthService {
             throw new RuntimeException("사용자 정보를 확인하세요");
         }
 
-        // 아이디와 비밀번호가 일치했을 때 해당 계정이 휴면 상태인지 확인하기 위해 휴면 정보 불러오기
-        InactiveAccount inactiveAccount = userMapper.findInactiveAccountByUserId(user.getUserId());
-
-        // 만약 아직 정보가 저장되어있지 않다면(회원가입 직후 일 때) 새로 생성해서 넣어주기
-        if(inactiveAccount == null) {
-            InactiveAccount newInactiveAccount = InactiveAccount.builder()
-                    .activityUserId(user.getUserId())
-                    .build();
-            userMapper.saveInactiveAccount(newInactiveAccount);
-        }
-
         // 계정 비활성화인 경우
-        if(userMapper.findInactiveAccountByUserId(user.getUserId()).getInactiveFlag() == 2) {
-            throw new RuntimeException("이메일 인증으로 계정 비활성화 해제 후 이용바랍니다.");
+        if(user.getLastLoginDate().isBefore(LocalDateTime.now().minusYears(1))) {
+            throw new InactiveAccountException();
         }
-
-        // 로그인 시점이 1년이 지나지 않아 아직 활성화 상태인경우 활성화시점을 오늘로 업데이트 해주기(필터에서 검사함)
-        userMapper.modifyInactiveAccount(user.getUserId());
 
         // ip와 토큰 가져오기
         String loginIp = IpUtils.getClientIp(request);
@@ -128,11 +115,5 @@ public class AuthService {
         userMapper.saveLoginHistory(loginHistory);
 
         return accessToken;
-    }
-
-    // 휴면 계정을 이메일 인증으로 풀었을 때 다시 활성화 상태로 업데이트 하는 기능
-    // 아직 이메일 인증 요청 컨트롤러 안 만듦(나중에 만들고 테스트 해보기)
-    public void changeInactiveFlagAble(int userId) {
-        userMapper.changeInactiveFlagAble(userId);
     }
 }
