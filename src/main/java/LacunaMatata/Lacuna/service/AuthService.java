@@ -107,7 +107,7 @@ public class AuthService {
 
         // 계정 비활성화인 경우
         if(userMapper.findInactiveAccountByUserId(user.getUserId()).getInactiveFlag() == 2) {
-
+            throw new RuntimeException("이메일 인증으로 계정 비활성화 해제 후 이용바랍니다.");
         }
 
         // 로그인 시점이 1년이 지나지 않아 아직 활성화 상태인경우 활성화시점을 오늘로 업데이트 해주기(필터에서 검사함)
