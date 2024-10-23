@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LacunaMatata.Lacuna.repository.admin.ProductManageMapper">
+    <insert id="saveProductUpperCategory">
+        insert into
+            tb_product_upper_category
+        values (default, #{productUpperCategoryName}, 1, now(), now());
+    </insert>
+    <insert id="saveProductLowerCategory">
+        insert into
+            tb_product_lower_category
+        values (default, 3, #{productLowerCategoryName}, 5, now(), now());
+    </insert>
+    <update id="modifyProductUpperCategory">
+        update
+            tb_product_upper_category
+        set
+            product_upper_category_id = #{productUpperCategoryId},
+            product_upper_category_name = #{productUpperCategoryName}
+        where
+            product_upper_category_id = #{upperId}
+    </update>
+    <update id="modifyProductLowerCategory">
+        update
+            tb_product_lower_category
+        set
+            product_lower_category_id = #{productLowerCategoryId}
+            product_lower_category_name = #{productLowerCategoryName}
+        where
+            product_lower_category_id = #{lowerId}
+    </update>
+    <delete id="deleteProduct">
+        delete
+        from
+            tb_product
+        where
+            product_id = #{productId}
+    </delete>
+    <delete id="deleteUpperProductCategory">
+        delete
+        from
+            tb_product_upper_category
+        where
+            upper_id = #{upperId}
+    </delete>
+    <delete id="deleteProductLowerCategory">
+        delete
+        from
+            tb_product_lower_category
+        where
+            lower_id = #{lowerId}
+    </delete>
+</mapper>
