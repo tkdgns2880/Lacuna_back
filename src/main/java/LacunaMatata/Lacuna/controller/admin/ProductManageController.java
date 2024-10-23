@@ -1,5 +1,12 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyLowerProductCategoryDto;
+import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyUpperProductDto;
+import LacunaMatata.Lacuna.dto.request.admin.product.ReqRegisterLowerProductCategoryDto;
+import LacunaMatata.Lacuna.dto.request.admin.product.ReqRegisterUpperProductCategoryDto;
+import LacunaMatata.Lacuna.service.admin.ProductManageService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +18,12 @@ import org.springframework.web.bind.annotation.*;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
+@Slf4j
 @RequestMapping("/auth/admin/product")
 public class ProductManageController {
+
+    @Autowired
+    private ProductManageService productManageService;
 
     // 상품 상위 분류 리스트 출력
     @GetMapping("/upper")
@@ -22,20 +33,23 @@ public class ProductManageController {
 
     // 상품 상위 분류 카테고리 등록
     @PostMapping("/upper/register")
-    public ResponseEntity<?> registerUpperProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> registerUpperProduct(@RequestBody ReqRegisterUpperProductCategoryDto dto) {
+        productManageService.registerProductUpperCategory(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 상위 분류 카테고리 수정
     @PutMapping("/upper/modify")
-    public ResponseEntity<?> modifyUpperProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> modifyUpperProduct(@RequestBody ReqModifyUpperProductDto dto) {
+        productManageService.modifyProductUpperCategory(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 상위 분류 카테고리 삭제
     @DeleteMapping("/upper/delete/{upperId}")
-    public ResponseEntity<?> deleteUpperProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> deleteUpperProduct(@PathVariable int upperId) {
+        productManageService.deleteProductUpperCategory(upperId);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 상위 분류 카테고리 복수개 삭제
@@ -52,20 +66,23 @@ public class ProductManageController {
 
     // 상품 하위 분류 카테고리 등록
     @PostMapping("/lower/register/{upperId}")
-    public ResponseEntity<?> registerLowerProduct() {
+    public ResponseEntity<?> registerLowerProduct(@RequestBody ReqRegisterLowerProductCategoryDto dto) {
+        productManageService.registerProductlowerCategory(dto);
         return ResponseEntity.ok().body(null);
     }
 
     // 상품 하위 분류 카테고리 수정
     @PutMapping("/lower/modify")
-    public ResponseEntity<?> modifyLowerProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> modifyLowerProduct(@RequestBody ReqModifyLowerProductCategoryDto dto) {
+        productManageService.modifyProductlowerCategory(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 하위 분류 카테고리 삭제
     @DeleteMapping("/lower/delete/{lowerId}")
-    public ResponseEntity<?> deleteLowerProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> deleteLowerProduct(@PathVariable int lowerId) {
+        productManageService.deleteProductlowerCategory(lowerId);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 하위 분류 카테고리 복수개 삭제
@@ -94,8 +111,9 @@ public class ProductManageController {
 
     // 상품 삭제
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<?> deleteProduct() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> deleteProduct(@PathVariable int productId) {
+        productManageService.deleteProduct(productId);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 복수개 삭제
