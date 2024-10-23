@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.security.filter;
 
 
+import LacunaMatata.Lacuna.entity.user.InactiveAccount;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /************************************
  * version: 1.0.2                   *
@@ -58,6 +60,7 @@ public class JwtTokenFilter extends GenericFilter {
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
         } catch(JwtException e) {
             e.printStackTrace();
             filterChain.doFilter(servletRequest, servletResponse);

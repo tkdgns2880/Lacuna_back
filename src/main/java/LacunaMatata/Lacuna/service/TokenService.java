@@ -35,6 +35,7 @@ public class TokenService {
                 throw new RuntimeException();
             }
 
+            userMapper.modifyLoginDate(userId);
 
         } catch (RuntimeException e) {
             throw new RuntimeException("유효성 발생");

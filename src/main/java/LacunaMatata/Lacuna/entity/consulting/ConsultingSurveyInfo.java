@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 @Builder
 public class ConsultingSurveyInfo {
     private int consultingId;
-    private int consultingSurveyUpperCategoryId;
+    private int consultingServeyUpperCategoryId;
     private int consultingLowerCategoryId;
+    private String consultingCode;
     private int consultingSurveyRegisterId;
     private String consultingTitle;
     private String consultingSubtitle;
