@@ -1,14 +1,14 @@
 package LacunaMatata.Lacuna.controller.admin;
 
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyUpperProductDto;
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqRegisterLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqRegisterUpperProductCategoryDto;
+import LacunaMatata.Lacuna.dto.request.admin.product.*;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /************************************************
  * version: 1.0.4                               *
@@ -25,10 +25,12 @@ public class ProductManageController {
     @Autowired
     private ProductManageService productManageService;
 
-    // 상품 상위 분류 리스트 출력
+    // 상품 상위 분류 리스트 출력 - 완료
     @GetMapping("/upper")
-    public ResponseEntity<?> getUpperProductList() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getUpperProductList(ReqGetUpperProductCategoryListDto dto) {
+        List<RespUpperProductCategoryDto> respUpperProductCategoryList =
+                productManageService.getProductUpperCategory(dto);
+        return ResponseEntity.ok().body(respUpperProductCategoryList);
     }
 
     // 상품 상위 분류 카테고리 등록
@@ -66,8 +68,8 @@ public class ProductManageController {
 
     // 상품 하위 분류 카테고리 등록
     @PostMapping("/lower/register/{upperId}")
-    public ResponseEntity<?> registerLowerProduct(@RequestBody ReqRegisterLowerProductCategoryDto dto) {
-        productManageService.registerProductlowerCategory(dto);
+    public ResponseEntity<?> registerLowerProduct(@RequestBody ReqRegisterLowerProductCategoryDto dto, @PathVariable int upperId) {
+        productManageService.registerProductlowerCategory(dto, upperId);
         return ResponseEntity.ok().body(null);
     }
 
