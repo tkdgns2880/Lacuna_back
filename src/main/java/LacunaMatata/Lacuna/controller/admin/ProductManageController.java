@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
 import io.swagger.annotations.Api;
@@ -65,15 +66,17 @@ public class ProductManageController {
     @DeleteMapping("/upper/delete")
     @ApiOperation(value = "deleteUpperProductListApi")
     public ResponseEntity<?> deleteUpperProductList(@RequestBody ReqDeleteUpperProductCategoryListDto dto) {
-
+        productManageService.deleteProductUpperCategoryList(dto);
         return ResponseEntity.ok().body(null);
     }
 
     // 상품 하위 분류 리스트 출력
     @GetMapping("/lower/{upperId}")
     @ApiOperation(value = "getLowerProductListApi")
-    public ResponseEntity<?> getLowerProductList() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getLowerProductList(@RequestBody ReqGetLowerProductCategoryListDto dto, @PathVariable int upperId) {
+        List<RespLowerProductCategoryDto> respLowerProductCategoryList =
+                productManageService.getProductlowerCategory(dto, upperId);
+        return ResponseEntity.ok().body(respLowerProductCategoryList);
     }
 
     // 상품 하위 분류 카테고리 등록
