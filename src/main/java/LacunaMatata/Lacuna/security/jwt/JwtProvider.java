@@ -49,10 +49,10 @@ public class JwtProvider {
     }
 
     // accessToken 생성
-    public String generateAccessToken(int userId, int roleId) {
+    public String generateAccessToken(int userId, String roleName) {
         return Jwts.builder()
                 .claim("userId", userId)
-                .claim("roleId", roleId)
+                .claim("roleName", roleName)
                 .expiration(authorizdExpriedDate())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

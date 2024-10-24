@@ -3,33 +3,58 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="LacunaMatata.Lacuna.repository.admin.ProductManageMapper">
-    <insert id="saveProductUpperCategory">
-        insert into
-            tb_product_upper_category
-        values (default, #{productUpperCategoryName}, 1, now(), now());
+    <resultMap id="productUpperCategoryResultMap" type="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
+        <id property="productUpperCategoryId" column="product_upper_category_id" />
+        <result property="productUpperCategoryName" column="product_upper_category_name" />
+        <result property="productUpperCategoryRegisterId" column="product_upper)category_register_id" />
+        <result property="createDate" column="create_date" />
+        <association property="user" resultMap="userResultMap" />
+    </resultMap>
+    <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
+        <id property="userId" column="user_id" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <insert id="saveProductUpperCategory" useGeneratedKeys="true" keyProperty="productUpperCategoryId">
+        insert into tb_product_upper_category
+        values (
+            default,
+            #{productUpperCategoryName},
+            #{productUpperCategoryRegisterId},
+            now(),
+            now()
+        )
     </insert>
-    <insert id="saveProductLowerCategory">
-        insert into
-            tb_product_lower_category
-        values (default, 3, #{productLowerCategoryName}, 5, now(), now());
+    <insert id="saveProductLowerCategory" useGeneratedKeys="true" keyProperty="productLowerCategoryId">
+        insert into tb_product_lower_category
+        values (
+            default,
+            #{productUpperCategoryId},
+            #{productLowerCategoryName},
+            #{productLowerCategoryRegisterId},
+            now(),
+            now()
+        );
     </insert>
     <update id="modifyProductUpperCategory">
         update
             tb_product_upper_category
         set
-            product_upper_category_id = #{productUpperCategoryId},
-            product_upper_category_name = #{productUpperCategoryName}
+            product_upper_category_name = #{productUpperCategoryName},
+            product_upper_category_register_id = #{productUpperCategoryRegisterId},
+            update_date = now()
         where
-            product_upper_category_id = #{upperId}
+            product_upper_category_id = #{productUpperCategoryId}
     </update>
     <update id="modifyProductLowerCategory">
         update
             tb_product_lower_category
         set
-            product_lower_category_id = #{productLowerCategoryId}
-            product_lower_category_name = #{productLowerCategoryName}
+            product_lower_category_name = #{productLowerCategoryName},
+            product_lower_category_register_id = #{productLowerCategoryRegisterId},
+            update_date = now()
         where
-            product_lower_category_id = #{lowerId}
+            product_lower_category_id = #{productLowerCategoryId}
     </update>
     <delete id="deleteProduct">
         delete
@@ -43,13 +68,30 @@
         from
             tb_product_upper_category
         where
-            upper_id = #{upperId}
+            product_upper_category_id = #{upperId}
     </delete>
     <delete id="deleteProductLowerCategory">
         delete
         from
             tb_product_lower_category
         where
-            lower_id = #{lowerId}
+            product_lower_category_id = #{lowerId}
     </delete>
+    <select id="getProductUpperCategoryList"
+            resultMap="productUpperCategoryResultMap">
+        select
+            puc.product_upper_category_id,
+            puc.product_upper_category_name,
+            puc.product_upper_category_register_id,
+            puc.create_date,
+            u.user_id,
+            u.name
+        from
+            tb_product_upper_category puc
+            left outer join tb_user u on (u.user_id = puc.product_upper_category_register_id)
+        order by
+            puc.product_upper_category_id
+        limit
+            #{startIndex}, #{limit}
+    </select>
 </mapper>

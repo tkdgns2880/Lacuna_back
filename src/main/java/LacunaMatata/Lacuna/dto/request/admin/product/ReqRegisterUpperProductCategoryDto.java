@@ -9,10 +9,4 @@ import lombok.Data;
 public class ReqRegisterUpperProductCategoryDto {
 //    @ApiModelProperty(value="데스트 데이터", example = "컨설팅", required = true)
     private String productUpperCategoryName;
-
-    public ProductUpperCategory toProductUpperCategory() {
-        return ProductUpperCategory.builder()
-                .productUpperCategoryName(productUpperCategoryName)
-                .build();
-    }
 }

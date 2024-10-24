@@ -1,11 +1,14 @@
-package LacunaMatata.Lacuna.controller;
+package LacunaMatata.Lacuna.controller.user;
 
+import LacunaMatata.Lacuna.aspect.annotation.user.AuthAop;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqAccessTokenDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
-import LacunaMatata.Lacuna.service.AuthService;
+import LacunaMatata.Lacuna.service.user.AuthService;
 import LacunaMatata.Lacuna.service.TokenService;
 import LacunaMatata.Lacuna.service.user.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
+@Api(tags = "AuthController")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
@@ -34,6 +38,7 @@ public class AuthController {
      * updateDate: 2024-10-11           *
      ***********************************/
     @GetMapping("/access")
+    @ApiOperation(value = "accessTokenApi")
     ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
         tokenService.isValidToken(dto.getAccessToken());
         return ResponseEntity.ok().body(true);
@@ -47,6 +52,8 @@ public class AuthController {
      * updateDate: 2024-10-16           *
      ***********************************/
     @PostMapping("/signin")
+    @ApiOperation(value = "signinApi")
+    @AuthAop
     public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto) {
         String accessToken = authService.signin(request, dto);
         String bearerToken = "Bearer ".concat(accessToken);
@@ -62,6 +69,8 @@ public class AuthController {
      * updateDate: 2024-10-16           *
      ***********************************/
     @PostMapping("/signup")
+    @ApiOperation(value = "signupApi")
+    @AuthAop
     public ResponseEntity<?> signup(@RequestBody ReqGeneralSignupDto dto) {
         authService.signup(dto);
         return ResponseEntity.ok().body(null);
