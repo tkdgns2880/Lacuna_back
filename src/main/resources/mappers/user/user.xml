@@ -15,19 +15,14 @@
         <result property="password" column="password" />
         <result property="email" column="email" />
         <result property="name" column="name" />
-        <result property="socialLoginType" column="social_login_type" />
-        <result property="passwordLastChanged" column="password_last_changed" />
         <result property="lastLoginDate" column="last_login_date" />
         <result property="createdDate" column="create_date" />
-        <result property="updateDate" column="update_date" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
     </resultMap>
     <resultMap id="userRoleMetsResultMap" type="LacunaMatata.Lacuna.entity.user.UserRoleMet">
         <id property="userRoleMetId" column="user_role_met_id" />
         <result property="roleUserId" column="role_user_id" />
         <result property="roleId" column="role_id" />
-        <result property="createDate" column="create_date" />
-        <result property="updateDate" column="update_date" />
         <association property="userRole" resultMap="userRoleResultMap" />
     </resultMap>
     <resultMap id="userRoleResultMap" type="LacunaMatata.Lacuna.entity.user.UserRole">
@@ -98,19 +93,13 @@
             u.email,
             u.password,
             u.name,
-            u.social_login_type,
-            u.password_last_changed,
             u.last_login_date,
-            u.created_date,
-            u.update_date,
+            u.create_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
-            urm.create_date,
-            urm.update_date,
             ur.role_id,
             ur.role_name,
-            ur.role_description,
             ur.role_img
         from
             tb_user u
@@ -126,19 +115,13 @@
             u.email,
             u.password,
             u.name,
-            u.social_login_type,
-            u.password_last_changed,
             u.last_login_date,
-            u.created_date,
-            u.update_date,
+            u.create_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
-            urm.create_date,
-            urm.update_date,
             ur.role_id,
             ur.role_name,
-            ur.role_description,
             ur.role_img
         from
             tb_user u
@@ -146,6 +129,39 @@
             left outer join tb_user_role ur on(urm.role_id = ur.role_id)
         where
             u.username = #{username}
+    </select>
+    <select id="findUserByEmail" resultMap="UserResultMap">
+        select
+            u.user_id,
+            u.username,
+            u.email,
+            u.password,
+            u.name,
+            u.last_login_date,
+            u.create_date,
+            urm.user_role_met_id,
+            urm.role_user_id,
+            urm.role_id,
+            ur.role_id,
+            ur.role_name,
+            ur.role_img
+        from
+            tb_user u
+            left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
+            left outer join tb_user_role ur on(urm.role_id = ur.role_id)
+        where
+            u.email = #{email}
+    </select>
+    <select id="findUserRoleByRoleId" resultMap="userRoleResultMap">
+        select
+            role_id,
+            role_name,
+            role_description,
+            role_img
+        from
+            tb_user_role
+        where
+            role_id = #{roleId}
     </select>
 
 </mapper>

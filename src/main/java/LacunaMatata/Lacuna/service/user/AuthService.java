@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.service;
+package LacunaMatata.Lacuna.service.user;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
@@ -9,14 +9,11 @@ import LacunaMatata.Lacuna.repository.user.UserRoleMetMapper;
 import LacunaMatata.Lacuna.security.ip.IpUtils;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /************************************
  * version: 1.0.5                   *
@@ -105,7 +102,9 @@ public class AuthService {
         int roleId = user.getUserRoleMets().stream().map(ur -> ur.getRoleId())
                 .max(Comparator.naturalOrder()).orElse(2);
 
-        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), roleId);
+        String roleName = userMapper.findUserRoleByRoleId(roleId).getRoleName();
+
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), roleName);
 
         // 로그인 정보에 로그인 시간과 ip 저장하기
         LoginHistory loginHistory = LoginHistory.builder()
@@ -115,5 +114,44 @@ public class AuthService {
         userMapper.saveLoginHistory(loginHistory);
 
         return accessToken;
+    }
+
+    // username이 있는 지 검사 -> AuthAspect로 들어감
+    public Boolean isNonUserByUsername(String username) {
+        User user = userMapper.findUserByUsername(username);
+        if(user == null) {
+            return true;
+        }
+        return false;
+    }
+
+    // username의 비밃번호를 틀렸을 때 검사 -> AuthAspect로 들어감
+    public Boolean isDifferentPassword(ReqGeneralSigninDto dto) {
+        User user = userMapper.findUserByUsername(dto.getUsername());
+
+        if(!user.getPassword().equals(dto.getPassword())) {
+            return true;
+        }
+        return false;
+    }
+
+    // username 중복 되는 지 검사 -> AuthAspect로 들어감
+    public Boolean isDuplicateUsername(String username) {
+        User user = userMapper.findUserByUsername(username);
+
+        if(user == null) {
+            return true;
+        }
+        return false;
+    }
+
+    // email 중복되는지 검사 -> AuthAspect로 들어감
+    public Boolean isDuplicateEmail(String email) {
+        User user = userMapper.findUserByEmail(email);
+
+        if(user == null) {
+            return true;
+        }
+        return false;
     }
 }

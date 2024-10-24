@@ -1,9 +1,6 @@
 package LacunaMatata.Lacuna.repository.user;
 
-import LacunaMatata.Lacuna.entity.user.InactiveAccount;
-import LacunaMatata.Lacuna.entity.user.LoginHistory;
-import LacunaMatata.Lacuna.entity.user.User;
-import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
+import LacunaMatata.Lacuna.entity.user.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
@@ -13,6 +10,8 @@ import java.util.List;
 public interface UserMapper {
     User findUserByUserId(int userId);
     User findUserByUsername(String username);
+    User findUserByEmail(String email);
+    UserRole findUserRoleByRoleId(int roleId);
     int saveUser(User user);
     int saveUserOptionalInfo(UserOptionalInfo userOptionalInfo);
     int saveLoginHistory(LoginHistory loginHistory);
