@@ -1,6 +1,6 @@
 package LacunaMatata.Lacuna.controller.admin;
 
-import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqRegisterMbtiCategoryDto;
+import LacunaMatata.Lacuna.dto.request.admin.mbti.*;
 import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryDto;
 import LacunaMatata.Lacuna.service.admin.MbtiManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +40,15 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 수정
     @PutMapping("/servey/category/modify")
-    public ResponseEntity<?> modifyMbtiCategory() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto) {
+        mbtiManageService.modifyMbtiCategory(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 분류 카테고리 삭제
     @DeleteMapping("/servey/category/delete/{categoryId}")
-    public ResponseEntity<?> deleteMbtiCategory() {
+    public ResponseEntity<?> deleteMbtiCategory(@PathVariable int categoryId) {
+        mbtiManageService.deleteMbtiCategory(categoryId);
         return ResponseEntity.ok().body(null);
     }
 
@@ -64,19 +66,22 @@ public class MbtiManageController {
 
     // MBTI 설문 항목 등록
     @PostMapping("/question/register")
-    public ResponseEntity<?> registerMbtiQuestion() {
+    public ResponseEntity<?> registerMbtiQuestion(@RequestBody ReqRegisterMbtiQuestionDto dto) {
+//        mbtiManageService.registerMbtiQuestion();
         return ResponseEntity.ok().body(null);
     }
 
     // MBTI 설문 항목 수정
     @PutMapping("/question/modify")
-    public ResponseEntity<?> modifyMbtiQuestion() {
+    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto) {
+//        mbtiManageService.modifyMbtiQuestion();
         return ResponseEntity.ok().body(null);
     }
 
     // MBTI 설문 항목 삭제
     @DeleteMapping("/question/delete/{mbtiId}")
-    public ResponseEntity<?> deleteMbtiQuestion() {
+    public ResponseEntity<?> deleteMbtiQuestion(@PathVariable int mbtiId) {
+        mbtiManageService.deleteMbtiQuestion(mbtiId);
         return ResponseEntity.ok().body(null);
     }
 
@@ -94,20 +99,23 @@ public class MbtiManageController {
 
     // MBTI 설문 결과 등록
     @PostMapping("/result/register")
-    public ResponseEntity<?> registerMbtiResult() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> registerMbtiResult(@RequestBody ReqRegisterMbtiResultDto dto) {
+        mbtiManageService.registerMbtiResult(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 결과 수정
     @PutMapping("/result/modify/{resultId}")
-    public ResponseEntity<?> modifyMbtiResult() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> modifyMbtiResult(@RequestBody ReqModifyMbtiResultDto dto) {
+        mbtiManageService.modifyMbtiResult(dto);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 결과 삭제
     @DeleteMapping("/result/delete/{resultId}")
-    public ResponseEntity<?> deleteMbtiResult() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> deleteMbtiResult(@PathVariable int resultId) {
+        mbtiManageService.deleteMbtiResult(resultId);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 결과 복수개 삭제

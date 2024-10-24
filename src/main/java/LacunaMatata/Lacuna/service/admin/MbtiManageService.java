@@ -1,8 +1,9 @@
 package LacunaMatata.Lacuna.service.admin;
 
-import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqRegisterMbtiCategoryDto;
+import LacunaMatata.Lacuna.dto.request.admin.mbti.*;
 import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryDto;
 import LacunaMatata.Lacuna.entity.mbti.MbtiCategory;
+import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import LacunaMatata.Lacuna.repository.admin.MbtiManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,13 @@ public class MbtiManageService {
     }
 
     // mbti 분류 카테고리 수정
-    public void modifyMbtiCategory() {
-
+    public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto) {
+        mbtiManageMapper.modifyMbtiCategory(dto);
     }
 
     // mbti 분류 카테고리 삭제
-    public void deleteMbtiCategory() {
-
+    public void deleteMbtiCategory(int categoryId) {
+        mbtiManageMapper.deleteMbtiCategory(categoryId);
     }
 
     // mbti 분류 카테고리 복수개 삭제
@@ -73,18 +74,18 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 등록
-    public void registerMbtiQuestion() {
+    public void registerMbtiQuestion(ReqRegisterMbtiQuestionDto dto) {
 
     }
 
     // mbti 설문지 항목 수정
-    public void modifyMbtiQuestion() {
-
+    public void modifyMbtiQuestion(int mbtiId) {
+//        mbtiManageMapper.
     }
 
     // mbti 설문지 항목 삭제
-    public void deleteMbtiQuestion() {
-
+    public void deleteMbtiQuestion(int mbtiId) {
+        mbtiManageMapper.deleteMbtiQuestion(mbtiId);
     }
 
     // mbti 설문지 항목 복수개 삭제
@@ -98,18 +99,27 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 등록
-    public void registerMbtiResult() {
-
+    public void registerMbtiResult(ReqRegisterMbtiResultDto dto) {
+        MbtiResult mbtiResult = MbtiResult.builder()
+                .mbtiResultTitle(dto.getMbtiResultTitle())
+                .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
+                .mbtiResultImg(dto.getMbtiResultImg())
+                .mbtiResultSummary(dto.getMbtiResultSummary())
+                .mbtiResultContent(dto.getMbtiResultContent())
+                .mbtiResultStatus(dto.getMbtiResultStatus())
+                .build();
+        mbtiManageMapper.registerMbtiResult(mbtiResult);
     }
 
     // mbti 설문 결과 항목 수정
-    public void modifyMbtiResult() {
+    public void modifyMbtiResult(ReqModifyMbtiResultDto dto) {
+        mbtiManageMapper.modifyMbtiResult(dto);
 
     }
 
     // mbti 설문 결과 항목 삭제
-    public void deleteMbtiResult() {
-
+    public void deleteMbtiResult(int resultId) {
+        mbtiManageMapper.deleteMbtiResult(resultId);
     }
 
     // mbti 설문 결과 복수개 삭제
