@@ -31,6 +31,7 @@ public class User {
     private LocalDateTime lastLoginDate;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
+    private String loginIp;
     private Set<UserRoleMet> userRoleMets;
 
     public PrincipalUser toPrincipal() {

@@ -16,11 +16,7 @@
         <result property="productLowerCategoryRegisterId" column="product_lower_category_register_id" />
         <result property="createDate" column="create_date" />
         <association property="user" resultMap="userResultMap" />
-        <association property="productUpperCategory" resultMap="productUpperCategoryResultMap2" />
-    </resultMap>
-    <resultMap id="productUpperCategoryResultMap2" type="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
-        <id property="productUpperCategoryId" column="product_upper_category_id" />
-        <result property="productUpperCategoryName" column="product_upper_category_name" />
+        <association property="productUpperCategory" resultMap="productUpperCategoryResultMap" />
     </resultMap>
     <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
         <id property="userId" column="user_id" />
@@ -98,6 +94,15 @@
             <foreach item="upperId" collection="upperIdList" open="(" separator="," close=")">
                 #{upperId}
             </foreach>
+    </delete>
+    <delete id="deleteProductLowerCategoryList">
+        delete
+        from
+            tb_product_lower_category
+        where
+        <foreach item="lowerId" collection="lowerIdList" open="(" separator="," close=")">
+            #{lowerId}
+        </foreach>
     </delete>
     <select id="getProductUpperCategoryList" resultMap="productUpperCategoryResultMap">
         select

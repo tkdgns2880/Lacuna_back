@@ -82,30 +82,20 @@ public class AuthService {
     public String signin(HttpServletRequest request, ReqGeneralSigninDto dto) {
         User user = userMapper.findUserByUsername(dto.getUsername());
 
-        // 입력한 로그인 아이디가 있는지 확인 -> 없으면 오류
-        if(user == null) {
-            throw new RuntimeException("없는 아이디"); // 나중에 사용자 정보를 확인하세요로 고칠 부분
-        }
-
-        // 입력한 아이디가 존재할 때 해당 아이디의 비밀번호가 일치하는지 확인 => 없으면 오류
-        if(!user.getPassword().equals(dto.getPassword())) {
-            throw new RuntimeException("사용자 정보를 확인하세요");
-        }
-
         // 계정 비활성화인 경우
         if(user.getLastLoginDate().isBefore(LocalDateTime.now().minusYears(1))) {
             throw new InactiveAccountException();
         }
 
-        // ip와 토큰 가져오기
-        String loginIp = IpUtils.getClientIp(request);
+        // 토큰 가져오기
         int roleId = user.getUserRoleMets().stream().map(ur -> ur.getRoleId())
                 .max(Comparator.naturalOrder()).orElse(2);
-
         String roleName = userMapper.findUserRoleByRoleId(roleId).getRoleName();
 
         String accessToken = jwtProvider.generateAccessToken(user.getUserId(), roleName);
 
+        // ip 가져오기
+        String loginIp = IpUtils.getClientIp(request);
         // 로그인 정보에 로그인 시간과 ip 저장하기
         LoginHistory loginHistory = LoginHistory.builder()
                 .loginUserId(user.getUserId())

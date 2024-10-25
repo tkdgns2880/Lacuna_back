@@ -37,7 +37,7 @@ public class AuthAspect {
         }
 
         switch (proceedingJoinPoint.getSignature().getName()) {
-            case "singup":
+            case "signup":
                 for(Object arg : args) {
                     if(arg.getClass() == ReqGeneralSignupDto.class) {
                         ReqGeneralSignupDto dto = (ReqGeneralSignupDto) arg;
@@ -59,8 +59,9 @@ public class AuthAspect {
                         break;
                     }
                 }
+                break;
 
-            case "singin":
+            case "signin":
                 for(Object arg : args) {
                     // 나중에 username과 password 둘다 같은 메세지로 설정
                     if(arg.getClass() == ReqGeneralSigninDto.class) {
@@ -69,6 +70,7 @@ public class AuthAspect {
                             FieldError fieldError
                                     = new FieldError("username", "username", "존재하지 않는 계정입니다");
                             bindingResult.addError(fieldError);
+                            break;
                         }
                         if(authService.isDifferentPassword(dto)){
                             FieldError fieldError
@@ -78,7 +80,7 @@ public class AuthAspect {
                         break;
                     }
                 }
-
+                break;
         }
 
         if(bindingResult.hasErrors()) {

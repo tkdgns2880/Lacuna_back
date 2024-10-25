@@ -78,7 +78,6 @@ public class ProductManageService {
 
     // 상품 상위 분류 카테고리 복수개 삭제
     public void deleteProductUpperCategoryList(ReqDeleteUpperProductCategoryListDto dto) {
-        System.out.println(dto.getClass().getName());
         List<Integer> upperIdList = dto.getUpperCategoryIdList();
         productManageMapper.deleteUpperProductCategoryList(upperIdList);
     }
@@ -94,13 +93,13 @@ public class ProductManageService {
         List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(params);
         List<RespLowerProductCategoryDto> productLowerCategory = new ArrayList<>();
         for(ProductLowerCategory productLowerCategoryDto : productLowerCategoryList) {
-            RespLowerProductCategoryDto respUpperProductCategoryDto = RespLowerProductCategoryDto.builder()
-                    .productLowerCategoryId(productLowerCategoryDto.getProductUpperCategoryId())
+            RespLowerProductCategoryDto respLowerProductCategoryDto = RespLowerProductCategoryDto.builder()
+                    .productLowerCategoryId(productLowerCategoryDto.getProductLowerCategoryId())
                     .productLowerCategoryName(productLowerCategoryDto.getProductLowerCategoryName())
                     .name(productLowerCategoryDto.getUser().getName())
                     .createdDate(productLowerCategoryDto.getCreateDate())
                     .build();
-            productLowerCategory.add(respUpperProductCategoryDto);
+            productLowerCategory.add(respLowerProductCategoryDto);
         }
 
         return productLowerCategory;
@@ -138,8 +137,9 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 복수개 삭제
-    public void deleteProductlowerCategoryList() {
-
+    public void deleteProductlowerCategoryList(ReqDeleteLowerProductCategoryListDto dto) {
+        List<Integer> lowerIdList = dto.getLowerCategoryIdList();
+        productManageMapper.deleteUpperProductCategoryList(lowerIdList);
     }
 
     // 상품 리스트 출력

@@ -106,7 +106,8 @@ public class ProductManageController {
     // 상품 하위 분류 카테고리 복수개 삭제
     @DeleteMapping("/lower/delete")
     @ApiOperation(value = "deleteLowerProductListApi")
-    public ResponseEntity<?> deleteLowerProductList() {
+    public ResponseEntity<?> deleteLowerProductList(@RequestBody ReqDeleteLowerProductCategoryListDto dto) {
+        productManageService.deleteProductlowerCategoryList(dto);
         return ResponseEntity.ok().body(null);
     }
 

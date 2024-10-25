@@ -15,7 +15,6 @@ public class OrderItem {
     private int orderItemId;
     private int orderId;
     private int orderProductId;
-    private int productDetailId;
     private int quantity;
     private BigDecimal priceAtPurchase;
 }
