@@ -31,6 +31,58 @@
             now()
         )
     </insert>
+    <insert id="registerMbtiResult">
+        insert into tb_
+    </insert>
+    <update id="modifyMbtiCategory">
+        update
+            tb_mbti_category
+        set
+            mbti_category_name = #{mbtiCategoryName},
+            mbti_category_description = #{mbtiCategoryDescription},,
+            mbti_category_img = #{mbtiCategoryImg}
+        where
+            mbti_category_id = #{categoryId}
+    </update>
+    <update id="modifyMbtiResult">
+        update
+            tb_mbti_result
+        set
+            mbti_result_title = #{mbtiResultTitle}
+            mbti_result_category_name = #{mbtiResultCategoryName}
+            mbti_result_img = #{mbtiResultImg}
+            mbti_result_summary = #{mbtiResultSummary}
+            mbti_result_content = #{mbtiResultContent}
+            mbti_result_status = #{mbtiResultStatus}
+        where
+            mbti_result_id = #{resultId}
+    </update>
+    <delete id="deleteMbtiCategory">
+        delete
+        from
+            tb_mbti_category
+        where
+            mbti_category_id = #{categoryId}
+    </delete>
+    <delete id="deleteMbtiQuestion">
+        delete
+        from
+            tb_mbti_result
+        where
+            mbti_result_title = #{mbtiResultTitle}
+            mbti_result_category_name = #{mbtiResultCategoryName}
+            mbti_result_img = #{mbtiResultImg}
+            mbti_result_summary = #{mbtiResultSummary}
+            mbti_result_content = #{mbtiResultContent}
+            mbti_result_status = #{mbtiResultStatus}
+    </delete>
+    <delete id="deleteMbtiResult">
+        delete
+        from
+            tb_mbti_result
+        where
+            mbti_result_id = #{resultId}
+    </delete>
 
     <select id="getMbtiCategoryList" resultMap="mbtiCategoryResultMap">
         select
