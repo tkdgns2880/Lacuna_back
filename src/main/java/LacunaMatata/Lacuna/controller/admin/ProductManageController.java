@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
 import io.swagger.annotations.Api;
@@ -114,14 +115,16 @@ public class ProductManageController {
     // 상품 리스트 출력
     @GetMapping("/list")
     @ApiOperation(value = "getProductListApi")
-    public ResponseEntity<?> getProductList() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getProductList(@RequestBody ReqGetProductListDto dto) {
+        List<RespProductDto> productList = productManageService.getProducts(dto);
+        return ResponseEntity.ok().body(productList);
     }
 
     // 상품 등록
     @PostMapping("/register")
     @ApiOperation(value = "registerProductApi")
-    public ResponseEntity<?> registerProduct() {
+    public ResponseEntity<?> registerProduct(@RequestBody ReqRegisterProductDto dto) {
+
         return ResponseEntity.ok().body(null);
     }
 

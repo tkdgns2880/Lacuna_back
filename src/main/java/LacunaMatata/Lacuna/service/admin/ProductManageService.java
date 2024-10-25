@@ -2,10 +2,9 @@ package LacunaMatata.Lacuna.service.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
-import LacunaMatata.Lacuna.entity.product.Product;
-import LacunaMatata.Lacuna.entity.product.ProductLowerCategory;
-import LacunaMatata.Lacuna.entity.product.ProductUpperCategory;
+import LacunaMatata.Lacuna.entity.product.*;
 import LacunaMatata.Lacuna.repository.admin.ProductManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -143,13 +143,73 @@ public class ProductManageService {
     }
 
     // 상품 리스트 출력
-    public List<Object> getProducts() {
-        return null;
+    public List<RespProductDto> getProducts(ReqGetProductListDto dto) {
+        int startIndex = (dto.getPage() - 1) * dto.getLimit();
+        Map<String, Object> params = Map.of(
+                "option", dto.getOption(),
+                "productName", dto.getProductName(),
+                "code", dto.getCode(),
+                "startIndex", startIndex,
+                "limit", dto.getLimit()
+        );
+        System.out.println(params);
+        List<RespProductDto> productList = productManageMapper.getProductList(params);
+        System.out.println(productList);
+
+        return productList;
     }
 
     // 상품 등록
-    public void registerProduct() {
+    public void registerProduct(ReqRegisterProductDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
+        ProductUpperCategory productUpperCategory
+                = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
+        ProductLowerCategory productLowerCategory
+                = productManageMapper.findByNameProductLowerCategory(dto.getProductLowerCategoryName());
 
+        Product product = Product.builder()
+                .productLowerCategoryId(productLowerCategory.getProductLowerCategoryId())
+                .productCode(dto.getProductCode())
+                .productName(dto.getProductName())
+                .price(BigDecimal.valueOf(dto.getPrice()))
+                .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
+                .productImg(dto.getProductImg())
+                .productRegisterId(registerId)
+                .build();
+        int productId = productManageMapper.saveProduct(product);
+
+        switch (productUpperCategory.getProductUpperCategoryId()) {
+            case 1:
+                ConsultingContent consultingContent = ConsultingContent.builder()
+                        .name(dto.getConsultingName())
+                        .build();
+                int consultingContentId = productManageMapper.saveConsultingContent(consultingContent);
+
+                ConsultingDetail consultingDetail = ConsultingDetail.builder()
+                        .consultingDetailProductId(productId)
+                        .consultingDetailContentId(consultingContentId)
+                        .repeatCount(dto.getRepeatCount())
+                        .description(dto.getConsultingDescription())
+                        .etc(dto.getEtc())
+                        .build();
+                productManageMapper.saveConsultingDetail(consultingDetail);
+                break;
+            case 2:
+                CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
+                        .cosmeticDetailProductId(productId)
+                        .volume(dto.getVolume())
+                        .ingredient(dto.getIngredient())
+                        .skinType(dto.getSkinType())
+                        .effect(dto.getEffect())
+                        .manufacture(dto.getManufacture())
+                        .productDescription(dto.getCosmeticProductDescription())
+                        .productUrl(dto.getProductUrl())
+                        .etc(dto.getEtc())
+                        .build();
+                productManageMapper.saveCosmeticDetail(cosmeticDetail);
+                break;
+        }
     }
 
     // 상품 수정

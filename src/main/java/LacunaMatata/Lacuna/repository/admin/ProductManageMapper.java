@@ -2,8 +2,8 @@ package LacunaMatata.Lacuna.repository.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyLowerProductCategoryDto;
 import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyUpperProductDto;
-import LacunaMatata.Lacuna.entity.product.ProductLowerCategory;
-import LacunaMatata.Lacuna.entity.product.ProductUpperCategory;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
+import LacunaMatata.Lacuna.entity.product.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -24,5 +24,13 @@ public interface ProductManageMapper {
     int deleteProductLowerCategory(int lowerId); // 상품 하위분류 삭제
     int deleteProductLowerCategoryList(List<Integer> lowerIdList);
 
+    List<RespProductDto> getProductList(Map<String,Object> params);
+    int saveProduct(Product product);
+    int saveConsultingContent(ConsultingContent consultingContent);
+    int saveConsultingDetail(ConsultingDetail consultingDetail);
+    int saveCosmeticDetail(CosmeticDetail cosmeticDetail);
     int deleteProduct(int productId); // 상품 삭제
+
+    ProductUpperCategory findByNameProductUpperCategory(String upperCategoryName);
+    ProductLowerCategory findByNameProductLowerCategory(String lowerCategoryName);
 }
