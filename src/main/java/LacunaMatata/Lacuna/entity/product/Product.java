@@ -17,7 +17,6 @@ public class Product {
     private int productLowerCategoryId;
     private String productCode;
     private String productName;
-    private String productDescription;
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String productImg;

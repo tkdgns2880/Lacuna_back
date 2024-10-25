@@ -16,7 +16,7 @@
         <result property="email" column="email" />
         <result property="name" column="name" />
         <result property="lastLoginDate" column="last_login_date" />
-        <result property="createdDate" column="create_date" />
+        <result property="createdDate" column="created_date" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
     </resultMap>
     <resultMap id="userRoleMetsResultMap" type="LacunaMatata.Lacuna.entity.user.UserRoleMet">
@@ -94,7 +94,7 @@
             u.password,
             u.name,
             u.last_login_date,
-            u.create_date,
+            u.created_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
@@ -116,7 +116,7 @@
             u.password,
             u.name,
             u.last_login_date,
-            u.create_date,
+            u.created_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
@@ -138,7 +138,7 @@
             u.password,
             u.name,
             u.last_login_date,
-            u.create_date,
+            u.created_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,

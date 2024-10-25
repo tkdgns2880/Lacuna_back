@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +55,10 @@ public class AuthController {
     @PostMapping("/signin")
     @ApiOperation(value = "signinApi")
     @AuthAop
-    public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto) {
+    public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto, BindingResult bindingResult) {
         String accessToken = authService.signin(request, dto);
         String bearerToken = "Bearer ".concat(accessToken);
+        System.out.println(bindingResult);
 
         return ResponseEntity.ok().body(bearerToken);
     }
@@ -71,7 +73,7 @@ public class AuthController {
     @PostMapping("/signup")
     @ApiOperation(value = "signupApi")
     @AuthAop
-    public ResponseEntity<?> signup(@RequestBody ReqGeneralSignupDto dto) {
+    public ResponseEntity<?> signup(@RequestBody ReqGeneralSignupDto dto, BindingResult bindingResult) {
         authService.signup(dto);
         return ResponseEntity.ok().body(null);
     }

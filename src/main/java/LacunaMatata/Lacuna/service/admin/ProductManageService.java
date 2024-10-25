@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.service.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.entity.product.Product;
 import LacunaMatata.Lacuna.entity.product.ProductLowerCategory;
@@ -76,13 +77,32 @@ public class ProductManageService {
     }
 
     // 상품 상위 분류 카테고리 복수개 삭제
-    public void deleteProductUpperCategoryList() {
-
+    public void deleteProductUpperCategoryList(ReqDeleteUpperProductCategoryListDto dto) {
+        List<Integer> upperIdList = dto.getUpperCategoryIdList();
+        productManageMapper.deleteUpperProductCategoryList(upperIdList);
     }
 
     // 상품 하위 분류 리스트 출력
-    public List<Object> getProductlowerCategory() {
-        return null;
+    public List<RespLowerProductCategoryDto> getProductlowerCategory(ReqGetLowerProductCategoryListDto dto, int upperId) {
+        int startIndex = (dto.getPage() - 1) * dto.getLimit();
+        Map<String, Object> params = Map.of(
+                "startIndex", startIndex,
+                "limit", dto.getLimit(),
+                "upperId", upperId
+        );
+        List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(params);
+        List<RespLowerProductCategoryDto> productLowerCategory = new ArrayList<>();
+        for(ProductLowerCategory productLowerCategoryDto : productLowerCategoryList) {
+            RespLowerProductCategoryDto respLowerProductCategoryDto = RespLowerProductCategoryDto.builder()
+                    .productLowerCategoryId(productLowerCategoryDto.getProductLowerCategoryId())
+                    .productLowerCategoryName(productLowerCategoryDto.getProductLowerCategoryName())
+                    .name(productLowerCategoryDto.getUser().getName())
+                    .createdDate(productLowerCategoryDto.getCreateDate())
+                    .build();
+            productLowerCategory.add(respLowerProductCategoryDto);
+        }
+
+        return productLowerCategory;
     }
 
     // 상품 하위 분류 카테고리 등록
@@ -117,8 +137,9 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 복수개 삭제
-    public void deleteProductlowerCategoryList() {
-
+    public void deleteProductlowerCategoryList(ReqDeleteLowerProductCategoryListDto dto) {
+        List<Integer> lowerIdList = dto.getLowerCategoryIdList();
+        productManageMapper.deleteUpperProductCategoryList(lowerIdList);
     }
 
     // 상품 리스트 출력

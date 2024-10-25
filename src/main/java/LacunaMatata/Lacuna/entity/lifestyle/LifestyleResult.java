@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.entity;
+package LacunaMatata.Lacuna.entity.lifestyle;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
