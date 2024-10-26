@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.entity.product;
 
+import LacunaMatata.Lacuna.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,9 @@ public class Product {
     private int productRegisterId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    // join할 테이블
+    private User user;
+    private ProductUpperCategory productUpperCategory;
+    private ProductLowerCategory productLowerCategory;
 }

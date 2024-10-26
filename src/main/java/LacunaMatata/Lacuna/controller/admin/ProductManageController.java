@@ -2,6 +2,8 @@ package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDetailDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
 import io.swagger.annotations.Api;
@@ -30,7 +32,7 @@ public class ProductManageController {
     private ProductManageService productManageService;
 
     // 상품 상위 분류 리스트 출력 - 완료
-    @GetMapping("/upper")
+    @GetMapping("/upper/list")
     @ApiOperation(value = "getUpperProductListApi")
     public ResponseEntity<?> getUpperProductList(ReqGetUpperProductCategoryListDto dto) {
         List<RespUpperProductCategoryDto> respUpperProductCategoryList =
@@ -44,6 +46,14 @@ public class ProductManageController {
     public ResponseEntity<?> registerUpperProduct(@RequestBody ReqRegisterUpperProductCategoryDto dto) {
         productManageService.registerProductUpperCategory(dto);
         return ResponseEntity.ok().body(true);
+    }
+
+    // 상품 상위 분류 항목 출력
+    @GetMapping("/upper/{upperId}")
+    @ApiOperation(value = "getUpperProductApi")
+    public ResponseEntity<?> getUpperProduct(@PathVariable int upperId) {
+        RespUpperProductCategoryDto respUpperCategory = productManageService.getProductUpper(upperId);
+        return ResponseEntity.ok().body(respUpperCategory);
     }
 
     // 상품 상위 분류 카테고리 수정
@@ -71,7 +81,7 @@ public class ProductManageController {
     }
 
     // 상품 하위 분류 리스트 출력
-    @GetMapping("/lower/{upperId}")
+    @GetMapping("/lower/list/{upperId}")
     @ApiOperation(value = "getLowerProductListApi")
     public ResponseEntity<?> getLowerProductList(@RequestBody ReqGetLowerProductCategoryListDto dto, @PathVariable int upperId) {
         List<RespLowerProductCategoryDto> respLowerProductCategoryList =
@@ -85,6 +95,14 @@ public class ProductManageController {
     public ResponseEntity<?> registerLowerProduct(@RequestBody ReqRegisterLowerProductCategoryDto dto, @PathVariable int upperId) {
         productManageService.registerProductlowerCategory(dto, upperId);
         return ResponseEntity.ok().body(null);
+    }
+
+    // 상품 하위 분류 카테고리 항목 출력
+    @GetMapping("/lower/{lowerId}")
+    @ApiOperation(value = "getLowerProductApi")
+    public ResponseEntity<?> getLowerProduct(@PathVariable int lowerId) {
+        RespLowerProductCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
+        return ResponseEntity.ok().body(respLowerCategory);
     }
 
     // 상품 하위 분류 카테고리 수정
@@ -114,21 +132,33 @@ public class ProductManageController {
     // 상품 리스트 출력
     @GetMapping("/list")
     @ApiOperation(value = "getProductListApi")
-    public ResponseEntity<?> getProductList() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getProductList(@RequestBody ReqGetProductListDto dto) {
+        List<RespProductDto> productList = productManageService.getProducts(dto);
+        return ResponseEntity.ok().body(productList);
     }
 
     // 상품 등록
     @PostMapping("/register")
     @ApiOperation(value = "registerProductApi")
-    public ResponseEntity<?> registerProduct() {
+    public ResponseEntity<?> registerProduct(@RequestBody ReqRegisterProductDto dto) {
+        productManageService.registerProduct(dto);
         return ResponseEntity.ok().body(null);
+    }
+
+    // 상품 항목 출력
+    @GetMapping("/{productId}")
+    @ApiOperation(value = "getProductApi")
+    public ResponseEntity<?> getProduct(@PathVariable int productId) {
+        RespProductDetailDto productDetail =
+                productManageService.getProductDetail(productId);
+        return ResponseEntity.ok().body(productDetail);
     }
 
     // 상품 수정
     @PutMapping("/modify")
     @ApiOperation(value = "modifyProductApi")
-    public ResponseEntity<?> modifyProduct() {
+    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto) {
+        productManageService.modifyProduct(dto);
         return ResponseEntity.ok().body(null);
     }
 

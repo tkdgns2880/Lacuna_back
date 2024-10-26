@@ -3,6 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="LacunaMatata.Lacuna.repository.admin.ProductManageMapper">
+
+    <resultMap id="productResultMap" type="LacunaMatata.Lacuna.entity.product.Product">
+        <id property="productId" column="product_id" />
+        <result property="productCode" column="product_code" />
+        <result property="productName" column="product_name" />
+        <result property="price" column="price" />
+        <result property="promotionPrice" column="promotion_price" />
+        <result property="createDate" column="create_date" />
+        <association property="user" resultMap="userResultMap" />
+        <association property="productUpperCategory" resultMap="productUpperCategoryResultMap2" />
+        <association property="productLowerCategory" resultMap="productLowerCategoryResultMap2" />
+    </resultMap>
+    <resultMap id="productUpperCategoryResultMap2" type="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
+        <id property="productUpperCategoryId" column="product_upper_category_id" />
+        <result property="productUpperCategoryName" column="product_upper_category_name" />
+    </resultMap>
+    <resultMap id="productLowerCategoryResultMap2" type="LacunaMatata.Lacuna.entity.product.ProductLowerCategory">
+        <id property="productLowerCategoryId" column="product_lower_category_id" />
+        <result property="productUpperCategoryId" column="product_upper_category_id" />
+        <result property="productLowerCategoryName" column="product_lower_category_name" />
+    </resultMap>
+
     <resultMap id="productUpperCategoryResultMap" type="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
         <id property="productUpperCategoryId" column="product_upper_category_id" />
         <result property="productUpperCategoryName" column="product_upper_category_name" />
@@ -21,6 +43,26 @@
     <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
         <id property="userId" column="user_id" />
         <result property="name" column="name" />
+    </resultMap>
+    <resultMap id="consultingDetailResultMap" type="LacunaMatata.Lacuna.entity.product.ConsultingDetail">
+        <id property="consultingDetailId" column="consulting_detail_id" />
+        <result property="consultingDetailProductId" column="consulting_detail_product_id" />
+        <result property="consultingDetailContentId" column="consulting_detail_content_id" />
+        <result property="repeatCount" column="repeat_count" />
+        <result property="description" column="description" />
+        <result property="etc" column="etc" />
+        <association property="consultingContent" resultMap="consultingContentResultMap" />
+    </resultMap>
+    <resultMap id="consultingContentResultMap" type="LacunaMatata.Lacuna.entity.product.ConsultingContent">
+        <id property="consultingContentId" column="consulting_content_id" />
+        <result property="name" column="name" />
+    </resultMap>
+    <resultMap id="cosmeticDetailResultMap" type="LacunaMatata.Lacuna.entity.product.CosmeticDetail">
+        <id property="cosmeticDetailId" column="cosmetic_detail_id" />
+        <result property="cosmeticDetailProductId" column="cosmetic_detail_product_id" />
+        <result property="skinType" column="skin_type" />
+        <result property="productDescription" column="product_description" />
+        <result property="productUrl" column="product_url" />
     </resultMap>
 
     <insert id="saveProductUpperCategory" useGeneratedKeys="true" keyProperty="productUpperCategoryId">
@@ -44,6 +86,54 @@
             now()
         );
     </insert>
+    <insert id="saveProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into tb_product
+        values(
+            default,
+            #{productLowerCategoryId},
+            #{productCode},
+            #{productName},
+            #{price},
+            #{promotionPrice},
+            #{productImg},
+            #{productRegisterId},
+            now(),
+            now()
+        )
+    </insert>
+    <insert id="saveConsultingContent" useGeneratedKeys="true" keyProperty="consultingContentId">
+        insert into tb_consulting_content
+        values(
+            default,
+            #{name}
+        )
+    </insert>
+    <insert id="saveConsultingDetail" useGeneratedKeys="true" keyProperty="consultingDetailId">
+        insert into tb_consulting_detail
+        values(
+            default,
+            #{consultingDetailProductId},
+            #{consultingDetailContentId},
+            #{repeatCount},
+            #{description},
+            #{etc}
+        )
+    </insert>
+    <insert id="saveCosmeticDetail" useGeneratedKeys="true" keyProperty="cosmeticDetailId">
+        insert into tb_cosmetic_detail
+        values(
+            default,
+            #{productId},
+            #{volume},
+            #{ingredient},
+            #{skinType},
+            #{effect},
+            #{manufacture},
+            #{productDescription},
+            #{productUrl},
+            #{etc}
+        )
+    </insert>
     <update id="modifyProductUpperCategory">
         update
             tb_product_upper_category
@@ -63,6 +153,53 @@
             update_date = now()
         where
             product_lower_category_id = #{productLowerCategoryId}
+    </update>
+    <update id="modifyProduct">
+        update
+            tb_product
+        set
+            product_code = #{productCode},
+            product_name = #{productName},
+            price = #{price},
+            promotion_price = #{promotionPrice},
+            product_img = #{productImg},
+            product_register_id = #{productRegisterId},
+            update_Date = now()
+        where
+            product_id = #{productId}
+    </update>
+    <update id="modifyConsultingDetail">
+        update
+            tb_consulting_detail
+        set
+            repeat_count = #{repeatCount},
+            description = #{description},
+            etc = #{etc}
+        where
+            consulting_detail_product_id = #{consultingDetailProductId}
+    </update>
+    <update id="modifyConsultingContent">
+        update
+            tb_consulting_content
+        set
+            name = #{name}
+        where
+            consulting_content_id = #{consultingContentId}
+    </update>
+    <update id="modifyCosmeticDetail">
+        update
+            tb_cosmetic_detail
+        set
+            volume = #{volume},
+            ingredient = #{ingredient},
+            skin_type = #{skinType},
+            effect = #{effect},
+            manufacture = #{manufacture},
+            product_description = #{productDescription},
+            product_url = #{productUrl},
+            etc = #{etc}
+        where
+            cosmetic_detail_product_id = #{cosmeticDetailProductId}
     </update>
     <delete id="deleteProduct">
         delete
@@ -100,9 +237,10 @@
         from
             tb_product_lower_category
         where
-        <foreach item="lowerId" collection="lowerIdList" open="(" separator="," close=")">
-            #{lowerId}
-        </foreach>
+            product_lower_category_id in
+            <foreach item="lowerId" collection="lowerIdList" open="(" separator="," close=")">
+                #{lowerId}
+            </foreach>
     </delete>
     <select id="getProductUpperCategoryList" resultMap="productUpperCategoryResultMap">
         select
@@ -119,6 +257,15 @@
             puc.product_upper_category_id
         limit
             #{startIndex}, #{limit}
+    </select>
+    <select id="getproductUpperDto" resultMap="productUpperCategoryResultMap2">
+        select
+            product_upper_category_id,
+            product_upper_category_name
+        from
+            tb_product_upper_category
+        where
+            product_upper_category_id = #{upperId}
     </select>
     <select id="getProductLowerCategoryList" resultMap="productLowerCategoryResultMap">
         select
@@ -138,5 +285,133 @@
             tb_product_upper_category puc on (plc.product_upper_category_id = puc.product_upper_category_id)
         where
             plc.product_upper_category_id = #{upperId}
+    </select>
+    <select id="getProductLowerDto" resultMap="productLowerCategoryResultMap2">
+        select
+            product_lower_category_id,
+            product_lower_category_name
+        from
+            tb_product_lower_category
+        where
+            product_lower_category_id = #{lowerId}
+    </select>
+    <select id="getProductList" resultMap="productResultMap">
+        select
+            p.product_name,
+            p.product_code,
+            p.price,
+            p.promotion_price,
+            p.product_register_id,
+            p.create_date,
+            u.user_id,
+            u.name,
+            p.product_lower_category_id,
+            plc.product_lower_category_id,
+            plc.product_upper_category_id,
+            puc.product_upper_category_id,
+            puc.product_upper_category_name
+        from
+            tb_product p
+            left outer join
+            tb_user u on p.product_register_id = u.user_id
+            left outer join
+            tb_product_lower_category plc on p.product_lower_category_id = plc.product_lower_category_id
+            left outer join
+            tb_product_upper_category puc on plc.product_upper_category_id = puc.product_upper_category_id
+        where
+            1 = 1
+                <if test="productName != null and productName != ''">
+                    and p.product_name like concat('%', trim(ifnull(#{productName}, '')), '%')
+                </if>
+                <if test="option != null and option != ''">
+                    and puc.product_upper_category_name = #{option}
+                </if>
+                <if test="code != null and code != ''">
+                    and p.product_code = #{code}
+                </if>
+        limit
+            #{startIndex}, #{limit}
+    </select>
+    <select id="getProduct" resultMap="productResultMap">
+        select
+            p.product_id,
+            p.product_lower_category_id,
+            p.product_code,
+            p.product_name,
+            p.price,
+            p.promotion_price,
+            p.product_img,
+            p.product_register_id,
+            p.product_upper_category_name,
+            u.user_id,
+            u.name,
+            p.product_lower_category_id,
+            plc.product_lower_category_id,
+            plc.product_lower_category_name,
+            plc.product_upper_category_id,
+            puc.product_upper_category_id,
+            puc.product_upper_category_name
+        from
+            tb_product p
+            left outer join
+            tb_user u on p.product_register_id = u.user_id
+            left outer join
+            tb_product_lower_category plc on p.product_lower_category_id = plc.product_lower_category_id
+            left outer join
+            tb_product_upper_category puc on plc.product_upper_category_id = puc.product_upper_category_id
+        where
+            product_id = #{productId}
+    </select>
+    <select id="getConsultingDetail" resultMap="consultingDetailResultMap">
+        private ConsultingContent consultingContent;
+        select
+            cd.consulting_detail_id,
+            cd.consulting_detail_product_id,
+            cd.consulting_detail_content_id,
+            cd.repeat-count,
+            cd.description
+            cd.etc,
+            cc.consulting_content_id,
+            cc.name
+        from
+            tb_consulting_detail cd
+            left outer join
+            tb_consulting_content cc on cc.consulting_content_id = cd.consulting_detail_content_id
+        where
+            consulting_detail_product_id = #{productId}
+    </select>
+    <select id="getCosmeticDetail" resultMap="cosmeticDetailResultMap">
+        select
+            *
+        from
+            tb_cosmetic_detail
+        where
+            cosmetic_detail_product_id = #{productId}
+    </select>
+    <select id="findByNameProductUpperCategory"
+            resultType="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
+        select
+            *
+        from
+            tb_product_upper_category
+        where
+            product_upper_category_name = #{productUpperCategoryName}
+    </select>
+    <select id="findByNameProductLowerCategory"
+            resultType="LacunaMatata.Lacuna.entity.product.ProductLowerCategory">
+        select
+            *
+        from
+            tb_product_lower_category
+        where
+            product_lower_category_name = #{productLowerCategoryName}
+    </select>
+    <select id="findByIdConsultingDetail" resultMap="consultingDetailResultMap">
+        select
+            *
+        from
+            tb_consulting_detail
+        where
+            consulting_detail_product_id = #{consultingDetailProductId}
     </select>
 </mapper>

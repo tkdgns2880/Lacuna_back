@@ -1,23 +1,26 @@
-package LacunaMatata.Lacuna.dto.request.admin.product;
+package LacunaMatata.Lacuna.dto.response.admin.product;
 
+import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
+@Builder
 @Data
-public class ReqRegisterProductDto {
+public class RespProductDetailDto {
+    private int productId;
     private String productUpperCategoryName;
     private String productLowerCategoryName;
     private String productCode;
     private String productName;
-    private int price;
-    private int promotionPrice;
+    private BigDecimal price;
+    private BigDecimal promotionPrice;
     private String productImg;
 
-    // 상위 분류가 컨설팅일때 받을 곳
     private int repeatCount; // 컨설팅 반복 횟수
     private String consultingDescription; // 컨설팅 상품 설명
     private String consultingName; // 컨설팅 상품 이름
 
-    // 상위 분류가 화장품일 때 받을 곳
     private String volume; // 화장품 상품 용량
     private String ingredient; // 화장품 상품 성분
     private String skinType; // 화장품 상품 피부타입
@@ -26,6 +29,5 @@ public class ReqRegisterProductDto {
     private String cosmeticProductDescription; // 화장품 상품 설명
     private String productUrl; // 화장품 상품 url
 
-    // 카테고리 공통 부분 받을 곳
     private String etc; // 기타사항
 }
