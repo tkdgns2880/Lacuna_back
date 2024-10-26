@@ -16,4 +16,6 @@ public class ConsultingDetail {
     private int repeatCount;
     private String description;
     private String etc;
+
+    private ConsultingContent consultingContent;
 }

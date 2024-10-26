@@ -3,6 +3,7 @@ package LacunaMatata.Lacuna.dto.response.admin.product;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -11,8 +12,8 @@ public class RespProductDto {
     private String productCode;
     private String productUpperCategoryName;
     private String productName;
-    private int price;
-    private int promotionPrice;
+    private BigDecimal price;
+    private BigDecimal promotionPrice;
     private String name;
     private LocalDateTime createdDate;
 }
