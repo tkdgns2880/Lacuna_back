@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@RequestMapping("/auth/admin")
+@RequestMapping("/api/v1/admin")
 public class OrderManageController {
 
     // 회원 주문 리스트 출력

@@ -1,10 +1,10 @@
-package LacunaMatata.Lacuna.controller.user;
+package LacunaMatata.Lacuna.controller;
 
 import LacunaMatata.Lacuna.aspect.annotation.user.AuthAop;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqAccessTokenDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
-import LacunaMatata.Lacuna.service.user.AuthService;
+import LacunaMatata.Lacuna.service.AuthService;
 import LacunaMatata.Lacuna.service.TokenService;
 import LacunaMatata.Lacuna.service.user.UserService;
 import io.swagger.annotations.Api;

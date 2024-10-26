@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@RequestMapping("/auth/admin/user")
+@RequestMapping("/api/v1/admin/user")
 public class UserManageController {
 
     // 사용자 목록 출력

@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.service.user;
+package LacunaMatata.Lacuna.service;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;

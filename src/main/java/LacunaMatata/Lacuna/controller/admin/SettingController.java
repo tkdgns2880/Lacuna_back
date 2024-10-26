@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@RequestMapping("/auth/admin/settings")
+@RequestMapping("/api/v1/admin/settings")
 public class SettingController {
 
     // 설정(약관 email, phone, sns 주소 등) 정보 불러오기

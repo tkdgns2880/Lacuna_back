@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Api(tags = "ProductManageController")
-@RequestMapping("/auth/admin/product")
+@RequestMapping("/api/v1/admin/product")
 public class ProductManageController {
 
     @Autowired
@@ -173,7 +173,8 @@ public class ProductManageController {
     // 상품 복수개 삭제
     @DeleteMapping("/delete")
     @ApiOperation(value = "deleteProductListApi")
-    public ResponseEntity<?> deleteProductList() {
+    public ResponseEntity<?> deleteProductList(@RequestBody ReqDeleteProductDto dto) {
+        productManageService.deleteProductList(dto);
         return ResponseEntity.ok().body(null);
     }
 }
