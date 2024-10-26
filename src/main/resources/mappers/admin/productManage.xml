@@ -154,6 +154,53 @@
         where
             product_lower_category_id = #{productLowerCategoryId}
     </update>
+    <update id="modifyProduct">
+        update
+            tb_product
+        set
+            product_code = #{productCode},
+            product_name = #{productName},
+            price = #{price},
+            promotion_price = #{promotionPrice},
+            product_img = #{productImg},
+            product_register_id = #{productRegisterId},
+            update_Date = now()
+        where
+            product_id = #{productId}
+    </update>
+    <update id="modifyConsultingDetail">
+        update
+            tb_consulting_detail
+        set
+            repeat_count = #{repeatCount},
+            description = #{description},
+            etc = #{etc}
+        where
+            consulting_detail_product_id = #{consultingDetailProductId}
+    </update>
+    <update id="modifyConsultingContent">
+        update
+            tb_consulting_content
+        set
+            name = #{name}
+        where
+            consulting_content_id = #{consultingContentId}
+    </update>
+    <update id="modifyCosmeticDetail">
+        update
+            tb_cosmetic_detail
+        set
+            volume = #{volume},
+            ingredient = #{ingredient},
+            skin_type = #{skinType},
+            effect = #{effect},
+            manufacture = #{manufacture},
+            product_description = #{productDescription},
+            product_url = #{productUrl},
+            etc = #{etc}
+        where
+            cosmetic_detail_product_id = #{cosmeticDetailProductId}
+    </update>
     <delete id="deleteProduct">
         delete
         from
@@ -358,5 +405,13 @@
             tb_product_lower_category
         where
             product_lower_category_name = #{productLowerCategoryName}
+    </select>
+    <select id="findByIdConsultingDetail" resultMap="consultingDetailResultMap">
+        select
+            *
+        from
+            tb_consulting_detail
+        where
+            consulting_detail_product_id = #{consultingDetailProductId}
     </select>
 </mapper>

@@ -276,7 +276,56 @@ public class ProductManageService {
 
     // 상품 수정
     public void modifyProduct(ReqModifyProductDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
+        ProductUpperCategory productUpperCategory
+                = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
+        ProductLowerCategory productLowerCategory
+                = productManageMapper.findByNameProductLowerCategory(dto.getProductLowerCategoryName());
 
+        Product product = Product.builder()
+                .productId(dto.getProductId())
+                .productCode(dto.getProductCode())
+                .productName(dto.getProductName())
+                .price(BigDecimal.valueOf(dto.getPrice()))
+                .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
+                .productImg(dto.getProductImg())
+                .productRegisterId(registerId)
+                .build();
+
+        if(productUpperCategory.getProductUpperCategoryId() == 1) {
+            ConsultingDetail consultingDetail = ConsultingDetail.builder()
+                    .consultingDetailProductId(dto.getProductId())
+                    .repeatCount(dto.getRepeatCount())
+                    .description(dto.getConsultingDescription())
+                    .etc(dto.getEtc())
+                    .build();
+            productManageMapper.modifyConsultingDetail(consultingDetail);
+
+            ConsultingDetail modifyConsultingDetail
+                    = productManageMapper.findByIdConsultingDetail(dto.getProductId());
+
+            ConsultingContent consultingContent = ConsultingContent.builder()
+                    .consultingContentId(modifyConsultingDetail.getConsultingDetailContentId())
+                    .name(dto.getConsultingName())
+                    .build();
+            productManageMapper.modifyConsultingContent(consultingContent);
+        }
+
+        if(productUpperCategory.getProductUpperCategoryId() == 2) {
+            CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
+                    .cosmeticDetailProductId(dto.getProductId())
+                    .volume(dto.getVolume())
+                    .ingredient(dto.getIngredient())
+                    .skinType(dto.getSkinType())
+                    .effect(dto.getEffect())
+                    .manufacture(dto.getManufacture())
+                    .productDescription(dto.getCosmeticProductDescription())
+                    .productUrl(dto.getProductUrl())
+                    .etc(dto.getEtc())
+                    .build();
+            productManageMapper.modifyCosmeticDetail(cosmeticDetail);
+        }
     }
 
     // 상품 삭제
