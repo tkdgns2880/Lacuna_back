@@ -265,8 +265,6 @@
             left outer join tb_user u on (u.user_id = puc.product_upper_category_register_id)
         order by
             puc.product_upper_category_id
-        limit
-            #{startIndex}, #{limit}
     </select>
     <select id="getproductUpperDto" resultMap="productUpperCategoryResultMap2">
         select

@@ -34,9 +34,9 @@ public class ProductManageController {
     // 상품 상위 분류 리스트 출력 - 완료
     @GetMapping("/upper/list")
     @ApiOperation(value = "getUpperProductListApi")
-    public ResponseEntity<?> getUpperProductList(ReqGetUpperProductCategoryListDto dto) {
+    public ResponseEntity<?> getUpperProductList() {
         List<RespUpperProductCategoryDto> respUpperProductCategoryList =
-                productManageService.getProductUpperCategory(dto);
+                productManageService.getProductUpperCategory();
         return ResponseEntity.ok().body(respUpperProductCategoryList);
     }
 
@@ -83,9 +83,9 @@ public class ProductManageController {
     // 상품 하위 분류 리스트 출력
     @GetMapping("/lower/list/{upperId}")
     @ApiOperation(value = "getLowerProductListApi")
-    public ResponseEntity<?> getLowerProductList(@RequestBody ReqGetLowerProductCategoryListDto dto, @PathVariable int upperId) {
+    public ResponseEntity<?> getLowerProductList(@PathVariable int upperId) {
         List<RespLowerProductCategoryDto> respLowerProductCategoryList =
-                productManageService.getProductlowerCategory(dto, upperId);
+                productManageService.getProductlowerCategory(upperId);
         return ResponseEntity.ok().body(respLowerProductCategoryList);
     }
 

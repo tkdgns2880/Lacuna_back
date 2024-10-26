@@ -25,13 +25,8 @@ public class ProductManageService {
     private ProductManageMapper productManageMapper;
 
     // 상품 상위 분류 리스트 출력
-    public List<RespUpperProductCategoryDto> getProductUpperCategory(ReqGetUpperProductCategoryListDto dto) {
-        int startIndex = (dto.getPage() - 1) * dto.getLimit();
-        Map<String, Object> params = Map.of(
-                "startIndex", startIndex,
-                "limit", dto.getLimit()
-        );
-        List<ProductUpperCategory> productUpperCategoryList = productManageMapper.getProductUpperCategoryList(params);
+    public List<RespUpperProductCategoryDto> getProductUpperCategory() {
+        List<ProductUpperCategory> productUpperCategoryList = productManageMapper.getProductUpperCategoryList();
         List<RespUpperProductCategoryDto> productUpperCategory = new ArrayList<>();
         for(ProductUpperCategory productUpperCategoryDto : productUpperCategoryList) {
             RespUpperProductCategoryDto respUpperProductCategoryDto = RespUpperProductCategoryDto.builder()
@@ -90,14 +85,8 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 리스트 출력
-    public List<RespLowerProductCategoryDto> getProductlowerCategory(ReqGetLowerProductCategoryListDto dto, int upperId) {
-        int startIndex = (dto.getPage() - 1) * dto.getLimit();
-        Map<String, Object> params = Map.of(
-                "startIndex", startIndex,
-                "limit", dto.getLimit(),
-                "upperId", upperId
-        );
-        List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(params);
+    public List<RespLowerProductCategoryDto> getProductlowerCategory(int upperId) {
+        List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(upperId);
         List<RespLowerProductCategoryDto> productLowerCategory = new ArrayList<>();
         for(ProductLowerCategory productLowerCategoryDto : productLowerCategoryList) {
             RespLowerProductCategoryDto respLowerProductCategoryDto = RespLowerProductCategoryDto.builder()
