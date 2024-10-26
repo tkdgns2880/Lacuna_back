@@ -242,6 +242,16 @@
                 #{lowerId}
             </foreach>
     </delete>
+    <delete id="deleteProductList">
+        delete
+        from
+            tb_product
+        where
+            product_id in
+            <foreach item="productId" collection="productIdList" open="(" separator="," close=")">
+                #{productId}
+            </foreach>
+    </delete>
     <select id="getProductUpperCategoryList" resultMap="productUpperCategoryResultMap">
         select
             puc.product_upper_category_id,

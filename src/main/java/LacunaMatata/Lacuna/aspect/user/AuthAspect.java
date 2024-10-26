@@ -2,7 +2,7 @@ package LacunaMatata.Lacuna.aspect.user;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
-import LacunaMatata.Lacuna.service.user.AuthService;
+import LacunaMatata.Lacuna.service.AuthService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

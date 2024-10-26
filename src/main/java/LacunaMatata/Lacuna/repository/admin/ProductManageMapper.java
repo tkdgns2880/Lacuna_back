@@ -42,6 +42,7 @@ public interface ProductManageMapper {
     int modifyConsultingContent(ConsultingContent consultingContent);
     int modifyCosmeticDetail(CosmeticDetail cosmeticDetail);
     int deleteProduct(int productId); // 상품 삭제
+    int deleteProductList(List<Integer> productIdList);
 
     ProductUpperCategory findByNameProductUpperCategory(String upperCategoryName);
     ProductLowerCategory findByNameProductLowerCategory(String lowerCategoryName);

@@ -17,7 +17,7 @@ import java.util.List;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@RequestMapping("/auth/admin/mbti")
+@RequestMapping("/api/v1/admin/mbti")
 public class MbtiManageController {
 
     @Autowired

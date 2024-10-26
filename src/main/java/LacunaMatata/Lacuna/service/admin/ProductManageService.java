@@ -294,6 +294,7 @@ public class ProductManageService {
                 .build();
 
         if(productUpperCategory.getProductUpperCategoryId() == 1) {
+            productManageMapper.modifyProduct(product);
             ConsultingDetail consultingDetail = ConsultingDetail.builder()
                     .consultingDetailProductId(dto.getProductId())
                     .repeatCount(dto.getRepeatCount())
@@ -313,6 +314,7 @@ public class ProductManageService {
         }
 
         if(productUpperCategory.getProductUpperCategoryId() == 2) {
+            productManageMapper.modifyProduct(product);
             CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
                     .cosmeticDetailProductId(dto.getProductId())
                     .volume(dto.getVolume())
@@ -334,7 +336,8 @@ public class ProductManageService {
     }
 
     // 상품 복수개 삭제
-    public void deleteProductList() {
-
+    public void deleteProductList(ReqDeleteProductDto dto) {
+        List<Integer> productIdList =  dto.getProductIdList();
+        productManageMapper.deleteProductList(productIdList);
     }
 }
