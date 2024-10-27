@@ -1,9 +1,7 @@
 package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.mbti.*;
-import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryDto;
-import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryListDto;
-import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiQuestionListDto;
+import LacunaMatata.Lacuna.dto.response.admin.mbti.*;
 import LacunaMatata.Lacuna.service.admin.MbtiManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,8 +94,8 @@ public class MbtiManageController {
     @ApiOperation(value = "getMbtiQuestionApi")
     @GetMapping("/question/{mbtiId}")
     public ResponseEntity<?> getMbtiQuestion(@PathVariable int mbtiId) {
-        mbtiManageService.getMbtiQuestion(mbtiId);
-        return ResponseEntity.ok().body(null);
+        RespMbtiQuestionDto mbtiQuestion = mbtiManageService.getMbtiQuestion(mbtiId);
+        return ResponseEntity.ok().body(mbtiQuestion);
     }
 
     // MBTI 설문 항목 모달 수정
@@ -120,15 +118,16 @@ public class MbtiManageController {
     @ApiOperation(value = "deleteMbtiQuestionListApi")
     @DeleteMapping("/question/delete")
     public ResponseEntity<?> deleteMbtiQuestionList(@RequestBody ReqDeleteMbtiQuestionDto dto) {
-
+        mbtiManageService.deleteMbtiQuestionList(dto);
         return ResponseEntity.ok().body(null);
     }
 
     // MBTI 설문 결과 리스트 출력
     @ApiOperation(value = "getMbtiResultListApi")
     @GetMapping("/result/list")
-    public ResponseEntity<?> getMbtiResultList() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getMbtiResultList(@RequestBody ReqGetMbtiResultDto dto) {
+        List<RespGetMbtiResultListDto> mbtiResultList = mbtiManageService.getMbtiResultList(dto);
+        return ResponseEntity.ok().body(mbtiResultList);
     }
 
     // MBTI 설문 결과 등록
@@ -139,7 +138,15 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // MBTI 설문 결과 수정
+    // MBTI 설문 결과 항목 모달 출력
+    @ApiOperation(value = "getMbtiResultApi")
+    @GetMapping("/result/{resultId}")
+    public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
+        RespGetMbtiResultDto mbtiResultDto = mbtiManageService.getMbtiResultDto(resultId);
+        return ResponseEntity.ok().body(mbtiResultDto);
+    }
+
+    // MBTI 설문 결과 항목 모달 수정
     @ApiOperation(value = "modifyMbtiResultApi")
     @PutMapping("/result/modify/{resultId}")
     public ResponseEntity<?> modifyMbtiResult(@RequestBody ReqModifyMbtiResultDto dto) {
@@ -158,7 +165,8 @@ public class MbtiManageController {
     // MBTI 설문 결과 복수개 삭제
     @ApiOperation(value = "deleteMbtiResultListApi")
     @DeleteMapping("/result/delete")
-    public ResponseEntity<?> deleteMbtiResultList() {
+    public ResponseEntity<?> deleteMbtiResultList(@RequestBody ReqDeleteMbtiResultListDto dto) {
+        mbtiManageService.deleteMbtiResultList(dto);
         return ResponseEntity.ok().body(null);
     }
 }

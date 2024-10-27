@@ -33,11 +33,23 @@
         <result property="optionName" column="option_name" />
         <result property="optionScore" column="option_score" />
     </resultMap>
+    <resultMap id="mbtiResultResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiResult">
+        <id property="mbtiResultId" column="mbti_result_id" />
+        <result property="mbtiResultRegisterId" column="mbti_result_register_id" />
+        <result property="mbtiResultCategoryName" column="mbti_result_category_name" />
+        <result property="mbtiResultTitle" column="mbti_result_title" />
+        <result property="mbtiResultSummary" column="mbti_result_summary" />
+        <result property="mbtiResultContent" column="mbti_result_content" />
+        <result property="mbtiResultImg" column="mbti_result_img" />
+        <result property="mbtiResultStatus" column="mbti_result_status" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+        <association property="user" resultMap="userResultMap" />
+    </resultMap>
     <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
         <id property="userId" column="user_id" />
         <result property="name" column="name" />
     </resultMap>
-
 
     <insert id="registerMbtiCategory" useGeneratedKeys="true" keyProperty="mbtiCategoryId">
         insert into tb_mbti_category
@@ -74,7 +86,21 @@
             #{optionScore}
         )
     </insert>
-
+    <insert id="registerMbtiResult">
+        insert into tb_mbti_result
+        values(
+            default,
+            #{mbtiResultRegisterId},
+            #{mbtiResultCategoryName},
+            #{mbtiResultTitle},
+            #{mbtiResultSummary},
+            #{mbtiResultContent},
+            #{mbtiResultImg},
+            #{mbtiResultStatus},
+            now(),
+            now()
+        )
+    </insert>
 
     <update id="modifyMbtiCategory">
         update
@@ -142,6 +168,16 @@
         where
             mbti_result_id = #{resultId}
     </delete>
+    <delete id="deleteMbtiResultList">
+        delete
+        from
+            tb_mbti_result
+        where
+            mbti_result_id in
+            <foreach item="mbtiResultId" collection="mbtiResultIdList" open="(" separator="," close=")">
+                #{mbtiResultId}
+            </foreach>
+    </delete>
 
     <select id="getMbtiCategoryList" resultMap="mbtiCategoryResultMap">
         select
@@ -181,7 +217,7 @@
             m.update_date,
             (select u.name
             from tb_user
-            where u.user_id = m.register_id) as registerName,
+            where u.user_id = m.register_id),
             (select mc.mbti_category_name
             from tb_mbti_category
             where m.mbti_category_id = mc.mbti_category_id)
@@ -204,6 +240,8 @@
                 and m.mbti_code like concat('%', trim(ifnull(#{inputValue}, '')), '%')
                 or m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
             </if>
+        limit
+            #{startIndex}, #{limit}
     </select>
     <select id="getMbtiQuestion" resultMap="mbtiResultMap">
         select
@@ -225,6 +263,31 @@
             tb_mbti_option mo on m.mbti_id = mo.mbti_id
         where
             m.mbti_id = #{mbtiId}
+    </select>
+    <select id="getMbtiResultList" resultMap="mbtiResultResultMap">
+        select
+            mr.mbti_result_id,
+            mr.mbti_result_register_id,
+            mr.mbti_result_category_name,
+            mr.mbti_result_title,
+            mr.mbti_result_summary,
+            mr.mbti_result_content,
+            mr.mbti_result_img,
+            mr.mbbti_result_status,
+            mr.create_date,
+            mr.update_date,
+            (select u.name
+            from tb_user
+            where u.user_id = m.register_id)
+        from
+            tb_mbti_result mr
+        where
+            1 = 1
+            <if test="inputValue != null and inputValue != ''">
+                and m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+            </if>
+        limit
+            #{startIndex}, #{limit}
     </select>
 
     <select id="findMbtiCategoryByCategoryName" resultMap="mbtiCategoryResultMap">

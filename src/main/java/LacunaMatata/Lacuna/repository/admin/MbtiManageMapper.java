@@ -46,13 +46,17 @@ public interface MbtiManageMapper {
 
     /** MBTI 결과지 관련 Mapper */
     // 1. MBTI 결과지 목록 출력_2024.10.27
+    List<MbtiResult> getMbtiResultList(Map<String, Object> params);
+    // 2. MBTI 결과지 항목 등록_2024.10.27
     int registerMbtiResult(MbtiResult mbtiResult); // MBTI 결과 항목 등록
-
+    // 3. MBTI 결과지 항목 모달 출력_2024.10.27
+    MbtiResult getMbtiResult(int resultId);
+    // 4. MBTI 결과지 항목 모달 수정_2024.10.27
     int modifyMbtiResult(ReqModifyMbtiResultDto dto); // MBTI 결과항목 수정
-
+    // 5. MBTI 결과지 항목 단일 삭제_2024.10.27
     int deleteMbtiResult(int resultId);
-
-
+    // 6. MBTI 결과지 항목 복수 삭제_2024.10.27
+    int deleteMbtiResultList(List<Integer> mbtiResultIdList);
 
     /** MBTI 공통으로 사용할 Mapper */
     MbtiCategory findMbtiCategoryByCategoryName(String mbtiCategoryName);
