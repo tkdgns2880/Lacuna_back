@@ -14,10 +14,31 @@
         <result property="updateDate" column="update_date" />
         <association property="user" resultMap="userResultMap" />
     </resultMap>
+    <resultMap id="mbtiResultMap" type="LacunaMatata.Lacuna.entity.mbti.Mbti">
+        <id property="mbtiId" column="mbti_id" />
+        <result property="mbtiCode" column="mbti_code" />
+        <result property="mbtiCategoryId" column="mbti_category_id" />
+        <result property="mbtiRegisterId" column="mbti_register_id" />
+        <result property="mbtiTitle" column="mbti_title" />
+        <result property="mbtiImg" column="mbti_img" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+        <association property="user" resultMap="userResultMap" />
+        <association property="mbtiCategory" resultMap="mbtiCategoryResultMap" />
+        <association property="mbtiOption" resultMap="mbtiOptionResultMap" />
+    </resultMap>
+    <resultMap id="mbtiOptionResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiOption">
+        <id property="mbtiOptionId" column="mbti_option_id" />
+        <result property="mbtiId" column="mbti_id" />
+        <result property="optionName" column="option_name" />
+        <result property="optionScore" column="option_score" />
+    </resultMap>
     <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
         <id property="userId" column="user_id" />
         <result property="name" column="name" />
     </resultMap>
+
+
     <insert id="registerMbtiCategory" useGeneratedKeys="true" keyProperty="mbtiCategoryId">
         insert into tb_mbti_category
         values(
@@ -31,13 +52,35 @@
             now()
         )
     </insert>
-    <insert id="registerMbtiResult">
-        insert into tb_
+    <insert id="saveMbti" useGeneratedKeys="true" keyProperty="mbtiId">
+        insert into tb_mbti
+        values(
+            default,
+            #{mbtiCode},
+            #{mbtiCategoryId},
+            #{mbtiRegisterId},
+            #{mbtiTitle},
+            #{mbtiImg},
+            now(),
+            now()
+        )
     </insert>
+    <insert id="saveMbtiOption">
+        insert into tb_mbti_option
+        values(
+            default,
+            #{mbtiId},
+            #{optionName},
+            #{optionScore}
+        )
+    </insert>
+
+
     <update id="modifyMbtiCategory">
         update
             tb_mbti_category
         set
+            mbti_category_register_id = #{registerId},
             mbti_category_name = #{mbtiCategoryName},
             mbti_category_title = #{mbtiCategoryTitle},
             mbti_category_description = #{mbtiCategoryDescription},
@@ -49,11 +92,11 @@
         update
             tb_mbti_result
         set
-            mbti_result_title = #{mbtiResultTitle}
-            mbti_result_category_name = #{mbtiResultCategoryName}
-            mbti_result_img = #{mbtiResultImg}
-            mbti_result_summary = #{mbtiResultSummary}
-            mbti_result_content = #{mbtiResultContent}
+            mbti_result_title = #{mbtiResultTitle},
+            mbti_result_category_name = #{mbtiResultCategoryName},
+            mbti_result_img = #{mbtiResultImg},
+            mbti_result_summary = #{mbtiResultSummary},
+            mbti_result_content = #{mbtiResultContent},
             mbti_result_status = #{mbtiResultStatus}
         where
             mbti_result_id = #{resultId}
@@ -70,7 +113,7 @@
         from
             tb_mbti_category
         where
-            mbti_catedory_id in
+            mbti_category_id in
             <foreach item="mbtiCategoryId" collection="mbtiCategoryIdList" open="(" separator="," close=")">
                 #{mbtiCategoryId}
             </foreach>
@@ -123,14 +166,14 @@
     </select>
     <select id="getMbtiQuestionList" resultMap="mbtiResultMap">
         select
-            mbti_id,
-            mbti_code,
-            mbti_category_id,
-            mbti_register_id,
-            mbti_title,
-            mbti_img,
-            create_date,
-            update_date,
+            m.mbti_id,
+            m.mbti_code,
+            m.mbti_category_id,
+            m.mbti_register_id,
+            m.mbti_title,
+            m.mbti_img,
+            m.create_date,
+            m.update_date,
             (select u.name
             from tb_user
             where u.user_id = m.register_id) as registerName,
@@ -144,8 +187,47 @@
             <if test="option != null and option != ''">
                 and mc.mbti_category_name = #{option}
             </if>
-            <if test="search != null and option != ''">
-                and
+            <if test="inputValue != null and inputValue != ''">
+                <if test="filter != null and filter != ''">
+                    <if test="filter.equals('mbtiCode')">
+                        and m.mbti_code like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+                    </if>
+                    <if test="filter.equals('mbtiTitle')">
+                        and m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+                    </if>
+                </if>
+                and m.mbti_code like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+                or m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
             </if>
+    </select>
+    <select id="getMbtiQuestion" resultMap="mbtiResultMap">
+        select
+            m.mbti_id,
+            m.mbti_code,
+            m.mbti_category_id,
+            m.mbti_register_id,
+            m.mbti_title,
+            m.mbti_img,
+            m.create_date,
+            m.update_date,
+            mo.mbti_option_id,
+            mo.mbti_id,
+            mo.option_name,
+            mo.option_score
+        from
+            tb_mbti m
+            left outer join
+            tb_mbti_option mo on m.mbti_id = mo.mbti_id
+        where
+            m.mbti_id = #{mbtiId}
+    </select>
+
+    <select id="findMbtiCategoryByCategoryName" resultMap="mbtiCategoryResultMap">
+        select
+            *
+        from
+            tb_mbti_category
+        where
+            mbti_category_name = #{mbtiCategoryName}
     </select>
 </mapper>

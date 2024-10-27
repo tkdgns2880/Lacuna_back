@@ -4,7 +4,9 @@ import LacunaMatata.Lacuna.dto.request.admin.mbti.*;
 import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryDto;
 import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiCategoryListDto;
 import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiQuestionListDto;
+import LacunaMatata.Lacuna.entity.mbti.Mbti;
 import LacunaMatata.Lacuna.entity.mbti.MbtiCategory;
+import LacunaMatata.Lacuna.entity.mbti.MbtiOption;
 import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import LacunaMatata.Lacuna.repository.admin.MbtiManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +78,12 @@ public class MbtiManageService {
     }
 
     // mbti 분류 카테고리 모달 수정
-    public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto) {mbtiManageMapper.modifyMbtiCategory(dto); }
+    public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto) {
+        PrincipalUser principalUser = (PrincipalUser)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
+        mbtiManageMapper.modifyMbtiCategory(dto, registerId);
+    }
 
     // mbti 분류 카테고리 삭제
     public void deleteMbtiCategory(int categoryId) {
@@ -98,23 +106,65 @@ public class MbtiManageService {
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
-        return null;
+        List<Mbti> mbtiQuestionList = mbtiManageMapper.getMbtiQuestionList(params);
+        List<RespMbtiQuestionListDto> respMbtiQuestionList = null;
+        for(Mbti mbti : mbtiQuestionList) {
+            RespMbtiQuestionListDto respMbtiQuestionListDto = RespMbtiQuestionListDto.builder()
+                    .mbtiId(mbti.getMbtiId())
+                    .mbtiCategoryName(mbti.getMbtiCategory().getMbtiCategoryName())
+                    .mbtiTitle(mbti.getMbtiTitle())
+                    .name(mbti.getUser().getName())
+                    .createdDate(mbti.getCreateDate())
+                    .build();
+            respMbtiQuestionList.add(respMbtiQuestionListDto);
+        }
+        return respMbtiQuestionList;
     }
 
     // mbti 설문지 항목 등록
     public void registerMbtiQuestion(ReqRegisterMbtiQuestionDto dto) {
+        PrincipalUser principalUser = (PrincipalUser)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
+        MbtiCategory mbtiCategory = mbtiManageMapper.findMbtiCategoryByCategoryName(dto.getMbtiCategoryName());
 
+        Mbti mbti = Mbti.builder()
+                .mbtiCode(dto.getMbtiCode())
+                .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
+                .mbtiRegisterId(registerId)
+                .mbtiTitle(dto.getMbtiTitle())
+                .mbtiImg(dto.getMbtiImg())
+                .build();
+        List<String> optionNames = dto.getOptionName();
+        List<Integer> optionScores = dto.getOptionScore();
+
+        int mbtiId = mbtiManageMapper.saveMbti(mbti);
+        for(int i = 0; i < dto.getOptionName().size(); i++) {
+            MbtiOption mbtiOption = MbtiOption.builder()
+                    .mbtiId(mbtiId)
+                    .optionName(optionNames.get(i))
+                    .optionScore(optionScores.get(i))
+                    .build();
+            mbtiManageMapper.saveMbtiOption(mbtiOption);
+        }
     }
 
-    // mbti 설문지 항목 수정
+    // mbti 설문지 항목 모달 출력
+    public Mbti getMbtiQuestion(int mbtiId) {
+        Mbti mbtiQuestion = mbtiManageMapper.getMbtiQuestion(mbtiId);
+        System.out.println(mbtiQuestion);
+        return mbtiQuestion;
+    }
+
+    // mbti 설문지 항목 모달 수정
     public void modifyMbtiQuestion(int mbtiId) {
 //        mbtiManageMapper.
     }
 
     // mbti 설문지 항목 삭제
-    public void deleteMbtiQuestion(int mbtiId) {
-        mbtiManageMapper.deleteMbtiQuestion(mbtiId);
-    }
+//    public void deleteMbtiQuestion(int mbtiId) {
+//        mbtiManageMapper.deleteMbtiQuestion(mbtiId);
+//    }
 
     // mbti 설문지 항목 복수개 삭제
     public void deleteMbtiQuestionList() {
