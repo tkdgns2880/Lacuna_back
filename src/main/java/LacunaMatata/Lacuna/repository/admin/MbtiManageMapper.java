@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.repository.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqDeleteMbtiQuestionDto;
 import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqModifyMbtiCategoryDto;
 import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqModifyMbtiResultDto;
 import LacunaMatata.Lacuna.entity.mbti.Mbti;
@@ -38,13 +39,20 @@ public interface MbtiManageMapper {
     Mbti getMbtiQuestion(int mbtiId);
     // 4. MBTI 설문 항목 모달 수정_2024.10.27
 
-    // 3. MBTI 설문 항목 삭제_2024.10.27
-
-    int registerMbtiResult(MbtiResult mbtiResult); // MBTI 결과 항목 등록
-    int modifyMbtiResult(ReqModifyMbtiResultDto dto); // MBTI 결과항목 수정
-    int deleteMbtiResult(int resultId);
+    // 5. MBTI 설문 항목 단일 삭제_2024.10.27
+    int deleteMbtiQuestion(int mbtiId);
+    // 6. MBTI 설문 항목 복수 삭제_2024.10.27
+    int deleteMbtiQuestionList(List<Integer> mbtiIdList);
 
     /** MBTI 결과지 관련 Mapper */
+    // 1. MBTI 결과지 목록 출력_2024.10.27
+    int registerMbtiResult(MbtiResult mbtiResult); // MBTI 결과 항목 등록
+
+    int modifyMbtiResult(ReqModifyMbtiResultDto dto); // MBTI 결과항목 수정
+
+    int deleteMbtiResult(int resultId);
+
+
 
     /** MBTI 공통으로 사용할 Mapper */
     MbtiCategory findMbtiCategoryByCategoryName(String mbtiCategoryName);

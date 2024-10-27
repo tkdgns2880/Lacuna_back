@@ -121,14 +121,19 @@
     <delete id="deleteMbtiQuestion">
         delete
         from
-            tb_mbti_result
+            tb_mbti
         where
-            mbti_result_title = #{mbtiResultTitle}
-            mbti_result_category_name = #{mbtiResultCategoryName}
-            mbti_result_img = #{mbtiResultImg}
-            mbti_result_summary = #{mbtiResultSummary}
-            mbti_result_content = #{mbtiResultContent}
-            mbti_result_status = #{mbtiResultStatus}
+            mbti_id = #{mbtiId}
+    </delete>
+    <delete id="deleteMbtiQuestionList">
+        delete
+        from
+            tb_mbti
+        where
+            mbti_id in
+            <foreach item="mbtiId" collection="mbtiIdList" open="(" separator="," close=")">
+                #{mbtiId}
+            </foreach>
     </delete>
     <delete id="deleteMbtiResult">
         delete
