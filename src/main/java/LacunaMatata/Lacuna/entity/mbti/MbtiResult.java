@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.entity.mbti;
 
+import LacunaMatata.Lacuna.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,7 @@ public class MbtiResult {
     private int mbtiResultStatus;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    // 매핑용
+    private User user;
 }
