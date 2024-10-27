@@ -152,7 +152,6 @@ public class MbtiManageService {
     // mbti 설문지 항목 모달 출력
     public Mbti getMbtiQuestion(int mbtiId) {
         Mbti mbtiQuestion = mbtiManageMapper.getMbtiQuestion(mbtiId);
-        System.out.println(mbtiQuestion);
         return mbtiQuestion;
     }
 
@@ -162,13 +161,14 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 삭제
-//    public void deleteMbtiQuestion(int mbtiId) {
-//        mbtiManageMapper.deleteMbtiQuestion(mbtiId);
-//    }
+    public void deleteMbtiQuestion(int mbtiId) {
+        mbtiManageMapper.deleteMbtiQuestion(mbtiId);
+    }
 
     // mbti 설문지 항목 복수개 삭제
-    public void deleteMbtiQuestionList() {
-
+    public void deleteMbtiQuestionList(ReqDeleteMbtiQuestionDto dto) {
+        List<Integer> mbtiIdList = dto.getMbtiIdList();
+        mbtiManageMapper.deleteMbtiQuestionList(mbtiIdList);
     }
 
     // mbti 설문 결과 리스트 출력

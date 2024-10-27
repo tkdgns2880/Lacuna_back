@@ -1,20 +1,15 @@
 package LacunaMatata.Lacuna.service.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.*;
 import LacunaMatata.Lacuna.entity.product.*;
 import LacunaMatata.Lacuna.repository.admin.ProductManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,17 +21,17 @@ public class ProductManageService {
     private ProductManageMapper productManageMapper;
 
     // 상품 상위 분류 리스트 출력
-    public List<RespUpperProductCategoryDto> getProductUpperCategory() {
+    public List<RespUpperProductCategoryListDto> getProductUpperCategory() {
         List<ProductUpperCategory> productUpperCategoryList = productManageMapper.getProductUpperCategoryList();
-        List<RespUpperProductCategoryDto> productUpperCategory = new ArrayList<>();
+        List<RespUpperProductCategoryListDto> productUpperCategory = new ArrayList<>();
         for(ProductUpperCategory productUpperCategoryDto : productUpperCategoryList) {
-            RespUpperProductCategoryDto respUpperProductCategoryDto = RespUpperProductCategoryDto.builder()
+            RespUpperProductCategoryListDto respUpperProductCategoryListDto = RespUpperProductCategoryListDto.builder()
                     .productUpperCategoryId(productUpperCategoryDto.getProductUpperCategoryId())
                     .productUpperCategoryName(productUpperCategoryDto.getProductUpperCategoryName())
                     .name(productUpperCategoryDto.getUser().getName())
                     .createdDate(productUpperCategoryDto.getCreateDate())
                     .build();
-            productUpperCategory.add(respUpperProductCategoryDto);
+            productUpperCategory.add(respUpperProductCategoryListDto);
         }
 
         return productUpperCategory;
@@ -90,17 +85,17 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 리스트 출력
-    public List<RespLowerProductCategoryDto> getProductlowerCategory(int upperId) {
+    public List<RespLowerProductCategoryListDto> getProductlowerCategory(int upperId) {
         List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(upperId);
-        List<RespLowerProductCategoryDto> productLowerCategory = new ArrayList<>();
+        List<RespLowerProductCategoryListDto> productLowerCategory = new ArrayList<>();
         for(ProductLowerCategory productLowerCategoryDto : productLowerCategoryList) {
-            RespLowerProductCategoryDto respLowerProductCategoryDto = RespLowerProductCategoryDto.builder()
+            RespLowerProductCategoryListDto respLowerProductCategoryListDto = RespLowerProductCategoryListDto.builder()
                     .productLowerCategoryId(productLowerCategoryDto.getProductLowerCategoryId())
                     .productLowerCategoryName(productLowerCategoryDto.getProductLowerCategoryName())
                     .name(productLowerCategoryDto.getUser().getName())
                     .createdDate(productLowerCategoryDto.getCreateDate())
                     .build();
-            productLowerCategory.add(respLowerProductCategoryDto);
+            productLowerCategory.add(respLowerProductCategoryListDto);
         }
 
         return productLowerCategory;
@@ -120,9 +115,9 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 항목 출력
-    public RespLowerProductCategoryDto getProductLower(int lowerId) {
+    public RespLowerCategoryDto getProductLower(int lowerId) {
         ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
-        RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
+        RespLowerCategoryDto lowerCategory = RespLowerCategoryDto.builder()
                 .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
                 .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
                 .build();

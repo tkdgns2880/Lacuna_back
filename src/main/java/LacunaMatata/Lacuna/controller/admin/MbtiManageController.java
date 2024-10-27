@@ -112,14 +112,15 @@ public class MbtiManageController {
     @ApiOperation(value = "deleteMbtiQuestionApi")
     @DeleteMapping("/question/delete/{mbtiId}")
     public ResponseEntity<?> deleteMbtiQuestion(@PathVariable int mbtiId) {
-//        mbtiManageService.deleteMbtiQuestion(mbtiId);
+        mbtiManageService.deleteMbtiQuestion(mbtiId);
         return ResponseEntity.ok().body(null);
     }
 
     // MBTI 설문 항목 복수개 삭제
     @ApiOperation(value = "deleteMbtiQuestionListApi")
     @DeleteMapping("/question/delete")
-    public ResponseEntity<?> deleteMbtiQuestionList() {
+    public ResponseEntity<?> deleteMbtiQuestionList(@RequestBody ReqDeleteMbtiQuestionDto dto) {
+
         return ResponseEntity.ok().body(null);
     }
 

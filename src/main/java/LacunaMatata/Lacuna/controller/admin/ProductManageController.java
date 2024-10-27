@@ -1,10 +1,7 @@
 package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.*;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +32,7 @@ public class ProductManageController {
     @GetMapping("/upper/list")
     @ApiOperation(value = "getUpperProductListApi")
     public ResponseEntity<?> getUpperProductList() {
-        List<RespUpperProductCategoryDto> respUpperProductCategoryList =
+        List<RespUpperProductCategoryListDto> respUpperProductCategoryList =
                 productManageService.getProductUpperCategory();
         return ResponseEntity.ok().body(respUpperProductCategoryList);
     }
@@ -84,7 +81,7 @@ public class ProductManageController {
     @GetMapping("/lower/list/{upperId}")
     @ApiOperation(value = "getLowerProductListApi")
     public ResponseEntity<?> getLowerProductList(@PathVariable int upperId) {
-        List<RespLowerProductCategoryDto> respLowerProductCategoryList =
+        List<RespLowerProductCategoryListDto> respLowerProductCategoryList =
                 productManageService.getProductlowerCategory(upperId);
         return ResponseEntity.ok().body(respLowerProductCategoryList);
     }
@@ -101,7 +98,7 @@ public class ProductManageController {
     @GetMapping("/lower/{lowerId}")
     @ApiOperation(value = "getLowerProductApi")
     public ResponseEntity<?> getLowerProduct(@PathVariable int lowerId) {
-        RespLowerProductCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
+        RespLowerCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
         return ResponseEntity.ok().body(respLowerCategory);
     }
 

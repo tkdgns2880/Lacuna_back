@@ -1,11 +1,5 @@
 package LacunaMatata.Lacuna.repository.admin;
 
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.request.admin.product.ReqModifyUpperProductDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryDto;
 import LacunaMatata.Lacuna.entity.product.*;
 import org.apache.ibatis.annotations.Mapper;
 

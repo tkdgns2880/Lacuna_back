@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class RespLowerProductCategoryDto {
-    private int productLowerCategoryId;
-    private String productLowerCategoryName;
+public class RespUpperProductCategoryListDto {
+    private int productUpperCategoryId;
+    private String productUpperCategoryName;
     private String name;
     private LocalDateTime createdDate;
 }
