@@ -10,6 +10,7 @@ public class ReqModifyMbtiQuestionDto {
     private String mbtiCategoryName;
     private String mbtiCode;
     private String mbtiTitle;
+    private String mbtiImg;
     private List<String> optionName;
     private List<Integer> optionScore;
 }

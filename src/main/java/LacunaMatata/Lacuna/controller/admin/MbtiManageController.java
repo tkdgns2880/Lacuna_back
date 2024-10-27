@@ -88,11 +88,19 @@ public class MbtiManageController {
     @ApiOperation(value = "registerMbtiQuestionApi")
     @PostMapping("/question/register")
     public ResponseEntity<?> registerMbtiQuestion(@RequestBody ReqRegisterMbtiQuestionDto dto) {
-//        mbtiManageService.registerMbtiQuestion();
+        mbtiManageService.registerMbtiQuestion(dto);
         return ResponseEntity.ok().body(null);
     }
 
-    // MBTI 설문 항목 수정
+    // MBTI 설문 항목 모달 출력
+    @ApiOperation(value = "getMbtiQuestionApi")
+    @GetMapping("/question/{mbtiId}")
+    public ResponseEntity<?> getMbtiQuestion(@PathVariable int mbtiId) {
+        mbtiManageService.getMbtiQuestion(mbtiId);
+        return ResponseEntity.ok().body(null);
+    }
+
+    // MBTI 설문 항목 모달 수정
     @ApiOperation(value = "modifyMbtiQuestionApi")
     @PutMapping("/question/modify")
     public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto) {
@@ -104,7 +112,7 @@ public class MbtiManageController {
     @ApiOperation(value = "deleteMbtiQuestionApi")
     @DeleteMapping("/question/delete/{mbtiId}")
     public ResponseEntity<?> deleteMbtiQuestion(@PathVariable int mbtiId) {
-        mbtiManageService.deleteMbtiQuestion(mbtiId);
+//        mbtiManageService.deleteMbtiQuestion(mbtiId);
         return ResponseEntity.ok().body(null);
     }
 

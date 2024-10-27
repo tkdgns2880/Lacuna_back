@@ -25,4 +25,5 @@ public class Mbti {
     // 매핑 목적
     private MbtiCategory mbtiCategory;
     private User user;
+    private MbtiOption mbtiOption;
 }
