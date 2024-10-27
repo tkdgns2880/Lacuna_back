@@ -6,6 +6,7 @@ import lombok.Data;
 public class ReqModifyMbtiCategoryDto {
     private int mbtiCategoryId;
     private String mbtiCategoryName;
+    private String mbtiCategoryTitle;
     private String mbtiCategoryDescription;
     private String mbtiCategoryImg;
 }

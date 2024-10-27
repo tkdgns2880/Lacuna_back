@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class ReqDeleteMbtiCategoryListDto {
-    private List<?> mbtiCategoryIdList;
+    private List<Integer> mbtiCategoryIdList;
 }
