@@ -39,10 +39,11 @@
             tb_mbti_category
         set
             mbti_category_name = #{mbtiCategoryName},
-            mbti_category_description = #{mbtiCategoryDescription},,
+            mbti_category_title = #{mbtiCategoryTitle},
+            mbti_category_description = #{mbtiCategoryDescription},
             mbti_category_img = #{mbtiCategoryImg}
         where
-            mbti_category_id = #{categoryId}
+            mbti_category_id = #{mbtiCategoryId}
     </update>
     <update id="modifyMbtiResult">
         update
@@ -63,6 +64,16 @@
             tb_mbti_category
         where
             mbti_category_id = #{categoryId}
+    </delete>
+    <delete id="deleteMbtiCategoryList">
+        delete
+        from
+            tb_mbti_category
+        where
+            mbti_catedory_id in
+            <foreach item="mbtiCategoryId" collection="mbtiCategoryIdList" open="(" separator="," close=")">
+                #{mbtiCategoryId}
+            </foreach>
     </delete>
     <delete id="deleteMbtiQuestion">
         delete
@@ -99,13 +110,42 @@
         from
             tb_mbti_category mc
             left outer join tb_user u on(u.user_id = mc.mbti_category_register_id)
+        limit
+            #{startIndex}, #{limit}
     </select>
-    <select id="findByCategoryId" resultMap="mbtiCategoryResultMap">
+    <select id="findMbtiCategoryByCategoryId" resultMap="mbtiCategoryResultMap">
         select
             *
         from
             tb_mbti_category
         where
             mbti_category_id = #{categoryId}
+    </select>
+    <select id="getMbtiQuestionList" resultMap="mbtiResultMap">
+        select
+            mbti_id,
+            mbti_code,
+            mbti_category_id,
+            mbti_register_id,
+            mbti_title,
+            mbti_img,
+            create_date,
+            update_date,
+            (select u.name
+            from tb_user
+            where u.user_id = m.register_id) as registerName,
+            (select mc.mbti_category_name
+            from tb_mbti_category
+            where m.mbti_category_id = mc.mbti_category_id)
+        from
+            tb_mbti m
+        where
+            1 = 1
+            <if test="option != null and option != ''">
+                and mc.mbti_category_name = #{option}
+            </if>
+            <if test="search != null and option != ''">
+                and
+            </if>
     </select>
 </mapper>

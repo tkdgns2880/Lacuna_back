@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,12 @@ public class ProductManageService {
 
     // 상품 상위 분류 카테고리 항목 출력
     public RespUpperProductCategoryDto getProductUpper(int upperId) {
-        RespUpperProductCategoryDto respUpperCategory = productManageMapper.getproductUpperDto(upperId);
-        return respUpperCategory;
+        ProductUpperCategory respUpperCategory = productManageMapper.getproductUpperDto(upperId);
+        RespUpperProductCategoryDto upperCategory = RespUpperProductCategoryDto.builder()
+                .productUpperCategoryId(respUpperCategory.getProductUpperCategoryId())
+                .productUpperCategoryName(respUpperCategory.getProductUpperCategoryName())
+                .build();
+        return upperCategory;
     }
 
     // 상품 상위 분류 카테고리 수정
@@ -116,8 +121,12 @@ public class ProductManageService {
 
     // 상품 하위 분류 카테고리 항목 출력
     public RespLowerProductCategoryDto getProductLower(int lowerId) {
-        RespLowerProductCategoryDto respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
-        return respLowerCategory;
+        ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
+        RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
+                .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
+                .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
+                .build();
+        return lowerCategory;
     }
 
     // 상품 하위 분류 카테고리 수정
@@ -154,10 +163,22 @@ public class ProductManageService {
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
-        List<RespProductDto> productList = productManageMapper.getProductList(params);
-        System.out.println(productList);
+        List<Product> productList = productManageMapper.getProductList(params);
+        List<RespProductDto> respProductDtoList = null;
+        for(Product product : productList) {
+            RespProductDto respProductDto = RespProductDto.builder()
+                    .productCode(product.getProductCode())
+                    .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
+                    .productName(product.getProductName())
+                    .price(product.getPrice())
+                    .promotionPrice(product.getPromotionPrice())
+                    .name(product.getUser().getName())
+                    .createdDate(product.getCreateDate())
+                    .build();
+            respProductDtoList.add(respProductDto);
+        }
 
-        return productList;
+        return respProductDtoList;
     }
 
     // 상품 등록
