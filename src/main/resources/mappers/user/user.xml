@@ -17,8 +17,8 @@
         <result property="name" column="name" />
         <result property="lastLoginDate" column="last_login_date" />
         <result property="createdDate" column="created_date" />
-        <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
         <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
+        <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
     </resultMap>
     <resultMap id="userRoleMetsResultMap" type="LacunaMatata.Lacuna.entity.user.UserRoleMet">
         <id property="userRoleMetId" column="user_role_met_id" />
@@ -35,7 +35,7 @@
     <resultMap id="userOptionalInfoResultMap" type="LacunaMatata.Lacuna.entity.user.UserOptionalInfo">
         <id property="userOptionId" column="user_option_id" />
         <result property="userId" column="user_id" />
-        <result property="birthDate" column="bitrh_date" />
+        <result property="birthDate" column="birth_date" />
         <result property="gender" column="gender" />
         <result property="phoneNumber" column="phone_number" />
         <result property="address" column="address" />
@@ -99,7 +99,6 @@
             login_user_id = #{userId}
     </select>
 
-    private int useConditionAgreement;
     <select id="findUserByUserId" resultMap="UserResultMap">
         select
             u.user_id,
@@ -210,5 +209,4 @@
         where
             role_id = #{roleId}
     </select>
-
 </mapper>

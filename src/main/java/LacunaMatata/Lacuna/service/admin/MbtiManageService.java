@@ -75,11 +75,15 @@ public class MbtiManageService {
     }
 
     // mbti 분류 카테고리 모달 수정
-    public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto) {
+    public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto, int mbtiCategoryId) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registeId = principalUser.getId();
-        mbtiManageMapper.modifyMbtiCategory(dto, registeId);
+        int registerId = principalUser.getId();
+        Map<String, Object> params = Map.of(
+                "registerId", registerId,
+                "mbtiCategoryId", dto.getMbtiCategoryId()
+        );
+        mbtiManageMapper.modifyMbtiCategory(dto, params);
     }
 
     // mbti 분류 카테고리 삭제
@@ -122,13 +126,13 @@ public class MbtiManageService {
     public void registeMbtiQuestion(ReqRegisteMbtiQuestionDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registeId = principalUser.getId();
+        int registerId = principalUser.getId();
         MbtiCategory mbtiCategory = mbtiManageMapper.findMbtiCategoryByCategoryName(dto.getMbtiCategoryName());
 
         Mbti mbti = Mbti.builder()
                 .mbtiCode(dto.getMbtiCode())
                 .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
-                .mbtiRegisterId(registeId)
+                .mbtiRegisterId(registerId)
                 .mbtiTitle(dto.getMbtiTitle())
                 .mbtiImg(dto.getMbtiImg())
                 .build();
@@ -160,8 +164,28 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 모달 수정
-    public void modifyMbtiQuestion(int mbtiId) {
-//        mbtiManageMapper.
+    public void modifyMbtiQuestion(ReqModifyMbtiQuestionDto dto, int mbtiId) {
+        PrincipalUser principalUser = (PrincipalUser)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
+        Map<String, Object> params = Map.of(
+            "registerId", registerId,
+            "mbtiId", dto.getMbtiId()
+        );
+
+        List<String> optionNameList = dto.getOptionName();
+        List<Integer> optionScoreList = dto.getOptionScore();
+        List<Integer> deleteOptionIdList = dto.getDeleteOptionIdList();
+
+        mbtiManageMapper.modifyMbtiQuestion(dto, params);
+        mbtiManageMapper.deleteMbtiQuestionOptionList(deleteOptionIdList);
+        for(int i = 0; i < optionNameList.size(); i++) {
+            MbtiOption mbtiOption = MbtiOption.builder()
+                    .optionName(optionNameList.get(i))
+                    .optionScore(optionScoreList.get(i))
+                    .build();
+            mbtiManageMapper.saveMbtiOption(mbtiOption);
+        }
     }
 
     // mbti 설문지 항목 삭제
@@ -203,10 +227,10 @@ public class MbtiManageService {
     public void registeMbtiResult(ReqRegisteMbtiResultDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registeId = principalUser.getId();
+        int registerId = principalUser.getId();
 
         MbtiResult mbtiResult = MbtiResult.builder()
-                .mbtiResultRegisterId(registeId)
+                .mbtiResultRegisterId(registerId)
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
                 .mbtiResultImg(dto.getMbtiResultImg())
@@ -232,9 +256,17 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 모달 수정
-    public void modifyMbtiResult(ReqModifyMbtiResultDto dto) {
-        mbtiManageMapper.modifyMbtiResult(dto);
+    public void modifyMbtiResult(ReqModifyMbtiResultDto dto, int resultId) {
+        PrincipalUser principalUser = (PrincipalUser)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int registerId = principalUser.getId();
 
+        Map<String, Object> params = Map.of(
+            "registerId", registerId,
+            "resultId", resultId
+        );
+
+        mbtiManageMapper.modifyMbtiResult(dto, params);
     }
 
     // mbti 설문 결과 항목 삭제

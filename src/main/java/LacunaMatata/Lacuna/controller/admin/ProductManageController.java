@@ -54,10 +54,10 @@ public class ProductManageController {
     }
 
     // 상품 상위 분류 카테고리 수정
-    @PutMapping("/upper/modify")
+    @PutMapping("/upper/modify/{upperId}")
     @ApiOperation(value = "modifyUpperProductApi")
-    public ResponseEntity<?> modifyUpperProduct(@RequestBody ReqModifyUpperProductDto dto) {
-        productManageService.modifyProductUpperCategory(dto);
+    public ResponseEntity<?> modifyUpperProduct(@RequestBody ReqModifyUpperProductDto dto, @PathVariable int upperId) {
+        productManageService.modifyProductUpperCategory(dto, upperId);
         return ResponseEntity.ok().body(true);
     }
 
@@ -103,9 +103,9 @@ public class ProductManageController {
     }
 
     // 상품 하위 분류 카테고리 수정
-    @PutMapping("/lower/modify")
+    @PutMapping("/lower/modify/{lowerId}")
     @ApiOperation(value = "modifyLowerProductApi")
-    public ResponseEntity<?> modifyLowerProduct(@RequestBody ReqModifyLowerProductCategoryDto dto) {
+    public ResponseEntity<?> modifyLowerProduct(@RequestBody ReqModifyLowerProductCategoryDto dto, @PathVariable int lowerId) {
         productManageService.modifyProductlowerCategory(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -152,9 +152,9 @@ public class ProductManageController {
     }
 
     // 상품 수정
-    @PutMapping("/modify")
+    @PutMapping("/modify/{productId}")
     @ApiOperation(value = "modifyProductApi")
-    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto) {
+    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto, @PathVariable int productId) {
         productManageService.modifyProduct(dto);
         return ResponseEntity.ok().body(null);
     }
