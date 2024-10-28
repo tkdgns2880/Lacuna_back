@@ -110,20 +110,34 @@
             mbti_category_name = #{mbtiCategoryName},
             mbti_category_title = #{mbtiCategoryTitle},
             mbti_category_description = #{mbtiCategoryDescription},
-            mbti_category_img = #{mbtiCategoryImg}
+            mbti_category_img = #{mbtiCategoryImg},
+            update_date = now()
         where
             mbti_category_id = #{mbtiCategoryId}
+    </update>
+    <update id="modifyMbtiQuestion">
+        update
+            tb_mbti
+        set
+            mbti_register_id = #{registerId},
+            mbti_title = #{mbtiTitle},
+            mbti_img = #{mbtiImg},
+            update_date = now()
+        where
+            mbti_id = #{mbtiId}
     </update>
     <update id="modifyMbtiResult">
         update
             tb_mbti_result
         set
+            mbti_result_register_id = #{registerId},
             mbti_result_title = #{mbtiResultTitle},
             mbti_result_category_name = #{mbtiResultCategoryName},
             mbti_result_img = #{mbtiResultImg},
             mbti_result_summary = #{mbtiResultSummary},
             mbti_result_content = #{mbtiResultContent},
-            mbti_result_status = #{mbtiResultStatus}
+            mbti_result_status = #{mbtiResultStatus},
+            update_date = now()
         where
             mbti_result_id = #{resultId}
     </update>
@@ -159,6 +173,16 @@
             mbti_id in
             <foreach item="mbtiId" collection="mbtiIdList" open="(" separator="," close=")">
                 #{mbtiId}
+            </foreach>
+    </delete>
+    <delete id="deleteMbtiQuestionOptionList">
+        delete
+        from
+            tb_mbti_option
+        where
+            mbti_option_id in
+            <foreach item="mbtiOptionId" collection="deleteOptionIdList" open="(" separator="," close=")">
+                #{mbtiOptionId}
             </foreach>
     </delete>
     <delete id="deleteMbtiResult">
@@ -289,16 +313,6 @@
         limit
             #{startIndex}, #{limit}
     </select>
-    private int mbtiResultId;
-    private int mbtiResultRegisterId;
-    private String mbtiResultCategoryName;
-    private String mbtiResultTitle;
-    private String mbtiResultSummary;
-    private String mbtiResultContent;
-    private String mbtiResultImg;
-    private int mbtiResultStatus;
-    private LocalDateTime createDate;
-    private LocalDateTime updateDate;
     <select id="getMbtiResult" resultMap="mbtiResultResultMap">
         select
             mbti_result_id,

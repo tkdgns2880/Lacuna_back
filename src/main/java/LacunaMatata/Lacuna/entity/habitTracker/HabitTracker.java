@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class HabitTracker {
     private int habitTrackerId;
     private int habitTrackerMemberUserId; //consultinfMemberId
-    private int habitTrackerWeeklyContentsId; // weeklyConentsId
     private LocalDateTime startDate;
     private String finalFeedback;
     private int finalFeedbackStatus; // 1-false, 2-true

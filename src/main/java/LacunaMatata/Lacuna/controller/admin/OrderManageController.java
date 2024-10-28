@@ -38,7 +38,7 @@ public class OrderManageController {
         return ResponseEntity.ok().body(null);
     }
 
-    // 주문 수정 - 회원 결제 취소하기( 계좌 이체)
+    // 주문 수정 - 회원 결제 취소하기(계좌 이체)
     @PostMapping("/pay/account/cancel")
     ResponseEntity<?> cancelAccountPayment() {
         return ResponseEntity.ok().body(null);

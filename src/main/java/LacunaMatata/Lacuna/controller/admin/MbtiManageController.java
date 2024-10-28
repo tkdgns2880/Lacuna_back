@@ -52,9 +52,9 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 모달 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
-    @PutMapping("/servey/category/modify")
-    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto) {
-        mbtiManageService.modifyMbtiCategory(dto);
+    @PutMapping("/servey/category/modify/{mbtiCategoryId}")
+    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int mbtiCategoryId) {
+        mbtiManageService.modifyMbtiCategory(dto, mbtiCategoryId);
         return ResponseEntity.ok().body(true);
     }
 
@@ -100,9 +100,9 @@ public class MbtiManageController {
 
     // MBTI 설문 항목 모달 수정
     @ApiOperation(value = "modifyMbtiQuestionApi")
-    @PutMapping("/question/modify")
-    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto) {
-//        mbtiManageService.modifyMbtiQuestion();
+    @PutMapping("/question/modify/{mbtiId}")
+    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) {
+        mbtiManageService.modifyMbtiQuestion(dto, mbtiId);
         return ResponseEntity.ok().body(null);
     }
 
@@ -149,8 +149,8 @@ public class MbtiManageController {
     // MBTI 설문 결과 항목 모달 수정
     @ApiOperation(value = "modifyMbtiResultApi")
     @PutMapping("/result/modify/{resultId}")
-    public ResponseEntity<?> modifyMbtiResult(@RequestBody ReqModifyMbtiResultDto dto) {
-        mbtiManageService.modifyMbtiResult(dto);
+    public ResponseEntity<?> modifyMbtiResult(@RequestBody ReqModifyMbtiResultDto dto, @PathVariable int resultId) {
+        mbtiManageService.modifyMbtiResult(dto, resultId);
         return ResponseEntity.ok().body(true);
     }
 

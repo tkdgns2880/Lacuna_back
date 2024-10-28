@@ -31,7 +31,6 @@ public class User {
     private LocalDateTime lastLoginDate;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
-    private String loginIp;
 
     // 매핑 목적
     private Set<UserRoleMet> userRoleMets;

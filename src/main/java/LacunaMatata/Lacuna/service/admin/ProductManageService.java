@@ -61,7 +61,7 @@ public class ProductManageService {
     }
 
     // 상품 상위 분류 카테고리 수정
-    public void modifyProductUpperCategory(ReqModifyUpperProductDto dto) {
+    public void modifyProductUpperCategory(ReqModifyUpperProductDto dto, int upperId) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registeAdminId = principalUser.getId();
         ProductUpperCategory productUpperCategory = ProductUpperCategory.builder()

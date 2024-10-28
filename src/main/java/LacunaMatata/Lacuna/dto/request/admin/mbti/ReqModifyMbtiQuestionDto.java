@@ -13,4 +13,5 @@ public class ReqModifyMbtiQuestionDto {
     private String mbtiImg;
     private List<String> optionName;
     private List<Integer> optionScore;
+    private List<Integer> deleteOptionIdList;
 }
