@@ -18,6 +18,7 @@
         <result property="lastLoginDate" column="last_login_date" />
         <result property="createdDate" column="created_date" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
+        <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
     </resultMap>
     <resultMap id="userRoleMetsResultMap" type="LacunaMatata.Lacuna.entity.user.UserRoleMet">
         <id property="userRoleMetId" column="user_role_met_id" />
@@ -30,6 +31,18 @@
         <result property="roleName" column="role_name" />
         <result property="roleDescription" column="role_description" />
         <result property="roleImg" column="role_img" />
+    </resultMap>
+    <resultMap id="userOptionalInfoResultMap" type="LacunaMatata.Lacuna.entity.user.UserOptionalInfo">
+        <id property="userOptionId" column="user_option_id" />
+        <result property="userId" column="user_id" />
+        <result property="birthDate" column="bitrh_date" />
+        <result property="gender" column="gender" />
+        <result property="phoneNumber" column="phone_number" />
+        <result property="address" column="address" />
+        <result property="profileImg" column="profile_img" />
+        <result property="marketingReceiveAgreement" column="marketing_receive_agreement" />
+        <result property="thirdPartyInfoSharingAgreement" column="third_party_info_sharing_agreement" />
+        <result property="useConditionAgreement" column="use_condition_agreement" />
     </resultMap>
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
@@ -86,6 +99,7 @@
             login_user_id = #{userId}
     </select>
 
+    private int useConditionAgreement;
     <select id="findUserByUserId" resultMap="UserResultMap">
         select
             u.user_id,
@@ -100,11 +114,22 @@
             urm.role_id,
             ur.role_id,
             ur.role_name,
-            ur.role_img
+            ur.role_img,
+            uoi.user_id,
+            uoi.user_option_id,
+            uoi.birth_date,
+            uoi.gender,
+            uoi.phone_number,
+            uoi.address,
+            uoi.profile_img,
+            uoi.marketing_receive_agreement,
+            uoi.third_party_info_sharing_agreement,
+            uoi.use_condition_agreement
         from
             tb_user u
             left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
             left outer join tb_user_role ur on(urm.role_id = ur.role_id)
+            left outer join tb_user_optional_info uoi on(uoi.user_id = u.user_id)
         where
             u.user_id = #{userId}
     </select>
@@ -122,11 +147,22 @@
             urm.role_id,
             ur.role_id,
             ur.role_name,
-            ur.role_img
+            ur.role_img,
+            uoi.user_id,
+            uoi.user_option_id,
+            uoi.birth_date,
+            uoi.gender,
+            uoi.phone_number,
+            uoi.address,
+            uoi.profile_img,
+            uoi.marketing_receive_agreement,
+            uoi.third_party_info_sharing_agreement,
+            uoi.use_condition_agreement
         from
             tb_user u
             left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
             left outer join tb_user_role ur on(urm.role_id = ur.role_id)
+            left outer join tb_user_optional_info uoi on(uoi.user_id = u.user_id)
         where
             u.username = #{username}
     </select>
@@ -144,11 +180,22 @@
             urm.role_id,
             ur.role_id,
             ur.role_name,
-            ur.role_img
+            ur.role_img,
+            uoi.user_id,
+            uoi.user_option_id,
+            uoi.birth_date,
+            uoi.gender,
+            uoi.phone_number,
+            uoi.address,
+            uoi.profile_img,
+            uoi.marketing_receive_agreement,
+            uoi.third_party_info_sharing_agreement,
+            uoi.use_condition_agreement
         from
             tb_user u
             left outer join tb_user_role_met urm on(u.user_id = urm.role_user_id)
             left outer join tb_user_role ur on(urm.role_id = ur.role_id)
+            left outer join tb_user_optional_info uoi on(uoi.user_id = u.user_id)
         where
             u.email = #{email}
     </select>

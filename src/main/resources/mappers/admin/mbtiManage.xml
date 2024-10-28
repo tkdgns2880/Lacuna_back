@@ -51,7 +51,7 @@
         <result property="name" column="name" />
     </resultMap>
 
-    <insert id="registerMbtiCategory" useGeneratedKeys="true" keyProperty="mbtiCategoryId">
+    <insert id="saveMbtiCategory" useGeneratedKeys="true" keyProperty="mbtiCategoryId">
         insert into tb_mbti_category
         values(
             default,
@@ -86,7 +86,7 @@
             #{optionScore}
         )
     </insert>
-    <insert id="registerMbtiResult">
+    <insert id="saveMbtiResult">
         insert into tb_mbti_result
         values(
             default,
@@ -288,6 +288,33 @@
             </if>
         limit
             #{startIndex}, #{limit}
+    </select>
+    private int mbtiResultId;
+    private int mbtiResultRegisterId;
+    private String mbtiResultCategoryName;
+    private String mbtiResultTitle;
+    private String mbtiResultSummary;
+    private String mbtiResultContent;
+    private String mbtiResultImg;
+    private int mbtiResultStatus;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
+    <select id="getMbtiResult" resultMap="mbtiResultResultMap">
+        select
+            mbti_result_id,
+            mbti_result_register_id,
+            mbti_result_category_name,
+            mbti_result_title,
+            mbti_result_summary,
+            mbti_result_content,
+            mbti_result_img,
+            mbti_result_status,
+            create_date,
+            update_date,
+        from
+            tb_mbti_result
+        where
+            mbti_result_id = #{resultId}
     </select>
 
     <select id="findMbtiCategoryByCategoryName" resultMap="mbtiCategoryResultMap">

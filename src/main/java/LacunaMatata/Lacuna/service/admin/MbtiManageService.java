@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class MbtiManageService {
     }
 
     // mbti 분류 카테고리 등록
-    public void registerMbtiCategory(ReqRegisterMbtiCategoryDto dto) {
+    public void registeMbtiCategory(ReqRegisteMbtiCategoryDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principalUser.getId();
@@ -59,7 +58,7 @@ public class MbtiManageService {
                 .mbtiCategoryDescription(dto.getMbtiCategoryDescription())
                 .mbtiCategoryImg(dto.getMbtiCategoryImg())
                 .build();
-        mbtiManageMapper.registerMbtiCategory(mbtiCategory);
+        mbtiManageMapper.saveMbtiCategory(mbtiCategory);
     }
 
     // mbti 분류 카테고리 모달 출력
@@ -79,8 +78,8 @@ public class MbtiManageService {
     public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerId = principalUser.getId();
-        mbtiManageMapper.modifyMbtiCategory(dto, registerId);
+        int registeId = principalUser.getId();
+        mbtiManageMapper.modifyMbtiCategory(dto, registeId);
     }
 
     // mbti 분류 카테고리 삭제
@@ -120,16 +119,16 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 등록
-    public void registerMbtiQuestion(ReqRegisterMbtiQuestionDto dto) {
+    public void registeMbtiQuestion(ReqRegisteMbtiQuestionDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerId = principalUser.getId();
+        int registeId = principalUser.getId();
         MbtiCategory mbtiCategory = mbtiManageMapper.findMbtiCategoryByCategoryName(dto.getMbtiCategoryName());
 
         Mbti mbti = Mbti.builder()
                 .mbtiCode(dto.getMbtiCode())
                 .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
-                .mbtiRegisterId(registerId)
+                .mbtiRegisterId(registeId)
                 .mbtiTitle(dto.getMbtiTitle())
                 .mbtiImg(dto.getMbtiImg())
                 .build();
@@ -201,13 +200,13 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 등록
-    public void registerMbtiResult(ReqRegisterMbtiResultDto dto) {
+    public void registeMbtiResult(ReqRegisteMbtiResultDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerId = principalUser.getId();
+        int registeId = principalUser.getId();
 
         MbtiResult mbtiResult = MbtiResult.builder()
-                .mbtiResultRegisterId(registerId)
+                .mbtiResultRegisterId(registeId)
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
                 .mbtiResultImg(dto.getMbtiResultImg())
@@ -215,7 +214,7 @@ public class MbtiManageService {
                 .mbtiResultContent(dto.getMbtiResultContent())
                 .mbtiResultStatus(dto.getMbtiResultStatus())
                 .build();
-        mbtiManageMapper.registerMbtiResult(mbtiResult);
+        mbtiManageMapper.saveMbtiResult(mbtiResult);
     }
 
     // mbti 살문 결과 항목 모달 출력
