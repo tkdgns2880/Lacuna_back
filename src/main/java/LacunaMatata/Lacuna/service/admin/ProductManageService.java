@@ -38,13 +38,13 @@ public class ProductManageService {
     }
 
     // 상품 상위 분류 카테고리 등록
-    public void registerProductUpperCategory(ReqRegisterUpperProductCategoryDto dto) {
+    public void registeProductUpperCategory(ReqRegisteUpperProductCategoryDto dto) {
 
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerAdminId = principalUser.getId();
+        int registeAdminId = principalUser.getId();
         ProductUpperCategory productUpperCategory = ProductUpperCategory.builder()
                 .productUpperCategoryName(dto.getProductUpperCategoryName())
-                .productUpperCategoryRegisterId(registerAdminId)
+                .productUpperCategoryRegisterId(registeAdminId)
                 .build();
 
         productManageMapper.saveProductUpperCategory(productUpperCategory);
@@ -63,11 +63,11 @@ public class ProductManageService {
     // 상품 상위 분류 카테고리 수정
     public void modifyProductUpperCategory(ReqModifyUpperProductDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerAdminId = principalUser.getId();
+        int registeAdminId = principalUser.getId();
         ProductUpperCategory productUpperCategory = ProductUpperCategory.builder()
                 .productUpperCategoryId(dto.getProductUpperCategoryId())
                 .productUpperCategoryName(dto.getProductUpperCategoryName())
-                .productUpperCategoryRegisterId(registerAdminId)
+                .productUpperCategoryRegisterId(registeAdminId)
                 .build();
 
         productManageMapper.modifyProductUpperCategory(productUpperCategory);
@@ -102,12 +102,12 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 등록
-    public void registerProductlowerCategory(ReqRegisterLowerProductCategoryDto dto, int upperId) {
+    public void registeProductlowerCategory(ReqRegisteLowerProductCategoryDto dto, int upperId) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerAdminId = principalUser.getId();
+        int registeAdminId = principalUser.getId();
         ProductLowerCategory productLowerCategory = ProductLowerCategory.builder()
                 .productLowerCategoryName(dto.getProductLowerCategoryName())
-                .productLowerCategoryRegisterId(registerAdminId)
+                .productLowerCategoryRegisterId(registeAdminId)
                 .productUpperCategoryId(upperId)
                 .build();
 
@@ -127,11 +127,11 @@ public class ProductManageService {
     // 상품 하위 분류 카테고리 수정
     public void modifyProductlowerCategory(ReqModifyLowerProductCategoryDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerAdminId = principalUser.getId();
+        int registeAdminId = principalUser.getId();
         ProductLowerCategory productLowerCategory = ProductLowerCategory.builder()
                 .productLowerCategoryId(dto.getProductLowerCategoryId())
                 .productLowerCategoryName(dto.getProductLowerCategoryName())
-                .productLowerCategoryRegisterId(registerAdminId)
+                .productLowerCategoryRegisterId(registeAdminId)
                 .build();
 
         productManageMapper.modifyProductLowerCategory(productLowerCategory);
@@ -177,9 +177,9 @@ public class ProductManageService {
     }
 
     // 상품 등록
-    public void registerProduct(ReqRegisterProductDto dto) {
+    public void registeProduct(ReqRegisteProductDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerId = principalUser.getId();
+        int registeId = principalUser.getId();
         ProductUpperCategory productUpperCategory
                 = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
         ProductLowerCategory productLowerCategory
@@ -192,7 +192,7 @@ public class ProductManageService {
                 .price(BigDecimal.valueOf(dto.getPrice()))
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
                 .productImg(dto.getProductImg())
-                .productRegisterId(registerId)
+                .productRegisterId(registeId)
                 .build();
         int productId = productManageMapper.saveProduct(product);
 
@@ -282,7 +282,7 @@ public class ProductManageService {
     // 상품 수정
     public void modifyProduct(ReqModifyProductDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int registerId = principalUser.getId();
+        int registeId = principalUser.getId();
         ProductUpperCategory productUpperCategory
                 = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
         ProductLowerCategory productLowerCategory
@@ -295,7 +295,7 @@ public class ProductManageService {
                 .price(BigDecimal.valueOf(dto.getPrice()))
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
                 .productImg(dto.getProductImg())
-                .productRegisterId(registerId)
+                .productRegisterId(registeId)
                 .build();
 
         if(productUpperCategory.getProductUpperCategoryId() == 1) {

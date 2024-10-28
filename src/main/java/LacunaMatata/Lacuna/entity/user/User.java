@@ -32,7 +32,10 @@ public class User {
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
     private String loginIp;
+
+    // 매핑 목적
     private Set<UserRoleMet> userRoleMets;
+    private UserOptionalInfo userOptionalInfo;
 
     public PrincipalUser toPrincipal() {
         return PrincipalUser.builder()

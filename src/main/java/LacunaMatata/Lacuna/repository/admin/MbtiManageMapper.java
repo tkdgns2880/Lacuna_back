@@ -18,11 +18,11 @@ public interface MbtiManageMapper {
     // 1. MBTI 분류 목록 조회_2024.10.27
     List<MbtiCategory> getMbtiCategoryList(Map<String, Object> params);
     // 2. MBTI 분류 등록_2024.10.27
-    int registerMbtiCategory(MbtiCategory mbtiCategory);
+    int saveMbtiCategory(MbtiCategory mbtiCategory);
     // 3. MBTI 분류 모달창 조회_2024.10.27
     MbtiCategory findMbtiCategoryByCategoryId(int categoryId);
     // 4. MBTI 분류 모달창 수정_2024.10.27
-    int modifyMbtiCategory(ReqModifyMbtiCategoryDto dto, int registerId);
+    int modifyMbtiCategory(ReqModifyMbtiCategoryDto dto, int registeId);
     // 5. MBTI 분류 단일 삭제_2024.10.27
     int deleteMbtiCategory(int categoryId);
     // 6. MBTI 분류 복수 삭제_2024.10.27
@@ -48,7 +48,7 @@ public interface MbtiManageMapper {
     // 1. MBTI 결과지 목록 출력_2024.10.27
     List<MbtiResult> getMbtiResultList(Map<String, Object> params);
     // 2. MBTI 결과지 항목 등록_2024.10.27
-    int registerMbtiResult(MbtiResult mbtiResult); // MBTI 결과 항목 등록
+    int saveMbtiResult(MbtiResult mbtiResult); // MBTI 결과 항목 등록
     // 3. MBTI 결과지 항목 모달 출력_2024.10.27
     MbtiResult getMbtiResult(int resultId);
     // 4. MBTI 결과지 항목 모달 수정_2024.10.27

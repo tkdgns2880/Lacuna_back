@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ReqRegisterMbtiQuestionDto {
+public class ReqRegisteMbtiQuestionDto {
     private String mbtiCategoryName;
     private String mbtiCode;
     private String mbtiTitle;
