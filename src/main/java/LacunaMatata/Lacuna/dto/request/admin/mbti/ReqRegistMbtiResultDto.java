@@ -4,7 +4,7 @@ import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import lombok.Data;
 
 @Data
-public class ReqRegisteMbtiResultDto {
+public class ReqRegistMbtiResultDto {
     private String mbtiResultTitle;
     private String mbtiResultCategoryName;
     private String mbtiResultImg;

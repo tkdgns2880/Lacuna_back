@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReqGetMbtiResultDto {
-    private String inputValue;
+    private String searchValue;
     private int page;
     private int limit;
 }
