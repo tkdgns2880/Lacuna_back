@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class RespLowerCategoryDto {
+public class RespLowerProductCategoryDto {
     private int productLowerCategoryId;
     private String productLowerCategoryName;
 }
