@@ -19,5 +19,6 @@ public class PurchaseInfo {
     private int purchaseCount;
     private int vipCriteriaMet;
     private int premiumCriteriaMet;
+    private String lastPurchaseItem;
     private LocalDateTime lastPurchaseDate;
 }
