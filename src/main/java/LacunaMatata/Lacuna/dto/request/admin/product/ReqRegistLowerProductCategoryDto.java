@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class ReqRegisteLowerProductCategoryDto {
+public class ReqRegistLowerProductCategoryDto {
     @ApiModelProperty(value="데스트", example = "Test", required = true)
     private String productLowerCategoryName;
 }

@@ -39,9 +39,9 @@ public class ProductManageController {
 
     // 상품 상위 분류 카테고리 등록
     @PostMapping("/upper/regist")
-    @ApiOperation(value = "registeUpperProductApi")
-    public ResponseEntity<?> registeUpperProduct(@RequestBody ReqRegisteUpperProductCategoryDto dto) {
-        productManageService.registeProductUpperCategory(dto);
+    @ApiOperation(value = "registUpperProductApi")
+    public ResponseEntity<?> registUpperProduct(@RequestBody ReqRegistUpperProductCategoryDto dto) {
+        productManageService.registProductUpperCategory(dto);
         return ResponseEntity.ok().body(true);
     }
 
@@ -87,10 +87,10 @@ public class ProductManageController {
     }
 
     // 상품 하위 분류 카테고리 등록
-    @PostMapping("/lower/registe/{upperId}")
-    @ApiOperation(value = "registeLowerProductApi")
-    public ResponseEntity<?> registeLowerProduct(@RequestBody ReqRegisteLowerProductCategoryDto dto, @PathVariable int upperId) {
-        productManageService.registeProductlowerCategory(dto, upperId);
+    @PostMapping("/lower/regist/{upperId}")
+    @ApiOperation(value = "registLowerProductApi")
+    public ResponseEntity<?> registLowerProduct(@RequestBody ReqRegistLowerProductCategoryDto dto, @PathVariable int upperId) {
+        productManageService.registProductlowerCategory(dto, upperId);
         return ResponseEntity.ok().body(null);
     }
 
@@ -136,10 +136,10 @@ public class ProductManageController {
     }
 
     // 상품 등록
-    @PostMapping("/registe")
-    @ApiOperation(value = "registeProductApi")
-    public ResponseEntity<?> registeProduct(@RequestBody ReqRegisteProductDto dto) {
-        productManageService.registeProduct(dto);
+    @PostMapping("/regist")
+    @ApiOperation(value = "registProductApi")
+    public ResponseEntity<?> registProduct(@RequestBody ReqRegistProductDto dto) {
+        productManageService.registProduct(dto);
         return ResponseEntity.ok().body(null);
     }
 

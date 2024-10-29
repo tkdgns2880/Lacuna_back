@@ -338,15 +338,13 @@
                     and puc.product_upper_category_id = #{filter}
                 </if>
                 <if test="option == 0">
-<<<<<<< HEAD
                     <if test="searchValue != null and !searchValue.equals('')">
                         and (p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                         or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%'))
-=======
+                    </if>
                     <if test="searchValue != null and searchValue != ''">
                         and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                         or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
->>>>>>> 9b954c611f6ebd2b3537868885f628fc9e7dfd48
                     </if>
                 </if>
                 <if test="option == 1">
@@ -372,7 +370,6 @@
             p.promotion_price,
             p.product_img,
             p.product_register_id,
-            p.product_upper_category_name,
             u.user_id,
             u.name,
             p.product_lower_category_id,
@@ -393,13 +390,12 @@
             product_id = #{productId}
     </select>
     <select id="getConsultingDetail" resultMap="consultingDetailResultMap">
-        private ConsultingContent consultingContent;
         select
             cd.consulting_detail_id,
             cd.consulting_detail_product_id,
             cd.consulting_detail_content_id,
-            cd.repeat-count,
-            cd.description
+            cd.repeat_count,
+            cd.description,
             cd.etc,
             cc.consulting_content_id,
             cc.name
@@ -412,7 +408,16 @@
     </select>
     <select id="getCosmeticDetail" resultMap="cosmeticDetailResultMap">
         select
-            *
+            cosmetic_detail_id,
+            cosmetic_detail_product_id,
+            volume,
+            ingredient,
+            skin_type,
+            effect,
+            manufacture,
+            product_description,
+            product_url,
+            etc
         from
             tb_cosmetic_detail
         where
@@ -421,7 +426,11 @@
     <select id="findByNameProductUpperCategory"
             resultType="LacunaMatata.Lacuna.entity.product.ProductUpperCategory">
         select
-            *
+            product_upper_category_id,
+            product_upper_category_name,
+            product_upper_category_register_id,
+            create_date,
+            update_date
         from
             tb_product_upper_category
         where
@@ -430,7 +439,12 @@
     <select id="findByNameProductLowerCategory"
             resultType="LacunaMatata.Lacuna.entity.product.ProductLowerCategory">
         select
-            *
+            product_lower_category_id,
+            product_upper_category_id,
+            product_lower_category_name,
+            product_lower_category_register_id,
+            create_date,
+            update_date
         from
             tb_product_lower_category
         where
@@ -438,7 +452,12 @@
     </select>
     <select id="findByIdConsultingDetail" resultMap="consultingDetailResultMap">
         select
-            *
+            consulting_detail_id,
+            consulting_detail_product_id,
+            consulting_detail_content_id,
+            repeat_count,
+            description,
+            etc
         from
             tb_consulting_detail
         where

@@ -223,7 +223,14 @@
     </select>
     <select id="findMbtiCategoryByCategoryId" resultMap="mbtiCategoryResultMap">
         select
-            *
+            mbti_category_id,
+            mbti_category_register_id,
+            mbti_category_name,
+            mbti_category_title,
+            mbti_category_description,
+            mbti_category_img,
+            create_date,
+            update_date
         from
             tb_mbti_category
         where
@@ -304,7 +311,7 @@
             mr.mbti_result_summary,
             mr.mbti_result_content,
             mr.mbti_result_img,
-            mr.mbbti_result_status,
+            mr.mbti_result_status,
             mr.create_date,
             mr.update_date,
             (select u.name
@@ -331,7 +338,7 @@
             mbti_result_img,
             mbti_result_status,
             create_date,
-            update_date,
+            update_date
         from
             tb_mbti_result
         where
@@ -340,7 +347,14 @@
 
     <select id="findMbtiCategoryByCategoryName" resultMap="mbtiCategoryResultMap">
         select
-            *
+            mbti_category_id,
+            mbti_category_register_id,
+            mbti_category_name,
+            mbti_category_title,
+            mbti_category_description,
+            mbti_category_img,
+            create_date,
+            update_date
         from
             tb_mbti_category
         where
