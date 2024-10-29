@@ -35,10 +35,10 @@ public class MbtiManageController {
     }
 
     // MBTI 분류 카테고리 등록
-    @ApiOperation(value = "registeMbtiCategoryApi")
-    @PostMapping("/servey/category/registe")
-    public ResponseEntity<?> registeMbtiCategory(@RequestBody ReqRegisteMbtiCategoryDto dto) {
-        mbtiManageService.registeMbtiCategory(dto);
+    @ApiOperation(value = "registMbtiCategoryApi")
+    @PostMapping("/servey/category/regist")
+    public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) {
+        mbtiManageService.registMbtiCategory(dto);
         return ResponseEntity.ok().body(null);
     }
 
@@ -83,10 +83,10 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 등록
-    @ApiOperation(value = "registeMbtiQuestionApi")
-    @PostMapping("/question/registe")
-    public ResponseEntity<?> registeMbtiQuestion(@RequestBody ReqRegisteMbtiQuestionDto dto) {
-        mbtiManageService.registeMbtiQuestion(dto);
+    @ApiOperation(value = "registMbtiQuestionApi")
+    @PostMapping("/question/regist")
+    public ResponseEntity<?> registMbtiQuestion(@RequestBody ReqRegistMbtiQuestionDto dto) {
+        mbtiManageService.registMbtiQuestion(dto);
         return ResponseEntity.ok().body(null);
     }
 
@@ -131,10 +131,10 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 등록
-    @ApiOperation(value = "registeMbtiResultApi")
-    @PostMapping("/result/registe")
-    public ResponseEntity<?> registeMbtiResult(@RequestBody ReqRegisteMbtiResultDto dto) {
-        mbtiManageService.registeMbtiResult(dto);
+    @ApiOperation(value = "registMbtiResultApi")
+    @PostMapping("/result/regist")
+    public ResponseEntity<?> registMbtiResult(@RequestBody ReqRegistMbtiResultDto dto) {
+        mbtiManageService.registMbtiResult(dto);
         return ResponseEntity.ok().body(true);
     }
 

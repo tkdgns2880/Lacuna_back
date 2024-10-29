@@ -31,7 +31,7 @@ public class MbtiManageService {
         );
 
         List<MbtiCategory> mbtiCategoryList = mbtiManageMapper.getMbtiCategoryList(params);
-        List<RespMbtiCategoryListDto> respMbtiCategoryListDtoList = new ArrayList<>();
+        List<RespMbtiCategoryListDto> respMbtiCategoryListDtoList = new ArrayList<RespMbtiCategoryListDto>();
         for(MbtiCategory mbtiCategory : mbtiCategoryList){
             RespMbtiCategoryListDto respMbtiCategoryListDto = RespMbtiCategoryListDto.builder()
                     .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
@@ -46,7 +46,7 @@ public class MbtiManageService {
     }
 
     // mbti 분류 카테고리 등록
-    public void registeMbtiCategory(ReqRegisteMbtiCategoryDto dto) {
+    public void registMbtiCategory(ReqRegistMbtiCategoryDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principalUser.getId();
@@ -101,14 +101,14 @@ public class MbtiManageService {
     public List<RespMbtiQuestionListDto> getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
-                "option", dto.getOption(),
                 "filter", dto.getFilter(),
-                "inputValue", dto.getInputValue(),
+                "option", dto.getOption(),
+                "searchValue", dto.getSearchValue(),
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
         List<Mbti> mbtiQuestionList = mbtiManageMapper.getMbtiQuestionList(params);
-        List<RespMbtiQuestionListDto> respMbtiQuestionList = null;
+        List<RespMbtiQuestionListDto> respMbtiQuestionList = new ArrayList<RespMbtiQuestionListDto>();
         for(Mbti mbti : mbtiQuestionList) {
             RespMbtiQuestionListDto respMbtiQuestionListDto = RespMbtiQuestionListDto.builder()
                     .mbtiId(mbti.getMbtiId())
@@ -123,7 +123,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 등록
-    public void registeMbtiQuestion(ReqRegisteMbtiQuestionDto dto) {
+    public void registMbtiQuestion(ReqRegistMbtiQuestionDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
@@ -203,12 +203,12 @@ public class MbtiManageService {
     public List<RespGetMbtiResultListDto> getMbtiResultList(ReqGetMbtiResultDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
-                "inputValue", dto.getInputValue(),
+                "searchValue", dto.getSearchValue(),
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
         List<MbtiResult> mbtiResultList = mbtiManageMapper.getMbtiResultList(params);
-        List<RespGetMbtiResultListDto> respGetMbtiResultListDtoList = null;
+        List<RespGetMbtiResultListDto> respGetMbtiResultListDtoList = new ArrayList<RespGetMbtiResultListDto>();
         for(MbtiResult mbtiResult : mbtiResultList) {
             RespGetMbtiResultListDto respGetMbtiResultListDto = RespGetMbtiResultListDto.builder()
                     .mbtiResultId(mbtiResult.getMbtiResultId())
@@ -224,7 +224,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 등록
-    public void registeMbtiResult(ReqRegisteMbtiResultDto dto) {
+    public void registMbtiResult(ReqRegistMbtiResultDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();

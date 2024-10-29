@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ReqGetMbtiQuestionListDto {
-    private String filter;
-    private String option;
-    private String inputValue;
+    private int filter;
+    private int option;
+    private String searchValue;
     private int page;
     private int limit;
 }

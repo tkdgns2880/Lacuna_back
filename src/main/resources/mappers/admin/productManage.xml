@@ -338,9 +338,15 @@
                     and puc.product_upper_category_id = #{filter}
                 </if>
                 <if test="option == 0">
+<<<<<<< HEAD
                     <if test="searchValue != null and !searchValue.equals('')">
                         and (p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                         or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%'))
+=======
+                    <if test="searchValue != null and searchValue != ''">
+                        and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                        or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+>>>>>>> 9b954c611f6ebd2b3537868885f628fc9e7dfd48
                     </if>
                 </if>
                 <if test="option == 1">
