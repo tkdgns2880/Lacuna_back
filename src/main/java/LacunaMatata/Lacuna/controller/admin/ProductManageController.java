@@ -98,7 +98,7 @@ public class ProductManageController {
     @GetMapping("/lower/{lowerId}")
     @ApiOperation(value = "getLowerProductApi")
     public ResponseEntity<?> getLowerProduct(@PathVariable int lowerId) {
-        RespLowerCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
+        RespLowerProductCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
         return ResponseEntity.ok().body(respLowerCategory);
     }
 
@@ -173,5 +173,15 @@ public class ProductManageController {
     public ResponseEntity<?> deleteProductList(@RequestBody ReqDeleteProductDto dto) {
         productManageService.deleteProductList(dto);
         return ResponseEntity.ok().body(null);
+    }
+    @GetMapping("/upper/filter")
+    public ResponseEntity<?> getUpperProductFilter() {
+        List<RespUpperProductCategoryDto> upperFilter = productManageService.getUpperProductFilter();
+        return ResponseEntity.ok().body(upperFilter);
+    }
+    @GetMapping("/lower/filter/{upperId}")
+    public ResponseEntity<?> getLowerProductFilter(@PathVariable int upperId) {
+        List<RespLowerProductCategoryDto> lowerFilter = productManageService.getLowerProductFilter(upperId);
+        return ResponseEntity.ok().body(lowerFilter);
     }
 }

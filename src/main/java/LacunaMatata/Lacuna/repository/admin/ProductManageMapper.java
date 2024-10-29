@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ProductManageMapper {
 
     /** 상품 상위 분류 관련 Mapper */
-    // 1. 상품 상위 분류 조회_2024.10.26
+    // 1. 상품 상위 분류 조회_2024.10.26 // 14. 상품 상위 분류 항목 출력(필터)
     List<ProductUpperCategory> getProductUpperCategoryList();
     // 2. 상품 상위 분류 등록_2024.10.26
     int saveProductUpperCategory(ProductUpperCategory productUpperCategory);
@@ -66,6 +66,7 @@ public interface ProductManageMapper {
     int deleteProduct(int productId); // 상품 삭제
     // 13. 상품 복수 삭제_2024.10.26
     int deleteProductList(List<Integer> productIdList);
+
 
     /** 상품 관련 공통으로 필요한 메서드 Mapper */
     // 1. 상품 상위 분류 이름으로 상품 상위 분류 정보 찾기_2024.10.26

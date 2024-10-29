@@ -115,9 +115,9 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 항목 출력
-    public RespLowerCategoryDto getProductLower(int lowerId) {
+    public RespLowerProductCategoryDto getProductLower(int lowerId) {
         ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
-        RespLowerCategoryDto lowerCategory = RespLowerCategoryDto.builder()
+        RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
                 .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
                 .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
                 .build();
@@ -344,5 +344,31 @@ public class ProductManageService {
     public void deleteProductList(ReqDeleteProductDto dto) {
         List<Integer> productIdList =  dto.getProductIdList();
         productManageMapper.deleteProductList(productIdList);
+    }
+
+    public List<RespUpperProductCategoryDto> getUpperProductFilter() {
+        List<ProductUpperCategory> upperFilter = productManageMapper.getProductUpperCategoryList();
+        List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<>();
+        for(ProductUpperCategory productUpperCategory : upperFilter) {
+            RespUpperProductCategoryDto upperFilter2 = RespUpperProductCategoryDto.builder()
+                    .productUpperCategoryId(productUpperCategory.getProductUpperCategoryId())
+                    .productUpperCategoryName(productUpperCategory.getProductUpperCategoryName())
+                    .build();
+            upperFilterList.add(upperFilter2);
+        }
+        return upperFilterList;
+    }
+
+    public List<RespLowerProductCategoryDto> getLowerProductFilter(int upperId) {
+        List<ProductLowerCategory> lowerFilter = productManageMapper.getProductLowerCategoryList(upperId);
+        List<RespLowerProductCategoryDto> lowerFilterList = new ArrayList<>();
+        for(ProductLowerCategory productLowerCategory : lowerFilter) {
+            RespLowerProductCategoryDto lowerFilter2 = RespLowerProductCategoryDto.builder()
+                    .productLowerCategoryId(productLowerCategory.getProductLowerCategoryId())
+                    .productLowerCategoryName(productLowerCategory.getProductLowerCategoryName())
+                    .build();
+            lowerFilterList.add(lowerFilter2);
+        }
+        return lowerFilterList;
     }
 }
