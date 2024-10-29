@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WeeklyContents {
+public class HabitTrackerWeeklyContents {
     private int weeklyContentsId;
     private int weeklyContentsHabitTrackerId; // habitTrackerId
     private int weeklyOrder; // 주별 순번
     private String title; // 주차 할 일 제목
-    private int weeklyContentsRegisterId; //userId 등록자
 }

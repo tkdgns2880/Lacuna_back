@@ -14,5 +14,7 @@ public class LifestyleResultDetail {
     private int lifestyleResultId;
     private String lifestyleResultType;
     private String lifestyleResultTitle;
+    private int lifestyleResultScoreMin;
+    private int lifestyleResultScoreMax;
     private String lifestyleResultContent;
 }

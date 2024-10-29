@@ -21,8 +21,8 @@ public class MbtiResponse {
     private int skinProblemOne;
     private int skinProblemTwo;
     private int responseMbtiCategoryId;
-    private int mbtiResultId;
     private int responseMbtiId;
+    private int mbtiResultId;
     private int mbtiOptionId;
     private LocalDateTime createDate;
 }

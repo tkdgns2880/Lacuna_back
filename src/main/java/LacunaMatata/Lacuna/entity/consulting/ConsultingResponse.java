@@ -13,11 +13,12 @@ import java.time.LocalDateTime;
 @Builder
 public class ConsultingResponse {
     private int consultingResponseId;
-    private int consultingResponseUserId;
+    private int consultingResponseMemberId;
     private int consultingResponseUpperCategoryId;
     private int consultingResponseLowerCategoryId;
     private int responseConsultingId;
     private int consultingOptionId;
+    private String consultingOptionValue;
     private int consultingResponseLifestyleResultId;
     private int consultingResponseStatus;
     private LocalDateTime createDate;

@@ -11,10 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WeeklyTodo {
+public class HabitTrackerWeeklyTodo {
     private int weeklyTodoId;
     private int weeklyTodoContentsId; // weeklyContentsId
     private int dailyOrder; // 일별순번
+    private String dailyTodo;
     private int status; // 진행상태 1 - false, 2 - true
     private LocalDateTime updateDate;
 }
