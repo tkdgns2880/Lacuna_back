@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class RespProductDto {
+    private int productId;
     private String productCode;
     private String productUpperCategoryName;
     private String productName;

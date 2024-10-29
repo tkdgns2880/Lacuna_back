@@ -162,6 +162,7 @@ public class ProductManageService {
         List<RespProductDto> respProductDtoList = new ArrayList<RespProductDto>();
         for(Product product : productList) {
             RespProductDto respProductDto = RespProductDto.builder()
+                    .productId(product.getProductId())
                     .productCode(product.getProductCode())
                     .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
                     .productName(product.getProductName())
