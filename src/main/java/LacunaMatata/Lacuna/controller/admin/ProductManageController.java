@@ -38,7 +38,7 @@ public class ProductManageController {
     }
 
     // 상품 상위 분류 카테고리 등록
-    @PostMapping("/upper/registe")
+    @PostMapping("/upper/regist")
     @ApiOperation(value = "registeUpperProductApi")
     public ResponseEntity<?> registeUpperProduct(@RequestBody ReqRegisteUpperProductCategoryDto dto) {
         productManageService.registeProductUpperCategory(dto);
@@ -130,7 +130,7 @@ public class ProductManageController {
     @GetMapping("/list")
     @ApiOperation(value = "getProductListApi")
     public ResponseEntity<?> getProductList(ReqGetProductListDto dto) {
-//        System.out.println("요청 데이터: " + dto);
+        System.out.println("요청 데이터: " + dto);
         List<RespProductDto> productList = productManageService.getProducts(dto);
         return ResponseEntity.ok().body(productList);
     }
