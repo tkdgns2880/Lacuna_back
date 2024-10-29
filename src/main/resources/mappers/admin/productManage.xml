@@ -310,6 +310,7 @@
     </select>
     <select id="getProductList" resultMap="productResultMap">
         select
+            p.product_id,
             p.product_name,
             p.product_code,
             p.price,
