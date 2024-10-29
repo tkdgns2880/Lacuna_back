@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ReqGetProductListDto {
-    private String productName;
-    private String option;
-    private String code;
+    private int filter;
+    private int option;
+    private String searchValue;
     private int page;
     private int limit;
 }

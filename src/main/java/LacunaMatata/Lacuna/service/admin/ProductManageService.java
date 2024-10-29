@@ -152,9 +152,9 @@ public class ProductManageService {
     public List<RespProductDto> getProducts(ReqGetProductListDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
+                "filter", dto.getFilter(),
                 "option", dto.getOption(),
-                "productName", dto.getProductName(),
-                "code", dto.getCode(),
+                "searchValue", dto.getSearchValue(),
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
