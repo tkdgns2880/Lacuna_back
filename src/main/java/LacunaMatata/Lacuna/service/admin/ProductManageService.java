@@ -159,7 +159,7 @@ public class ProductManageService {
                 "limit", dto.getLimit()
         );
         List<Product> productList = productManageMapper.getProductList(params);
-        List<RespProductDto> respProductDtoList = null;
+        List<RespProductDto> respProductDtoList = new ArrayList<RespProductDto>();
         for(Product product : productList) {
             RespProductDto respProductDto = RespProductDto.builder()
                     .productCode(product.getProductCode())
@@ -173,6 +173,7 @@ public class ProductManageService {
             respProductDtoList.add(respProductDto);
         }
 
+//        System.out.println("resp 데이터 : " + respProductDtoList);
         return respProductDtoList;
     }
 

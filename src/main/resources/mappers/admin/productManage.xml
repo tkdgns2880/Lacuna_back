@@ -333,9 +333,17 @@
             tb_product_upper_category puc on plc.product_upper_category_id = puc.product_upper_category_id
         where
             1 = 1
-
+                <if test="filter == 0">
+                    and 1 = 1
+                </if>
                 <if test="filter != null and filter != ''">
-                    and puc.product_upper_category_name = #{filter}
+                    and puc.product_upper_category_id = #{filter}
+                </if>
+                <if test="option == 0">
+                    <if test="searchValue != null and searchValue != ''">
+                        and p.product_code like concat('%', trim(ifnull(#{seachValue}, '')), '%')
+                        or p.product_name like concat('%', trim(ifnull(#{seachValue}, '')), '%')
+                    </if>
                 </if>
                 <if test="option == 1">
                     <if test="searchValue != null and searchValue != ''">
