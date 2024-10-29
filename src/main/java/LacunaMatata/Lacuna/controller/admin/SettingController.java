@@ -1,10 +1,13 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.settinginfo.ReqModifySettingInfoDto;
+import LacunaMatata.Lacuna.dto.response.admin.settinginfo.RespSettingInfoDto;
+import LacunaMatata.Lacuna.service.admin.SettingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /************************************************
  * version: 1.0.4                               *
@@ -17,15 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/admin/settings")
 public class SettingController {
 
+    @Autowired
+    private SettingService settingService;
+
     // 설정(약관 email, phone, sns 주소 등) 정보 불러오기
     @GetMapping("/")
     ResponseEntity<?> getSettingList() {
-        return ResponseEntity.ok().body(null);
+        List<RespSettingInfoDto> settingInfo = settingService.getSettingInfo();
+        return ResponseEntity.ok().body(settingInfo);
     }
 
     // 설정(약관 email, phone, sns 주소 등) 항목 수정
     @PutMapping("/modify/{settingId}")
-    ResponseEntity<?> modifySetting() {
+    ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
+        settingService.modifySettingInfo(dto, settingId);
         return ResponseEntity.ok().body(null);
     }
 }

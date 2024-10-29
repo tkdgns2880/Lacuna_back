@@ -249,20 +249,27 @@
             tb_mbti m
         where
             1 = 1
-            <if test="option != null and option != ''">
-                and mc.mbti_category_name = #{option}
+            <if test="filter == 0">
+                and 1 = 1
             </if>
-            <if test="inputValue != null and inputValue != ''">
-                <if test="filter != null and filter != ''">
-                    <if test="filter.equals('mbtiCode')">
-                        and m.mbti_code like concat('%', trim(ifnull(#{inputValue}, '')), '%')
-                    </if>
-                    <if test="filter.equals('mbtiTitle')">
-                        and m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
-                    </if>
+            <if test="filter != null and filter != ''">
+                and m.mbti_category_id = #{filter}
+            </if>
+            <if test="option == 0">
+                <if test="searchValue != null and searchValue != ''">
+                    and m.mbti_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                    or m.mbti_title like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                 </if>
-                and m.mbti_code like concat('%', trim(ifnull(#{inputValue}, '')), '%')
-                or m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+            </if>
+            <if test="option == 1">
+                <if test="searchValue != null and searchValue != ''">
+                    and m.mbti_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                </if>
+            </if>
+            <if test="option == 2">
+                <if test="searchValue != null and searchValue != ''">
+                    and m.mbti_title like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                </if>
             </if>
         limit
             #{startIndex}, #{limit}
@@ -307,8 +314,8 @@
             tb_mbti_result mr
         where
             1 = 1
-            <if test="inputValue != null and inputValue != ''">
-                and m.mbti_title like concat('%', trim(ifnull(#{inputValue}, '')), '%')
+            <if test="searchValue != null and searchValue != ''">
+                and mr.mbti_title like concat('%', trim(ifnull(#{searchValue}, '')), '%')
             </if>
         limit
             #{startIndex}, #{limit}

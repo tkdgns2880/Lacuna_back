@@ -342,18 +342,18 @@
                 </if>
                 <if test="option == 0">
                     <if test="searchValue != null and searchValue != ''">
-                        and p.product_code like concat('%', trim(ifnull(#{seachValue}, '')), '%')
-                        or p.product_name like concat('%', trim(ifnull(#{seachValue}, '')), '%')
+                        and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                        or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                     </if>
                 </if>
                 <if test="option == 1">
                     <if test="searchValue != null and searchValue != ''">
-                        and p.product_code like concat('%', trim(ifnull(#{seachValue}, '')), '%')
+                        and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                     </if>
                 </if>
                 <if test="option == 2">
                     <if test="searchValue != null and searchValue != ''">
-                        and p.product_Name like concat('%', trim(ifnull(#{seachValue}, '')), '%')
+                        and p.product_Name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                     </if>
                 </if>
         limit
