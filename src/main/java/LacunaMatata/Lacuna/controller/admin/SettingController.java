@@ -34,6 +34,6 @@ public class SettingController {
     @PutMapping("/modify/{settingId}")
     ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
         settingService.modifySettingInfo(dto, settingId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 }

@@ -367,4 +367,17 @@
         where
             mbti_category_name = #{mbtiCategoryName}
     </select>
+    <select id="getMbtiCategoryFilter" resultMap="mbtiCategoryResultMap">
+        select
+            mbti_category_id,
+            mbti_category_register_id,
+            mbti_category_name,
+            mbti_category_title,
+            mbti_category_description,
+            mbti_category_img,
+            create_date,
+            update_date
+        from
+            tb_mbti_category
+    </select>
 </mapper>

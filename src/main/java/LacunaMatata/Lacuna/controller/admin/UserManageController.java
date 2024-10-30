@@ -33,27 +33,27 @@ public class UserManageController {
     // 사용자 등록
     @PostMapping("/regist")
     ResponseEntity<?> registerUser() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 사용자 항목 출력
     @GetMapping("/{userId}")
     ResponseEntity<?> getUser(@PathVariable String userId) {
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 사용자 권한 목록 출력
     @GetMapping("/role/list")
     ResponseEntity<?> getUserRoleList() {
 
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 사용자 수정(권한, 활성화)
     @PutMapping("/modify/{userId}")
     ResponseEntity<?> modifyUser() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 사용자 삭제
@@ -61,7 +61,7 @@ public class UserManageController {
     @ApiOperation(value = "deleteUserApi")
     ResponseEntity<?> deleteUser(@PathVariable int userId) {
         userManageService.deleteUser(userId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 사용자 복수개 삭제
@@ -69,6 +69,6 @@ public class UserManageController {
     @ApiOperation(value = "deleteUserListApi")
     ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
         userManageService.deleteUserList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 }

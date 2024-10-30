@@ -65,5 +65,8 @@ public interface MbtiManageMapper {
     int deleteMbtiResultList(List<Integer> mbtiResultIdList);
 
     /** MBTI 공통으로 사용할 Mapper */
+    // 1. MBTI 카테고리 이름으로 mbtiCategory 데이터 출력_2024.10.27
     MbtiCategory findMbtiCategoryByCategoryName(String mbtiCategoryName);
+    // 2. MBTI 카테고리 리스트 출력(id, name만)
+    List<MbtiCategory> getMbtiCategoryFilter();
 }

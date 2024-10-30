@@ -74,7 +74,7 @@ public class ProductManageController {
     @ApiOperation(value = "deleteUpperProductListApi")
     public ResponseEntity<?> deleteUpperProductList(@RequestBody ReqDeleteUpperProductCategoryListDto dto) {
         productManageService.deleteProductUpperCategoryList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 하위 분류 리스트 출력
@@ -91,7 +91,7 @@ public class ProductManageController {
     @ApiOperation(value = "registLowerProductApi")
     public ResponseEntity<?> registLowerProduct(@RequestBody ReqRegistLowerProductCategoryDto dto, @PathVariable int upperId) {
         productManageService.registProductlowerCategory(dto, upperId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 하위 분류 카테고리 항목 출력
@@ -123,7 +123,7 @@ public class ProductManageController {
     @ApiOperation(value = "deleteLowerProductListApi")
     public ResponseEntity<?> deleteLowerProductList(@RequestBody ReqDeleteLowerProductCategoryListDto dto) {
         productManageService.deleteProductlowerCategoryList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 리스트 출력
@@ -139,7 +139,7 @@ public class ProductManageController {
     @ApiOperation(value = "registProductApi")
     public ResponseEntity<?> registProduct(@RequestBody ReqRegistProductDto dto) {
         productManageService.registProduct(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 항목 출력
@@ -156,7 +156,7 @@ public class ProductManageController {
     @ApiOperation(value = "modifyProductApi")
     public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto, @PathVariable int productId) {
         productManageService.modifyProduct(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 상품 삭제
@@ -172,13 +172,17 @@ public class ProductManageController {
     @ApiOperation(value = "deleteProductListApi")
     public ResponseEntity<?> deleteProductList(@RequestBody ReqDeleteProductDto dto) {
         productManageService.deleteProductList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
+
+    // 상품 상위 분류 출력(필터용)
     @GetMapping("/upper/filter")
     public ResponseEntity<?> getUpperProductFilter() {
         List<RespUpperProductCategoryDto> upperFilter = productManageService.getUpperProductFilter();
         return ResponseEntity.ok().body(upperFilter);
     }
+
+    // 상품 하위 분류 출력(필터용)
     @GetMapping("/lower/filter/{upperId}")
     public ResponseEntity<?> getLowerProductFilter(@PathVariable int upperId) {
         List<RespLowerProductCategoryDto> lowerFilter = productManageService.getLowerProductFilter(upperId);
