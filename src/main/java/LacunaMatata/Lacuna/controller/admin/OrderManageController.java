@@ -31,42 +31,42 @@ public class OrderManageController {
     // 회원 주문 항목 상세 출력
     @GetMapping("/order/detail/{orderId}")
     ResponseEntity<?> getOrderDetail() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 회원 결제 항목 상세 출력
     @GetMapping("/pay/detail/{paymentId}")
     ResponseEntity<?> getPaymentDetail() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 회원 결제 취소하기(결제 시스템)
     @PutMapping("/pay/system/cancel/{paymentId}")
     ResponseEntity<?> cancelSystemPayment() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 주문 수정 - 회원 결제 취소하기(계좌 이체)
     @PostMapping("/pay/account/cancel")
     ResponseEntity<?> cancelAccountPayment() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
     @PostMapping("/pay/account/approve")
     ResponseEntity<?> approveAccountPayment() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 회원 주문 항목 삭제
     @DeleteMapping("/pay/account/order/delete/{orderId}")
     ResponseEntity<?> deleteOrder() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // 회원 주문 항목 복수개 삭제
     @DeleteMapping("/pay/account/order/delete")
     ResponseEntity<?> deleteOrderLIST() {
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 }

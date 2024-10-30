@@ -39,7 +39,7 @@ public class MbtiManageController {
     @PostMapping("/servey/category/regist")
     public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) {
         mbtiManageService.registMbtiCategory(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     //MBTI 분류 카테고리 모달 조회
@@ -48,6 +48,13 @@ public class MbtiManageController {
     public ResponseEntity<?> getMbtiCategory(@PathVariable int categoryId) {
         RespMbtiCategoryDto mbtiCategory = mbtiManageService.getMbtiCategory(categoryId);
         return ResponseEntity.ok().body(mbtiCategory);
+    }
+
+    //MBTI 분류 카테고리 출력(필터용)
+    @GetMapping("/servey/category/filter")
+    public ResponseEntity<?> getMbtiCategoryListFilter() {
+        List<RespMbtiCategoryFilterDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryFilterDto();
+        return ResponseEntity.ok().body(mbtiCategoryList);
     }
 
     // MBTI 분류 카테고리 모달 수정
@@ -63,7 +70,7 @@ public class MbtiManageController {
     @DeleteMapping("/servey/category/delete/{categoryId}")
     public ResponseEntity<?> deleteMbtiCategory(@PathVariable int categoryId) {
         mbtiManageService.deleteMbtiCategory(categoryId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 분류 카테고리 복수개 삭제
@@ -71,7 +78,7 @@ public class MbtiManageController {
     @DeleteMapping("/servey/category/delete")
     public ResponseEntity<?> deleteMbtiCategoryList(@RequestBody ReqDeleteMbtiCategoryListDto dto) {
         mbtiManageService.deleteMbtiCategoryList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 항목 리스트 출력
@@ -87,7 +94,7 @@ public class MbtiManageController {
     @PostMapping("/question/regist")
     public ResponseEntity<?> registMbtiQuestion(@RequestBody ReqRegistMbtiQuestionDto dto) {
         mbtiManageService.registMbtiQuestion(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 항목 모달 출력
@@ -103,7 +110,7 @@ public class MbtiManageController {
     @PutMapping("/question/modify/{mbtiId}")
     public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) {
         mbtiManageService.modifyMbtiQuestion(dto, mbtiId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 항목 삭제
@@ -111,7 +118,7 @@ public class MbtiManageController {
     @DeleteMapping("/question/delete/{mbtiId}")
     public ResponseEntity<?> deleteMbtiQuestion(@PathVariable int mbtiId) {
         mbtiManageService.deleteMbtiQuestion(mbtiId);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 항목 복수개 삭제
@@ -119,7 +126,7 @@ public class MbtiManageController {
     @DeleteMapping("/question/delete")
     public ResponseEntity<?> deleteMbtiQuestionList(@RequestBody ReqDeleteMbtiQuestionDto dto) {
         mbtiManageService.deleteMbtiQuestionList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     // MBTI 설문 결과 리스트 출력
@@ -167,6 +174,6 @@ public class MbtiManageController {
     @DeleteMapping("/result/delete")
     public ResponseEntity<?> deleteMbtiResultList(@RequestBody ReqDeleteMbtiResultListDto dto) {
         mbtiManageService.deleteMbtiResultList(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 }

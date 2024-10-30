@@ -80,6 +80,20 @@ public class MbtiManageService {
         return respMbtiCategory;
     }
 
+    // MBTI 분류 카테고리 출력(필터용)
+    public List<RespMbtiCategoryFilterDto> getMbtiCategoryFilterDto() {
+        List<MbtiCategory> mbtiCategoryList = mbtiManageMapper.getMbtiCategoryFilter();
+        List<RespMbtiCategoryFilterDto> mbtiCategoryFilterDto = new ArrayList<>();
+        for(MbtiCategory mbtiCategory : mbtiCategoryList) {
+            RespMbtiCategoryFilterDto categoryFilter = RespMbtiCategoryFilterDto.builder()
+                    .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
+                    .mbtiCategoryName(mbtiCategory.getMbtiCategoryName())
+                    .build();
+            mbtiCategoryFilterDto.add(categoryFilter);
+        }
+        return mbtiCategoryFilterDto;
+    }
+
     // mbti 분류 카테고리 모달 수정
     public void modifyMbtiCategory(ReqModifyMbtiCategoryDto dto, int mbtiCategoryId) {
         PrincipalUser principalUser = (PrincipalUser)

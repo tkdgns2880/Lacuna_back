@@ -364,6 +364,7 @@ public class ProductManageService {
         productManageMapper.deleteProductList(productIdList);
     }
 
+    // 상품 상위 카테고리 분류 출력(필터용)
     public List<RespUpperProductCategoryDto> getUpperProductFilter() {
         List<ProductUpperCategory> upperFilter = productManageMapper.getProductUpperCategoryList();
         List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<RespUpperProductCategoryDto>();
@@ -377,6 +378,7 @@ public class ProductManageService {
         return upperFilterList;
     }
 
+    // 상품 하위 카테고리 분류 출력(필터용)
     public List<RespLowerProductCategoryDto> getLowerProductFilter(int upperId) {
         List<ProductLowerCategory> lowerFilter = productManageMapper.getProductLowerCategoryList(upperId);
         List<RespLowerProductCategoryDto> lowerFilterList = new ArrayList<RespLowerProductCategoryDto>();
