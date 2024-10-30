@@ -343,25 +343,19 @@
                 <if test="filter != null and filter != '' and filter != 0">
                     and puc.product_upper_category_id = #{filter}
                 </if>
-                <if test="option == 0">
-                    <if test="searchValue != null and !searchValue.equals('')">
-                        and (p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                        or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%'))
-                    </if>
-                    <if test="searchValue != null and searchValue != ''">
-                        and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                        or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                    </if>
-                </if>
-                <if test="option == 1">
-                    <if test="searchValue != null and searchValue != ''">
-                        and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                    </if>
-                </if>
-                <if test="option == 2">
-                    <if test="searchValue != null and searchValue != ''">
-                        and p.product_Name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                    </if>
+                <if test="searchValue != null and searchValue != ''">
+                    <choose>
+                        <when test="option == 0">
+                            and (p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                            or p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%'))
+                        </when>
+                        <when test="option == 1">
+                            and p.product_code like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                        </when>
+                        <when test="option == 2">
+                            and p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                        </when>
+                    </choose>
                 </if>
         limit
             #{startIndex}, #{limit}
