@@ -29,9 +29,9 @@ public class MbtiManageController {
     // MBTI 분류 카테고리 리스트 출력
     @ApiOperation(value = "getMbtiCategoryListApi")
     @GetMapping("/servey/category/list")
-    public ResponseEntity<?> getMbtiCategoryList(@RequestBody ReqGetMbtiGategoryListDto dto) {
-        List<RespMbtiCategoryListDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryList(dto);
-        return ResponseEntity.ok().body(mbtiCategoryList);
+    public ResponseEntity<?> getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
+        RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = mbtiManageService.getMbtiCategoryList(dto);
+        return ResponseEntity.ok().body(respCountAndMbtiCategoryDto);
     }
 
     // MBTI 분류 카테고리 등록
@@ -77,9 +77,9 @@ public class MbtiManageController {
     // MBTI 설문 항목 리스트 출력
     @ApiOperation(value = "getMbtiQuestionListApi")
     @GetMapping("/question")
-    public ResponseEntity<?> getMbtiQuestionList(@RequestBody ReqGetMbtiQuestionListDto dto) {
-        List<RespMbtiQuestionListDto> mbtiQuestionList = mbtiManageService.getMbtiQuestionList(dto);
-        return ResponseEntity.ok().body(mbtiQuestionList);
+    public ResponseEntity<?> getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
+        RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = mbtiManageService.getMbtiQuestionList(dto);
+        return ResponseEntity.ok().body(respCountAndMbtiQuestionDto);
     }
 
     // MBTI 설문 항목 등록
@@ -125,9 +125,9 @@ public class MbtiManageController {
     // MBTI 설문 결과 리스트 출력
     @ApiOperation(value = "getMbtiResultListApi")
     @GetMapping("/result/list")
-    public ResponseEntity<?> getMbtiResultList(@RequestBody ReqGetMbtiResultDto dto) {
-        List<RespGetMbtiResultListDto> mbtiResultList = mbtiManageService.getMbtiResultList(dto);
-        return ResponseEntity.ok().body(mbtiResultList);
+    public ResponseEntity<?> getMbtiResultList(ReqGetMbtiResultDto dto) {
+        RespCountAndMbtiResultDto respCountAndMbtiResultDto = mbtiManageService.getMbtiResultList(dto);
+        return ResponseEntity.ok().body(respCountAndMbtiResultDto);
     }
 
     // MBTI 설문 결과 등록

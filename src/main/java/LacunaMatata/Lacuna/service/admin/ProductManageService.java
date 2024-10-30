@@ -21,7 +21,7 @@ public class ProductManageService {
     private ProductManageMapper productManageMapper;
 
     // 상품 상위 분류 리스트 출력
-    public List<RespUpperProductCategoryListDto> getProductUpperCategory() {
+    public RespCountAndUpperProductDto getProductUpperCategory() {
         List<ProductUpperCategory> productUpperCategoryList = productManageMapper.getProductUpperCategoryList();
         List<RespUpperProductCategoryListDto> productUpperCategory = new ArrayList<RespUpperProductCategoryListDto>();
         for(ProductUpperCategory productUpperCategoryDto : productUpperCategoryList) {
@@ -33,8 +33,12 @@ public class ProductManageService {
                     .build();
             productUpperCategory.add(respUpperProductCategoryListDto);
         }
+        RespCountAndUpperProductDto respCountAndUpperProductDto = RespCountAndUpperProductDto.builder()
+                .totalCount(productUpperCategory.size())
+                .productUpperCategoryList(productUpperCategory)
+                .build();
 
-        return productUpperCategory;
+        return respCountAndUpperProductDto;
     }
 
     // 상품 상위 분류 카테고리 등록
@@ -85,7 +89,7 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 리스트 출력
-    public List<RespLowerProductCategoryListDto> getProductlowerCategory(int upperId) {
+    public RespCountAndLowerProductDto getProductlowerCategory(int upperId) {
         List<ProductLowerCategory> productLowerCategoryList = productManageMapper.getProductLowerCategoryList(upperId);
         List<RespLowerProductCategoryListDto> productLowerCategory = new ArrayList<RespLowerProductCategoryListDto>();
         for(ProductLowerCategory productLowerCategoryDto : productLowerCategoryList) {
@@ -97,8 +101,12 @@ public class ProductManageService {
                     .build();
             productLowerCategory.add(respLowerProductCategoryListDto);
         }
+        RespCountAndLowerProductDto respCountAndLowerProductDto = RespCountAndLowerProductDto.builder()
+                .totalCount(productLowerCategory.size())
+                .productLowerCategory(productLowerCategory)
+                .build();
 
-        return productLowerCategory;
+        return respCountAndLowerProductDto;
     }
 
     // 상품 하위 분류 카테고리 등록
@@ -149,7 +157,7 @@ public class ProductManageService {
     }
 
     // 상품 리스트 출력
-    public List<RespProductDto> getProducts(ReqGetProductListDto dto) {
+    public RespCountAndProductDto getProducts(ReqGetProductListDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
                 "filter", dto.getFilter(),
@@ -174,8 +182,12 @@ public class ProductManageService {
             respProductDtoList.add(respProductDto);
         }
 
-//        System.out.println("resp 데이터 : " + respProductDtoList);
-        return respProductDtoList;
+        RespCountAndProductDto respCountAndProductDto = RespCountAndProductDto.builder()
+                .totalCount(productList.size())
+                .respProductDtoList(respProductDtoList)
+                .build();
+
+        return respCountAndProductDto;
     }
 
     // 상품 등록

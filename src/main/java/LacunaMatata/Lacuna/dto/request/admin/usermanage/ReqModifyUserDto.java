@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.dto.request.admin.manageuser;
+package LacunaMatata.Lacuna.dto.request.admin.usermanage;
 
 import lombok.Data;
 

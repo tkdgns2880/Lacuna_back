@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Setting {
     private int settingId;
-    private String dateType;
+    private String dataType;
     private String value;
     private int settingRegisterId;
     private LocalDateTime createDate;

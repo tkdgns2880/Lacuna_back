@@ -23,7 +23,7 @@ public class MbtiManageService {
     private MbtiManageMapper mbtiManageMapper;
 
     // mbti 분류 카테고리 리스트 출력
-    public List<RespMbtiCategoryListDto> getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
+    public RespCountAndMbtiCategoryDto getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
                 "startIndex", startIndex,
@@ -42,7 +42,12 @@ public class MbtiManageService {
             respMbtiCategoryListDtoList.add(respMbtiCategoryListDto);
         }
 
-        return respMbtiCategoryListDtoList;
+        RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = RespCountAndMbtiCategoryDto.builder()
+                .totalCount(respMbtiCategoryListDtoList.size())
+                .respMbtiCategoryListDtoList(respMbtiCategoryListDtoList)
+                .build();
+
+        return respCountAndMbtiCategoryDto;
     }
 
     // mbti 분류 카테고리 등록
@@ -98,7 +103,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 리스트 출력
-    public List<RespMbtiQuestionListDto> getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
+    public RespCountAndMbtiQuestionDto getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
                 "filter", dto.getFilter(),
@@ -119,7 +124,13 @@ public class MbtiManageService {
                     .build();
             respMbtiQuestionList.add(respMbtiQuestionListDto);
         }
-        return respMbtiQuestionList;
+
+        RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = RespCountAndMbtiQuestionDto.builder()
+                .totalCount(mbtiQuestionList.size())
+                .respMbtiQuestionList(respMbtiQuestionList)
+                .build();
+
+        return respCountAndMbtiQuestionDto;
     }
 
     // mbti 설문지 항목 등록
@@ -200,7 +211,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 리스트 출력
-    public List<RespGetMbtiResultListDto> getMbtiResultList(ReqGetMbtiResultDto dto) {
+    public RespCountAndMbtiResultDto getMbtiResultList(ReqGetMbtiResultDto dto) {
         int startIndex = (dto.getPage() - 1) * dto.getLimit();
         Map<String, Object> params = Map.of(
                 "searchValue", dto.getSearchValue(),
@@ -220,7 +231,11 @@ public class MbtiManageService {
                     .build();
             respGetMbtiResultListDtoList.add(respGetMbtiResultListDto);
         }
-        return respGetMbtiResultListDtoList;
+        RespCountAndMbtiResultDto respCountAndMbtiResultDto = RespCountAndMbtiResultDto.builder()
+                .totalCount(mbtiResultList.size())
+                .respGetMbtiResultListDtoList(respGetMbtiResultListDtoList)
+                .build();
+        return respCountAndMbtiResultDto;
     }
 
     // mbti 설문 결과 항목 등록
