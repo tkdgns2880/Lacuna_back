@@ -34,6 +34,7 @@ public class SettingService {
     // 설정(약관 email, phone, sns 주소 등) 정보 수정
     public void modifySettingInfo(ReqModifySettingInfoDto dto, int settingId) {
         String modifySettingValue = dto.getValue();
-        settingMapper.modifySettingInfo(modifySettingValue, settingId);
+        int modifySettingId = dto.getSettingId();
+        settingMapper.modifySettingInfo(modifySettingValue, modifySettingId);
     }
 }

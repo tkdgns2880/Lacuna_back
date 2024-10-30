@@ -25,6 +25,9 @@ public class Product {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     // join할 테이블
     private User user;
     private ProductUpperCategory productUpperCategory;

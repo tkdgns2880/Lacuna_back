@@ -20,6 +20,9 @@ public class ProductLowerCategory {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     private ProductUpperCategory productUpperCategory;
     private User user;
 }

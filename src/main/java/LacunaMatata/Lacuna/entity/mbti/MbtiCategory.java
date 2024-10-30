@@ -22,5 +22,8 @@ public class MbtiCategory {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     private User user; // resultMap association 용도
 }

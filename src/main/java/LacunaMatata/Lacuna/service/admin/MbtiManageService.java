@@ -41,9 +41,10 @@ public class MbtiManageService {
                     .build();
             respMbtiCategoryListDtoList.add(respMbtiCategoryListDto);
         }
+        int totalCount = mbtiCategoryList.isEmpty() ? 0 : mbtiCategoryList.get(0).getTotalCount();
 
         RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = RespCountAndMbtiCategoryDto.builder()
-                .totalCount(respMbtiCategoryListDtoList.size())
+                .totalCount(totalCount)
                 .respMbtiCategoryListDtoList(respMbtiCategoryListDtoList)
                 .build();
 
@@ -124,9 +125,10 @@ public class MbtiManageService {
                     .build();
             respMbtiQuestionList.add(respMbtiQuestionListDto);
         }
+        int totalCount = mbtiQuestionList.isEmpty() ? 0 : mbtiQuestionList.get(0).getTotalCount();
 
         RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = RespCountAndMbtiQuestionDto.builder()
-                .totalCount(mbtiQuestionList.size())
+                .totalCount(totalCount)
                 .respMbtiQuestionList(respMbtiQuestionList)
                 .build();
 
@@ -231,8 +233,10 @@ public class MbtiManageService {
                     .build();
             respGetMbtiResultListDtoList.add(respGetMbtiResultListDto);
         }
+        int totalCount = mbtiResultList.isEmpty() ? 0 : mbtiResultList.get(0).getTotalCount();
+
         RespCountAndMbtiResultDto respCountAndMbtiResultDto = RespCountAndMbtiResultDto.builder()
-                .totalCount(mbtiResultList.size())
+                .totalCount(totalCount)
                 .respGetMbtiResultListDtoList(respGetMbtiResultListDtoList)
                 .build();
         return respCountAndMbtiResultDto;

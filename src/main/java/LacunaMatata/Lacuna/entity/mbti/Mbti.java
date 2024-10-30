@@ -22,6 +22,9 @@ public class Mbti {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     // 매핑 목적
     private MbtiCategory mbtiCategory;
     private User user;

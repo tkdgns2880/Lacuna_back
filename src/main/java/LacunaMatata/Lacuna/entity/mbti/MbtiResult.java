@@ -24,6 +24,9 @@ public class MbtiResult {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     // 매핑용
     private User user;
 }
