@@ -247,10 +247,10 @@
             m.create_date,
             m.update_date,
             (select u.name
-            from tb_user
-            where u.user_id = m.register_id),
+            from tb_user u
+            where u.user_id = m.mbti_register_id),
             (select mc.mbti_category_name
-            from tb_mbti_category
+            from tb_mbti_category mc
             where m.mbti_category_id = mc.mbti_category_id)
         from
             tb_mbti m
@@ -315,8 +315,8 @@
             mr.create_date,
             mr.update_date,
             (select u.name
-            from tb_user
-            where u.user_id = m.register_id)
+            from tb_user u
+            where u.user_id = mr.mbti_result_register_id)
         from
             tb_mbti_result mr
         where

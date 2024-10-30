@@ -32,9 +32,9 @@ public class ProductManageController {
     @GetMapping("/upper/list")
     @ApiOperation(value = "getUpperProductListApi")
     public ResponseEntity<?> getUpperProductList() {
-        List<RespUpperProductCategoryListDto> respUpperProductCategoryList =
+        RespCountAndUpperProductDto respCountAndUpperProductDto =
                 productManageService.getProductUpperCategory();
-        return ResponseEntity.ok().body(respUpperProductCategoryList);
+        return ResponseEntity.ok().body(respCountAndUpperProductDto);
     }
 
     // 상품 상위 분류 카테고리 등록
@@ -81,9 +81,9 @@ public class ProductManageController {
     @GetMapping("/lower/list/{upperId}")
     @ApiOperation(value = "getLowerProductListApi")
     public ResponseEntity<?> getLowerProductList(@PathVariable int upperId) {
-        List<RespLowerProductCategoryListDto> respLowerProductCategoryList =
+        RespCountAndLowerProductDto respCountAndLowerProductDto =
                 productManageService.getProductlowerCategory(upperId);
-        return ResponseEntity.ok().body(respLowerProductCategoryList);
+        return ResponseEntity.ok().body(respCountAndLowerProductDto);
     }
 
     // 상품 하위 분류 카테고리 등록
@@ -130,9 +130,8 @@ public class ProductManageController {
     @GetMapping("/list")
     @ApiOperation(value = "getProductListApi")
     public ResponseEntity<?> getProductList(ReqGetProductListDto dto) {
-        System.out.println("요청 데이터: " + dto);
-        List<RespProductDto> productList = productManageService.getProducts(dto);
-        return ResponseEntity.ok().body(productList);
+        RespCountAndProductDto respCountAndProductDto = productManageService.getProducts(dto);
+        return ResponseEntity.ok().body(respCountAndProductDto);
     }
 
     // 상품 등록

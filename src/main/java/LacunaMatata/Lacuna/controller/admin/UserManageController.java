@@ -1,5 +1,9 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
+import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
+import LacunaMatata.Lacuna.service.admin.UserManageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +18,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/admin/user")
 public class UserManageController {
 
+    @Autowired
+    private UserManageService userManageService;
+
     // 사용자 목록 출력
     @GetMapping("/list")
-    ResponseEntity<?> getUserList() {
-        return ResponseEntity.ok().body(null);
+    ResponseEntity<?> getUserList(ReqGetUserListDto dto) {
+        RespCountAndUserListDto respCountAndUserListDto = userManageService.getUserInfoList(dto);
+        return ResponseEntity.ok().body(respCountAndUserListDto);
     }
 
     // 사용자 등록
-    @PostMapping("/register")
+    @PostMapping("/regist")
     ResponseEntity<?> registerUser() {
+        return ResponseEntity.ok().body(null);
+    }
+
+    // 사용자 항목 출력
+    @GetMapping("/{userId}")
+    ResponseEntity<?> getUser(@PathVariable String userId) {
+
+        return ResponseEntity.ok().body(null);
+    }
+
+    // 사용자 권한 목록 출력
+    @GetMapping("/role/list")
+    ResponseEntity<?> getUserRoleList() {
+
         return ResponseEntity.ok().body(null);
     }
 

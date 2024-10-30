@@ -29,12 +29,15 @@ public class User {
     private int socialLoginType;
     private LocalDateTime passwordLastChanged;
     private LocalDateTime lastLoginDate;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    private String inactive;
 
     // 매핑 목적
     private Set<UserRoleMet> userRoleMets;
     private UserOptionalInfo userOptionalInfo;
+    private LoginHistory loginHistory;
 
     public PrincipalUser toPrincipal() {
         return PrincipalUser.builder()

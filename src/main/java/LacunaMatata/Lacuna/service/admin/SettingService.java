@@ -23,7 +23,7 @@ public class SettingService {
         for(Setting setting : settings) {
             RespSettingInfoDto respSettingInfoDto = RespSettingInfoDto.builder()
                     .settingId(setting.getSettingId())
-                    .dataType(setting.getDateType())
+                    .dataType(setting.getDataType())
                     .value(setting.getValue())
                     .build();
             respSettingInfo.add(respSettingInfoDto);
