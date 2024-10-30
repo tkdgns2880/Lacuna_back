@@ -7,8 +7,9 @@ import java.math.BigDecimal;
 
 @Builder
 @Data
-public class RespConsultingDetailDto {
+public class RespConsultingDetailDto{
     private int productId;
+    private int productUpperCategoryId;
     private String productUpperCategoryName;
     private String productLowerCategoryName;
     private String productCode;

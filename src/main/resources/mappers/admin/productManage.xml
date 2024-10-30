@@ -378,7 +378,6 @@
             p.product_register_id,
             u.user_id,
             u.name,
-            p.product_lower_category_id,
             plc.product_lower_category_id,
             plc.product_lower_category_name,
             plc.product_upper_category_id,
