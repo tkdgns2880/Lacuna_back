@@ -28,7 +28,8 @@
         update
             tb_setting
         set
-            value = #{value}
+            value = #{value},
+            update_date = now()
         where
             setting_id = #{settingId}
     </update>
