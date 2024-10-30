@@ -12,9 +12,10 @@
         <result property="socialLoginType" column="social_login_type" />
         <result property="passwordLastChanged" column="password_last_changed" />
         <result property="lastLoginDate" column="last_login_date" />
-        <result property="createDate" column="create_date" />
+        <result property="createDate" column="created_date" />
         <result property="updateDate" column="update_date" />
         <result property="inactive" column="inactive" />
+        <result property="loginIp" column="loginIp" />
         <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
         <association property="loginHistory" resultMap="loginHistoryResultMap" />
         <collection property="userRoleMets" resultMap="userRoleMetResultMap" />
@@ -56,7 +57,9 @@
             u.user_id,
             u.username,
             u.name,
-            u.create_date,
+            u.email,
+            u.password,
+            u.created_date,
             u.last_login_date,
             (select
                 case when (datediff(now(), u.last_login_date)) > 365
@@ -64,13 +67,15 @@
             (select lh.login_ip
             from tb_login_history lh
             where lh.login_user_id = u.user_id
-            order by lh.login_date desc
-            limit 1) as login_ip,
+            order by lh.login_time desc
+            limit 1) as loginIp,
             (select ur.role_name
             from tb_user_role ur
             where ur.role_id = (select urm.role_id
                 from tb_user_role_met urm
-                where urm.role_user_id = u.user_id)) as role_name,
+                where urm.role_user_id = u.user_id
+                order by urm.role_id desc
+                limit 1 )) as role_name,
             uoi.user_id,
             uoi.gender,
             uoi.birth_date

@@ -1,5 +1,9 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.order.ReqGetOrderListDto;
+import LacunaMatata.Lacuna.dto.response.admin.order.RespCountAndOderListDto;
+import LacunaMatata.Lacuna.service.admin.OrderManageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/admin")
 public class OrderManageController {
 
+    @Autowired
+    private OrderManageService orderManageService;
+
     // 회원 주문 리스트 출력
     @GetMapping("/order/list")
-    ResponseEntity<?> getOrderList() {
-        return ResponseEntity.ok().body(null);
+    ResponseEntity<?> getOrderList(@RequestBody ReqGetOrderListDto dto) {
+        RespCountAndOderListDto respCountAndOderListDto = orderManageService.getOrderList(dto);
+        return ResponseEntity.ok().body(respCountAndOderListDto);
     }
 
     // 회원 주문 항목 상세 출력

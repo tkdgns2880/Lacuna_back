@@ -33,6 +33,7 @@ public class User {
     private LocalDateTime updateDate;
 
     private String inactive;
+    private String loginIp;
 
     // 매핑 목적
     private Set<UserRoleMet> userRoleMets;

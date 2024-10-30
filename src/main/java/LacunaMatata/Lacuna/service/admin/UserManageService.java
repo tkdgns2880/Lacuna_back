@@ -32,7 +32,7 @@ public class UserManageService {
         );
         List<User> userList = userManageMapper.getUserList(params);
         List<RespGetUserListDto> respGetUserListDtos = new ArrayList<>();
-
+        System.out.println(userList);
         for(User user : userList) {
             Map<Integer, String> roleMap = user.getUserRoleMets().stream()
                     .collect(Collectors.toMap(
@@ -41,6 +41,7 @@ public class UserManageService {
 
             Integer maxRoleId = roleMap.keySet().stream().max(Integer::compare).orElse(1);
             String roleName = (maxRoleId != null) ? roleMap.get(maxRoleId) : null;
+            System.out.println(roleName);
 
             RespGetUserListDto respGetUserListDto = RespGetUserListDto.builder()
                     .userId(user.getUserId())
@@ -51,8 +52,8 @@ public class UserManageService {
                     .gender(user.getUserOptionalInfo().getGender())
                     .birthDate(user.getUserOptionalInfo().getBirthDate())
                     .createdDate(user.getCreateDate())
-                    .loginTime(user.getLoginHistory().getLoginTime())
-                    .loginIp(user.getLoginHistory().getLoginIp())
+                    .loginTime(user.getLastLoginDate())
+                    .loginIp(user.getLoginIp())
                     .email(user.getEmail())
                     .inactive(user.getInactive())
                     .build();

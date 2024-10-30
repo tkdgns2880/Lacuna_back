@@ -18,4 +18,8 @@ public class Order {
     private BigDecimal totalAmount;
     private String status;
     private LocalDateTime createdDate;
+
+    // 조인용
+    private String name;
+    private String roleName;
 }
