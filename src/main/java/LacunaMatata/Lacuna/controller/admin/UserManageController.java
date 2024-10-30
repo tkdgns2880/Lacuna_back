@@ -1,8 +1,10 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.service.admin.UserManageService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,13 +58,17 @@ public class UserManageController {
 
     // 사용자 삭제
     @PostMapping("/delete/{userId}")
-    ResponseEntity<?> deleteUser() {
+    @ApiOperation(value = "deleteUserApi")
+    ResponseEntity<?> deleteUser(@PathVariable int userId) {
+        userManageService.deleteUser(userId);
         return ResponseEntity.ok().body(null);
     }
 
     // 사용자 복수개 삭제
     @PostMapping("/delete")
-    ResponseEntity<?> deleteUserList() {
+    @ApiOperation(value = "deleteUserListApi")
+    ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
+        userManageService.deleteUserList(dto);
         return ResponseEntity.ok().body(null);
     }
 }
