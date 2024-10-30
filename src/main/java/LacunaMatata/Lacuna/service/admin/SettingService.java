@@ -32,9 +32,9 @@ public class SettingService {
     }
 
     // 설정(약관 email, phone, sns 주소 등) 정보 수정
-    public void modifySettingInfo(ReqModifySettingInfoDto dto, int settingId) {
-        String modifySettingValue = dto.getValue();
+    public void modifySettingInfo(ReqModifySettingInfoDto dto) {
         int modifySettingId = dto.getSettingId();
+        String modifySettingValue = dto.getValue();
         settingMapper.modifySettingInfo(modifySettingValue, modifySettingId);
     }
 }

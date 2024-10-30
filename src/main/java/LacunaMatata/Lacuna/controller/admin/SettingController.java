@@ -33,7 +33,8 @@ public class SettingController {
     // 설정(약관 email, phone, sns 주소 등) 항목 수정
     @PutMapping("/modify/{settingId}")
     ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
-        settingService.modifySettingInfo(dto, settingId);
+        System.out.println("요청 데이터: "+dto);
+        settingService.modifySettingInfo(dto);
         return ResponseEntity.ok().body(true);
     }
 }
