@@ -33,8 +33,9 @@ public class ProductManageService {
                     .build();
             productUpperCategory.add(respUpperProductCategoryListDto);
         }
+        int totalCount = productUpperCategoryList.isEmpty() ? 0 : productUpperCategoryList.get(0).getTotalCount();
         RespCountAndUpperProductDto respCountAndUpperProductDto = RespCountAndUpperProductDto.builder()
-                .totalCount(productUpperCategory.size())
+                .totalCount(totalCount)
                 .productUpperCategoryList(productUpperCategory)
                 .build();
 
@@ -101,8 +102,10 @@ public class ProductManageService {
                     .build();
             productLowerCategory.add(respLowerProductCategoryListDto);
         }
+        int totalCount = productLowerCategoryList.isEmpty() ? 0 : productLowerCategoryList.get(0).getTotalCount();
+
         RespCountAndLowerProductDto respCountAndLowerProductDto = RespCountAndLowerProductDto.builder()
-                .totalCount(productLowerCategory.size())
+                .totalCount(totalCount)
                 .productLowerCategory(productLowerCategory)
                 .build();
 
@@ -181,9 +184,10 @@ public class ProductManageService {
                     .build();
             respProductDtoList.add(respProductDto);
         }
+        int totalCount = productList.isEmpty() ? 0 : productList.get(0).getTotalCount();
 
         RespCountAndProductDto respCountAndProductDto = RespCountAndProductDto.builder()
-                .totalCount(productList.size())
+                .totalCount(totalCount)
                 .respProductDtoList(respProductDtoList)
                 .build();
 

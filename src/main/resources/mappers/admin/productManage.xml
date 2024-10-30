@@ -11,6 +11,7 @@
         <result property="price" column="price" />
         <result property="promotionPrice" column="promotion_price" />
         <result property="createDate" column="create_date" />
+        <result property="totalCount" column="totalCount" />
         <association property="user" resultMap="userResultMap" />
         <association property="productUpperCategory" resultMap="productUpperCategoryResultMap2" />
         <association property="productLowerCategory" resultMap="productLowerCategoryResultMap2" />
@@ -36,6 +37,7 @@
         <result property="productUpperCategoryName" column="product_upper_category_name" />
         <result property="productUpperCategoryRegisterId" column="product_upper_category_register_id" />
         <result property="createDate" column="create_date" />
+        <result property="totalCount" column="totalCount" />
         <association property="user" resultMap="userResultMap" />
     </resultMap>
     <resultMap id="productLowerCategoryResultMap" type="LacunaMatata.Lacuna.entity.product.ProductLowerCategory">
@@ -43,6 +45,7 @@
         <result property="productLowerCategoryName" column="product_lower_category_name" />
         <result property="productLowerCategoryRegisterId" column="product_lower_category_register_id" />
         <result property="createDate" column="create_date" />
+        <result property="totalCount" column="totalCount" />
         <association property="user" resultMap="userResultMap" />
         <association property="productUpperCategory" resultMap="productUpperCategoryResultMap" />
     </resultMap>
@@ -265,7 +268,8 @@
             puc.product_upper_category_register_id,
             puc.create_date,
             u.user_id,
-            u.name
+            u.name,
+            (select count(*) from tb_product_upper_category) as totalCount
         from
             tb_product_upper_category puc
             left outer join tb_user u on (u.user_id = puc.product_upper_category_register_id)
@@ -288,6 +292,7 @@
             puc.product_upper_category_id,
             u.user_id,
             u.name,
+            count(*) over () as totalCount,
             plc.product_lower_category_register_id,
             plc.create_date
         from
@@ -319,6 +324,7 @@
             p.create_date,
             u.user_id,
             u.name,
+            count(*) over () as totalCount,
             p.product_lower_category_id,
             plc.product_lower_category_id,
             plc.product_upper_category_id,

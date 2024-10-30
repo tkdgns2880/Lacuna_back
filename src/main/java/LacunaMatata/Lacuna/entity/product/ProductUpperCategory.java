@@ -19,5 +19,8 @@ public class ProductUpperCategory {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    // 서브쿼리 계산용
+    private int totalCount;
+
     private User user;
 }

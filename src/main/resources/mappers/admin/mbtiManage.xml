@@ -10,6 +10,7 @@
         <result property="mbtiCategoryTitle" column="mbti_category_title" />
         <result property="mbtiCategoryDescription" column="mbti_category_description" />
         <result property="mbtiCategoryImg" column="mbti_category_img" />
+        <result property="totalCount" column="totalCount" />
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
         <association property="user" resultMap="userResultMap" />
@@ -21,6 +22,7 @@
         <result property="mbtiRegisterId" column="mbti_register_id" />
         <result property="mbtiTitle" column="mbti_title" />
         <result property="mbtiImg" column="mbti_img" />
+        <result property="totalCount" column="totalCount" />
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
         <association property="user" resultMap="userResultMap" />
@@ -42,6 +44,7 @@
         <result property="mbtiResultContent" column="mbti_result_content" />
         <result property="mbtiResultImg" column="mbti_result_img" />
         <result property="mbtiResultStatus" column="mbti_result_status" />
+        <result property="totalCount" column="totalCount" />
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
         <association property="user" resultMap="userResultMap" />
@@ -211,6 +214,8 @@
             mc.mbti_category_title,
             mc.mbti_category_description,
             mc.mbti_category_img,
+            (select count(*)
+            from tb_mbti_category) as totalCount,
             mc.create_date,
             mc.update_date,
             u.user_id,
@@ -244,6 +249,7 @@
             m.mbti_register_id,
             m.mbti_title,
             m.mbti_img,
+            count(*) over () as totalCount,
             m.create_date,
             m.update_date,
             (select u.name
@@ -312,6 +318,7 @@
             mr.mbti_result_content,
             mr.mbti_result_img,
             mr.mbti_result_status,
+            count(*) over () as totalCount,
             mr.create_date,
             mr.update_date,
             (select u.name
