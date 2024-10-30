@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LacunaMatata.Lacuna.repository.admin.OrderManageMapper">
+    <resultMap id="orderResultMap" type="LacunaMatata.Lacuna.entity.order.Order">
+        <id property="orderId" column="order_id" />
+        <result property="orderUserId" column="order_user_id" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="status" column="status" />
+        <result property="name" column="name" />
+        <result property="createdDate" column="created_date" />
+        <result property="roleName" column="roleName" />
+    </resultMap>
+
+    <select id="getOrderList" resultMap="orderResultMap">
+        select
+            o.order_id,
+            o.order_user_id,
+            o.total_amount,
+            o.status,
+            o.created_date,
+            (select name
+            from tb_user u
+            where u.user_id = o.order_user_id) as name,
+            (select role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+                from tb_user_role_met urm
+                where o.order_user_id = urm.role_user_id
+                order by urm.role_id desc
+                limit 1)) as roleName
+        from
+            tb_order o
+            left outer join tb_user u on u.user_id = o.order_user_id
+            left outer join tb_user_role_met urm on urm.role_user_id = u.user_id
+            left outer join tb_user_role ur on ur.role_id = urm.role_id
+        where
+            1 = 1
+            <if test="filter != null and filter != ''">
+                and ur.role_id = #{filter}
+            </if>
+            <if test="filter == 1">
+                and o.status = 'pending'
+            </if>
+            <if test="filter == 2">
+                and o.status = 'completed'
+            </if>
+            <if test="filter == 3">
+                and o.status = 'cancelled'
+            </if>
+            <if test="option == 0">
+                <if test="searchValue != null and searchValue != ''">
+                    and u.name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                </if>
+            </if>
+            <if test="option == 1">
+                <if test="searchValue != null and searchValue != ''">
+                    and u.name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                </if>
+            </if>
+    </select>
+</mapper>
