@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.service.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetUserListDto;
@@ -77,12 +78,13 @@ public class UserManageService {
     }
 
     // 사용자 삭제
-    public void deleteUser() {
-
+    public void deleteUser(int userId) {
+        userManageMapper.deleteByUserId(userId);
     }
 
     // 사용자 복수개 삭제
-    public void deleteUserList() {
-
+    public void deleteUserList(ReqDeleteUserListDto dto) {
+        List<Integer> userIdList = dto.getUserIdList();
+        userManageMapper.deleteByuserList(userIdList);
     }
 }

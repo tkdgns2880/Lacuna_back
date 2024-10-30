@@ -51,6 +51,23 @@
         <result property="loginTime" column="login_time" />
         <result property="loginIp" column="login_ip" />
     </resultMap>
+    <delete id="deleteByUserId">
+        delete
+        from
+            tb_user_optional_info
+        where
+            user_id = #{userId}
+    </delete>
+    <delete id="deleteByuserList">
+        delete
+        from
+            tb_user_optional_info
+        where
+            user_id in
+        <foreach item="userId" collection="userIdList" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
     <select id="getUserList" resultMap="userResultMap">
         select
             u.user_id,
