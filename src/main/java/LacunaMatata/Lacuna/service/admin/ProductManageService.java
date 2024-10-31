@@ -106,7 +106,7 @@ public class ProductManageService {
 
         RespCountAndLowerProductDto respCountAndLowerProductDto = RespCountAndLowerProductDto.builder()
                 .totalCount(totalCount)
-                .productLowerCategory(productLowerCategory)
+                .productLowerCategoryList(productLowerCategory)
                 .build();
 
         return respCountAndLowerProductDto;
