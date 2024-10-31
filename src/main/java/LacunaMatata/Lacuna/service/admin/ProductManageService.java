@@ -114,13 +114,13 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 등록
-    public void registProductlowerCategory(ReqRegistLowerProductCategoryDto dto, int upperId) {
+    public void registProductlowerCategory(ReqRegistLowerProductCategoryDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
         ProductLowerCategory productLowerCategory = ProductLowerCategory.builder()
                 .productLowerCategoryName(dto.getProductLowerCategoryName())
                 .productLowerCategoryRegisterId(registerId)
-                .productUpperCategoryId(upperId)
+                .productUpperCategoryId(dto.getProductUpperCategoryId())
                 .build();
 
         productManageMapper.saveProductLowerCategory(productLowerCategory);
