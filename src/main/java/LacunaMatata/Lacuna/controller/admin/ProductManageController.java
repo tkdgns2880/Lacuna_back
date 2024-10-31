@@ -149,7 +149,6 @@ public class ProductManageController {
     @GetMapping("/{productId}")
     @ApiOperation(value = "getProductApi")
     public ResponseEntity<?> getProduct(@PathVariable int productId) {
-        System.out.println("일단 들오나? " + productId);
         return ResponseEntity.ok().body(productManageService.getProductDetail(productId));
     }
 

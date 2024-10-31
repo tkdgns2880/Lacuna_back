@@ -36,8 +36,6 @@ public class ProductDetailAspect {
         if (body instanceof RespProductDetailDto) {
 
             Product product = productManageMapper.getProduct(productId);
-            System.out.println(productId);
-            System.out.println(product);
             // 만약 컨설팅 관련 상품이면 컨설팅 내용만 담아서 보냄
             if(product.getProductUpperCategory().getProductUpperCategoryId() == 1) {
                 ConsultingDetail consultingDetail = productManageMapper.getConsultingDetail(productId);
@@ -56,13 +54,13 @@ public class ProductDetailAspect {
                         .consultingName(consultingDetail.getConsultingContent().getName())
                         .etc(consultingDetail.getEtc())
                         .build();
-                System.out.println(consultingDetail);
                 return ResponseEntity.ok().body(respConsultingDetailDto);
             }
 
             // 만약 화장품 관련 상품이면 화장품 내용만 담아서 보냄
             if(product.getProductUpperCategory().getProductUpperCategoryId() == 2) {
                 CosmeticDetail cosmeticDetail = productManageMapper.getCosmeticDetail(productId);
+                System.out.println(cosmeticDetail);
                 RespCosmeticDetailDto respCosmeticDetailDto = RespCosmeticDetailDto.builder()
                         .productId(product.getProductId())
                         .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
