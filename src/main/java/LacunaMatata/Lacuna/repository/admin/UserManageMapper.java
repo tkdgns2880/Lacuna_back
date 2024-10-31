@@ -19,9 +19,15 @@ public interface UserManageMapper {
     int saveUserOptionalInfo(UserOptionalInfo userOptionalInfo);
     // 2-3. 사용자 권한 등록_2024.10.31
     int saveUserRoleMet(Map<String, Object> params);
+    // 3. 사용자 권한 수정(1단계 - 삭제)
+    int deleteUserRoleMet(List<Integer> roleIdList, int userId);
 
     // 사용자 삭제
     int deleteByUserId(int userId);
     // 사용자 복수개 삭제
     int deleteByUserList(List<Integer> userIdList);
+
+    /** 공통으로 사용할 Mapper */
+    // 1. 사용자 ID로 사용자 찾기
+    User findUserById(int userId);
 }

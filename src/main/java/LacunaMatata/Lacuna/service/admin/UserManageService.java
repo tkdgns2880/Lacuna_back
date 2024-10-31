@@ -2,11 +2,14 @@ package LacunaMatata.Lacuna.service.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqModifyUserDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetUserListDto;
+import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserDetailDto;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
+import LacunaMatata.Lacuna.entity.user.UserRoleMet;
 import LacunaMatata.Lacuna.repository.admin.UserManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,8 +106,42 @@ public class UserManageService {
         }
     }
 
+    // 사용자 항목 출력
+    public RespUserDetailDto getUserDetail(int userId) {
+        User user = userManageMapper.findUserById(userId);
+        RespUserDetailDto respUserDetailDto = RespUserDetailDto.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .roleName(user.getRoleName())
+                .email(user.getEmail())
+                .name(user.getName())
+                .inactiveFlag(user.getInactive())
+                .build();
+        return respUserDetailDto;
+    }
+
+    // 사용자 권한 목록 출력(필터)
+    public void getUserRoleList() {
+
+    }
+
     // 사용자 수정
-    public void modifyUser() {
+    public void modifyUser(ReqModifyUserDto dto) {
+        User user = userManageMapper.findUserById(dto.getUserId());
+
+        List<Integer> roleIdList = new ArrayList<>();
+        for(int i = 0; i < user.getRoleId() + 1; i++) {
+            roleIdList.add(i);
+        }
+        userManageMapper.deleteUserRoleMet(roleIdList, dto.getUserId());
+
+        for(int i = 1; i < dto.getRoleId() + 1; i++) {
+            Map<String, Object> params = Map.of(
+                    "userId", user.getUserId(),
+                    "roleId", i
+            );
+            userManageMapper.saveUserRoleMet(params);
+        }
 
     }
 

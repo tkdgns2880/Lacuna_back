@@ -32,6 +32,8 @@ public class User {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    private int roleId;
+    private String roleName;
     private int totalCount;
     private String inactive;
     private String loginIp;
