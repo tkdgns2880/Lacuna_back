@@ -8,6 +8,7 @@ import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -195,6 +196,7 @@ public class ProductManageService {
     }
 
     // 상품 등록
+    @Transactional(rollbackFor = Exception.class)
     public void registProduct(ReqRegistProductDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registeId = principalUser.getId();
@@ -265,6 +267,7 @@ public class ProductManageService {
     }
 
     // 상품 수정
+    @Transactional(rollbackFor = Exception.class)
     public void modifyProduct(ReqModifyProductDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
