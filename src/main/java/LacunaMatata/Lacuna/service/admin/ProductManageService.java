@@ -250,51 +250,18 @@ public class ProductManageService {
     // 상품 항목 출력
     public RespProductDetailDto getProductDetail(int productId) {
         Product product = productManageMapper.getProduct(productId);
-        RespProductDetailDto productDetail = null;
-        // 만약 컨설팅 관련 상품이면 컨설팅 내용만 담아서 보냄
-        if(product.getProductUpperCategory().getProductUpperCategoryId() == 1) {
-            ConsultingDetail consultingDetail = productManageMapper.getConsultingDetail(productId);
-            RespProductDetailDto productConsultingDetail = RespProductDetailDto.builder()
-                    .productId(product.getProductId())
-                    .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
-                    .productLowerCategoryName(product.getProductLowerCategory().getProductLowerCategoryName())
-                    .productCode(product.getProductCode())
-                    .productName(product.getProductName())
-                    .price(product.getPrice())
-                    .promotionPrice(product.getPromotionPrice())
-                    .productImg(product.getProductImg())
-                    .repeatCount(consultingDetail.getRepeatCount())
-                    .consultingDescription(consultingDetail.getDescription())
-                    .consultingName(consultingDetail.getConsultingContent().getName())
-                    .etc(consultingDetail.getEtc())
-                    .build();
-            productDetail = productConsultingDetail;
-        }
-
-        // 만약 화장품 관련 상품이면 화장품 내용만 담아서 보냄
-        if(product.getProductUpperCategory().getProductUpperCategoryId() == 2) {
-            CosmeticDetail cosmeticDetail = productManageMapper.getCosmeticDetail(productId);
-            RespProductDetailDto productCosmeticDetail = RespProductDetailDto.builder()
-                    .productId(product.getProductId())
-                    .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
-                    .productLowerCategoryName(product.getProductLowerCategory().getProductLowerCategoryName())
-                    .productCode(product.getProductCode())
-                    .productName(product.getProductName())
-                    .price(product.getPrice())
-                    .promotionPrice(product.getPromotionPrice())
-                    .productImg(product.getProductImg())
-                    .volume(cosmeticDetail.getVolume())
-                    .ingredient(cosmeticDetail.getIngredient())
-                    .skinType(cosmeticDetail.getSkinType())
-                    .effect(cosmeticDetail.getEffect())
-                    .manufacture(cosmeticDetail.getManufacture())
-                    .cosmeticProductDescription(cosmeticDetail.getProductDescription())
-                    .productUrl(cosmeticDetail.getProductUrl())
-                    .etc(cosmeticDetail.getEtc())
-                    .build();
-            productDetail = productCosmeticDetail;
-        }
-        return productDetail;
+        RespProductDetailDto productConsultingDetail = RespProductDetailDto.builder()
+                .productId(product.getProductId())
+                .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
+                .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
+                .productLowerCategoryName(product.getProductLowerCategory().getProductLowerCategoryName())
+                .productCode(product.getProductCode())
+                .productName(product.getProductName())
+                .price(product.getPrice())
+                .promotionPrice(product.getPromotionPrice())
+                .productImg(product.getProductImg())
+                .build();
+        return productConsultingDetail;
     }
 
     // 상품 수정

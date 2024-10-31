@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Data
 public class RespCosmeticDetailDto {
     private int productId;
+    private int productUpperCategoryId;
     private String productUpperCategoryName;
     private String productLowerCategoryName;
     private String productCode;

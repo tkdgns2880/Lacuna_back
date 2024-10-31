@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.aspect.annotation.admin.ProductDetailAop;
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.*;
 import LacunaMatata.Lacuna.service.admin.ProductManageService;
@@ -144,12 +145,12 @@ public class ProductManageController {
     }
 
     // 상품 항목 출력
+    @ProductDetailAop
     @GetMapping("/{productId}")
     @ApiOperation(value = "getProductApi")
     public ResponseEntity<?> getProduct(@PathVariable int productId) {
-        RespProductDetailDto productDetail =
-                productManageService.getProductDetail(productId);
-        return ResponseEntity.ok().body(productDetail);
+        System.out.println("일단 들오나? " + productId);
+        return ResponseEntity.ok().body(productManageService.getProductDetail(productId));
     }
 
     // 상품 수정
