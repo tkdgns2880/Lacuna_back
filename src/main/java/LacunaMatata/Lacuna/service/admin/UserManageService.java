@@ -125,24 +125,49 @@ public class UserManageService {
 
     }
 
-    // 사용자 수정
+    // 사용자 수정(권한)
+    @Transactional(rollbackFor = Exception.class)
     public void modifyUser(ReqModifyUserDto dto) {
         User user = userManageMapper.findUserById(dto.getUserId());
 
-        List<Integer> roleIdList = new ArrayList<>();
-        for(int i = 0; i < user.getRoleId() + 1; i++) {
-            roleIdList.add(i);
-        }
-        userManageMapper.deleteUserRoleMet(roleIdList, dto.getUserId());
+        int originalRoleId = user.getRoleId();
+        int modifyRoleId = dto.getRoleId();
 
-        for(int i = 1; i < dto.getRoleId() + 1; i++) {
+        if(originalRoleId > modifyRoleId) {
+            List<Integer> roleIdList = new ArrayList<>();
+            for(int i = originalRoleId; i > modifyRoleId; i--) {
+                roleIdList.add(i);
+            }
             Map<String, Object> params = Map.of(
                     "userId", user.getUserId(),
-                    "roleId", i
+                    "roleIdList", roleIdList
             );
-            userManageMapper.saveUserRoleMet(params);
+            userManageMapper.deleteUserRoleMet(params);
         }
 
+        if(originalRoleId < modifyRoleId) {
+            for(int i = modifyRoleId; i > originalRoleId; i--) {
+                Map<String, Object> params = Map.of(
+                        "userId", user.getUserId(),
+                        "roleId", i
+                );
+                userManageMapper.saveUserRoleMet(params);
+            }
+        }
+
+        if(originalRoleId == modifyRoleId) {
+            return;
+        }
+
+        List<Integer> roleIdList = new ArrayList<>();
+        for(int i = 1; i < modifyRoleId + 1; i++) {
+            roleIdList.add(i);
+        }
+        Map<String, Object> modifyParams = Map.of(
+                "userId", dto.getUserId(),
+                "roleIdList", roleIdList
+        );
+        userManageMapper.modifyUserRoleMetDate(modifyParams);
     }
 
     // 사용자 삭제
