@@ -9,6 +9,7 @@
         <result property="name" column="name" />
         <result property="email" column="email" />
         <result property="password" column="password" />
+        <result property="totalCount" column="totalCount" />
         <result property="socialLoginType" column="social_login_type" />
         <result property="passwordLastChanged" column="password_last_changed" />
         <result property="lastLoginDate" column="last_login_date" />
@@ -52,17 +53,57 @@
         <result property="loginTime" column="login_time" />
         <result property="loginIp" column="login_ip" />
     </resultMap>
+    <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into tb_user
+        values(
+            default,
+            #{username},
+            #{email},
+            #{password},
+            #{name},
+            1,
+            now(),
+            now(),
+            now(),
+            now()
+        )
+    </insert>
+    <insert id="saveUserOptionalInfo" useGeneratedKeys="true" keyProperty="userOptionId">
+        insert into tb_user_optional_info
+        values(
+            default,
+            #{userId},
+            #{birthDate},
+            #{gender},
+            #{phoneNumber},
+            "",
+            default,
+            2,
+            1,
+            1
+        )
+    </insert>
+    <insert id="saveUserRoleMet">
+        insert into tb_user_role_met
+        values(
+            default,
+            #{userId},
+            #{roleId},
+            now(),
+            now()
+        )
+    </insert>
     <delete id="deleteByUserId">
         delete
         from
-            tb_user_optional_info
+            tb_user
         where
             user_id = #{userId}
     </delete>
-    <delete id="deleteByuserList">
+    <delete id="deleteByUserList">
         delete
         from
-            tb_user_optional_info
+            tb_user
         where
             user_id in
         <foreach item="userId" collection="userIdList" open="(" separator="," close=")">
@@ -78,6 +119,7 @@
             u.password,
             u.created_date,
             u.last_login_date,
+            count(*) over () as totalCount,
             (select
                 case when (datediff(now(), u.last_login_date)) > 365
                 then "휴면 계정" else "활성화 계정" end) as inactive,

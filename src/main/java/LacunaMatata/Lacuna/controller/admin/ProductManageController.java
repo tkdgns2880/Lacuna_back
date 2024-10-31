@@ -88,10 +88,10 @@ public class ProductManageController {
     }
 
     // 상품 하위 분류 카테고리 등록
-    @PostMapping("/lower/regist/{upperId}")
+    @PostMapping("/lower/regist")
     @ApiOperation(value = "registLowerProductApi")
-    public ResponseEntity<?> registLowerProduct(@RequestBody ReqRegistLowerProductCategoryDto dto, @PathVariable int upperId) {
-        productManageService.registProductlowerCategory(dto, upperId);
+    public ResponseEntity<?> registLowerProduct(@RequestBody ReqRegistLowerProductCategoryDto dto) {
+        productManageService.registProductlowerCategory(dto);
         return ResponseEntity.ok().body(true);
     }
 

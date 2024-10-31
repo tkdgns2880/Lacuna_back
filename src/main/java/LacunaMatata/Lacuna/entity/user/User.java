@@ -32,6 +32,7 @@ public class User {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
+    private int totalCount;
     private String inactive;
     private String loginIp;
 

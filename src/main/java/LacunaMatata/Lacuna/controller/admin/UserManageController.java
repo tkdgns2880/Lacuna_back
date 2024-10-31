@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.controller.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.service.admin.UserManageService;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +33,8 @@ public class UserManageController {
 
     // 사용자 등록
     @PostMapping("/regist")
-    ResponseEntity<?> registerUser() {
+    ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) {
+        userManageService.registUser(dto);
         return ResponseEntity.ok().body(true);
     }
 

@@ -2,15 +2,19 @@ package LacunaMatata.Lacuna.service.admin;
 
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
+import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetUserListDto;
 import LacunaMatata.Lacuna.entity.user.User;
+import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
 import LacunaMatata.Lacuna.repository.admin.UserManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,17 +64,43 @@ public class UserManageService {
                     .build();
             respGetUserListDtos.add(respGetUserListDto);
         }
+        int totalCount = userList.isEmpty() ? 0 : userList.get(0).getTotalCount();
+
         RespCountAndUserListDto respCountAndUserListDto = RespCountAndUserListDto.builder()
-                .totalCount(respGetUserListDtos.size())
+                .totalCount(totalCount)
                 .userList(respGetUserListDtos)
                 .build();
+
 
         return respCountAndUserListDto;
     }
 
     // 사용자 등록
-    public void registerUser() {
+    @Transactional(rollbackFor = Exception.class)
+    public void registUser(ReqRegistUserDto dto) {
+        User user = User.builder()
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .name(dto.getName())
+                .build();
+        int userId = userManageMapper.saveUser(user);
 
+        UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
+                .userId(userId)
+                .birthDate(dto.getBirthDate())
+                .gender(dto.getGender())
+                .phoneNumber(dto.getPhoneNumber())
+                .build();
+        userManageMapper.saveUserOptionalInfo(userOptionalInfo);
+
+        for(int i = 1; i < dto.getRoleId() + 1; i++) {
+            Map<String, Object> params = Map.of(
+                    "userId", userId,
+                    "roleId", i
+            );
+            userManageMapper.saveUserRoleMet(params);
+        }
     }
 
     // 사용자 수정
@@ -86,6 +116,6 @@ public class UserManageService {
     // 사용자 복수개 삭제
     public void deleteUserList(ReqDeleteUserListDto dto) {
         List<Integer> userIdList = dto.getUserIdList();
-        userManageMapper.deleteByuserList(userIdList);
+        userManageMapper.deleteByUserList(userIdList);
     }
 }
