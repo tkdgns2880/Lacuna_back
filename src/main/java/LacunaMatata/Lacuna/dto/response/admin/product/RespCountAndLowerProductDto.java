@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 public class RespCountAndLowerProductDto {
     private int totalCount;
-    private List<RespLowerProductCategoryListDto> productLowerCategory;
+    private List<RespLowerProductCategoryListDto> productLowerCategoryList;
 }
