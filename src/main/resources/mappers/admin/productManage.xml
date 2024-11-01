@@ -143,6 +143,14 @@
             #{etc}
         )
     </insert>
+    <insert id="insertProductImg">
+        insert into tb_product
+        value(
+            default,
+            #{insertCompletedImgPath},
+            #{productId}
+        )
+    </insert>
     <update id="modifyProductUpperCategory">
         update
             tb_product_upper_category

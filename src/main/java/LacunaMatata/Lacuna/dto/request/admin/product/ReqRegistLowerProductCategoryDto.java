@@ -7,6 +7,5 @@ import lombok.Data;
 public class ReqRegistLowerProductCategoryDto {
     @ApiModelProperty(value="데스트", example = "Test", required = true)
     private int productUpperCategoryId;
-    private String productUpperCategoryName;
     private String productLowerCategoryName;
 }

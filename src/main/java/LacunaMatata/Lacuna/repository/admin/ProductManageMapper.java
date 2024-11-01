@@ -66,7 +66,8 @@ public interface ProductManageMapper {
     int deleteProduct(int productId); // 상품 삭제
     // 13. 상품 복수 삭제_2024.10.26
     int deleteProductList(List<Integer> productIdList);
-
+    // 14. 상품 이미지 등록
+    int insertProductImg(String insertCompletedImgPath, int productId);
 
     /** 상품 관련 공통으로 필요한 메서드 Mapper */
     // 1. 상품 상위 분류 이름으로 상품 상위 분류 정보 찾기_2024.10.26

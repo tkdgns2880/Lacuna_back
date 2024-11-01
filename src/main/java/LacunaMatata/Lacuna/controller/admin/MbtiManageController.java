@@ -5,6 +5,7 @@ import LacunaMatata.Lacuna.dto.response.admin.mbti.*;
 import LacunaMatata.Lacuna.service.admin.MbtiManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin/mbti")
 @Api(tags = {"mbtiManageController"})
+@Slf4j
 public class MbtiManageController {
 
     @Autowired
@@ -140,7 +142,7 @@ public class MbtiManageController {
     // MBTI 설문 결과 등록
     @ApiOperation(value = "registMbtiResultApi")
     @PostMapping("/result/regist")
-    public ResponseEntity<?> registMbtiResult(@RequestBody ReqRegistMbtiResultDto dto) {
+    public ResponseEntity<?> registMbtiResult(@ModelAttribute ReqRegistMbtiResultDto dto) {
         mbtiManageService.registMbtiResult(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -156,8 +158,8 @@ public class MbtiManageController {
     // MBTI 설문 결과 항목 모달 수정
     @ApiOperation(value = "modifyMbtiResultApi")
     @PutMapping("/result/modify/{resultId}")
-    public ResponseEntity<?> modifyMbtiResult(@RequestBody ReqModifyMbtiResultDto dto, @PathVariable int resultId) {
-        mbtiManageService.modifyMbtiResult(dto, resultId);
+    public ResponseEntity<?> modifyMbtiResult(@ModelAttribute ReqModifyMbtiResultDto dto, @PathVariable int resultId) {
+        mbtiManageService.modifyMbtiResult(dto);
         return ResponseEntity.ok().body(true);
     }
 

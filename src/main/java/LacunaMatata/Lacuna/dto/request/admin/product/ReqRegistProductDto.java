@@ -1,16 +1,19 @@
 package LacunaMatata.Lacuna.dto.request.admin.product;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.Multipart;
+import java.util.List;
 
 @Data
 public class ReqRegistProductDto {
-    private String productUpperCategoryName;
-    private String productLowerCategoryName;
+    private int productUpperCategoryId;
+    private int productLowerCategoryId;
     private String productCode;
     private String productName;
     private int price;
     private int promotionPrice;
-    private String productImg;
 
     // 상위 분류가 컨설팅일때 받을 곳
     private int repeatCount; // 컨설팅 반복 횟수
@@ -28,4 +31,7 @@ public class ReqRegistProductDto {
 
     // 카테고리 공통 부분 받을 곳
     private String etc; // 기타사항
+
+    // 상품 이미지 파일을 받는 곳
+    private MultipartFile productImg;
 }

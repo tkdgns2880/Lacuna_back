@@ -6,20 +6,29 @@ import LacunaMatata.Lacuna.entity.product.*;
 import LacunaMatata.Lacuna.repository.admin.ProductManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductManageService {
 
     @Autowired
     private ProductManageMapper productManageMapper;
+
+    @Value("${file.path}")
+    private String filePath;
 
     // 상품 상위 분류 리스트 출력
     public RespCountAndUpperProductDto getProductUpperCategory() {
@@ -197,26 +206,36 @@ public class ProductManageService {
 
     // 상품 등록
     @Transactional(rollbackFor = Exception.class)
-    public void registProduct(ReqRegistProductDto dto) {
+    public void registProduct(ReqRegistProductDto dto) throws Exception {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registeId = principalUser.getId();
-        ProductUpperCategory productUpperCategory
-                = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
-        ProductLowerCategory productLowerCategory
-                = productManageMapper.findByNameProductLowerCategory(dto.getProductLowerCategoryName());
 
         Product product = Product.builder()
-                .productLowerCategoryId(productLowerCategory.getProductLowerCategoryId())
+                .productUpperCategoryId(dto.getProductUpperCategoryId())
+                .productLowerCategoryId(dto.getProductLowerCategoryId())
                 .productCode(dto.getProductCode())
-                .productName(dto.getProductName())
                 .price(BigDecimal.valueOf(dto.getPrice()))
+                .productName(dto.getProductName())
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
-                .productImg(dto.getProductImg())
                 .productRegisterId(registeId)
                 .build();
-        int productId = productManageMapper.saveProduct(product);
 
-        switch (productUpperCategory.getProductUpperCategoryId()) {
+        productManageMapper.saveProduct(product);
+
+        // 이미지 등록
+        // 1. 이미지 신규 등록할 공간 생성
+        MultipartFile insertImg = dto.getProductImg();
+        String insertCompletedImgPath = null;
+
+        // 2. 신규 이미지 저장
+        if(insertImg != null) {
+            insertCompletedImgPath = registerImgUrl(insertImg, "product");
+            productManageMapper.insertProductImg(insertCompletedImgPath, product.getProductId());
+        }
+
+        // Todo 상품 세부 정보 컨설팅 분류에 맞게 넣는거 알아서 짜봐여. (dto, enttiy 확인 및 수정 필요
+        // Todo insert 된 id는 useGenerator 사용하면 build한 엔티티 변수에 들어있는 것을 사용하면 됨 (위 이미지 넣은 방법 참조)
+        switch (dto.getProductUpperCategoryId()) {
             case 1:
                 ConsultingContent consultingContent = ConsultingContent.builder()
                         .name(dto.getConsultingName())
@@ -268,13 +287,32 @@ public class ProductManageService {
 
     // 상품 수정
     @Transactional(rollbackFor = Exception.class)
-    public void modifyProduct(ReqModifyProductDto dto) {
+    public void modifyProduct(ReqModifyProductDto dto) throws IOException {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
-        ProductUpperCategory productUpperCategory
-                = productManageMapper.findByNameProductUpperCategory(dto.getProductUpperCategoryName());
-        ProductLowerCategory productLowerCategory
-                = productManageMapper.findByNameProductLowerCategory(dto.getProductLowerCategoryName());
+
+        /* 이미지 삭제 후 이미지 추가 */
+        // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
+
+        // 1. 최종 수정될 imgPath 공간 생성
+        String finalImgPath = dto.getPrevImgPath();
+
+        // 2. 이미지 신규 등록할 공간 생성
+        MultipartFile insertImg = dto.getNewProductImg();
+
+        // 3. 이미지 삭제할 공간 생성
+        String deleteImgPath = dto.getDeleteProductImgPath();
+
+        // 4. 물리 파일 삭제
+        if(deleteImgPath != null) {
+            deleteImgUrl(deleteImgPath);
+            finalImgPath = null;
+        }
+
+        // 4. 신규 이미지 저장
+        if(insertImg != null) {
+            finalImgPath = registerImgUrl(insertImg, "product");
+        }
 
         Product product = Product.builder()
                 .productId(dto.getProductId())
@@ -282,7 +320,7 @@ public class ProductManageService {
                 .productName(dto.getProductName())
                 .price(BigDecimal.valueOf(dto.getPrice()))
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
-                .productImg(dto.getProductImg())
+                .productImg(finalImgPath)
                 .productRegisterId(registerId)
                 .build();
 
@@ -360,5 +398,25 @@ public class ProductManageService {
             lowerFilterList.add(lowerFilter2);
         }
         return lowerFilterList;
+    }
+
+    public String registerImgUrl(MultipartFile img, String dirName ) throws IOException {
+        String imgName = img.getOriginalFilename();
+        // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+        File directory = new File(filePath + dirName);
+        if(!directory.exists()) {
+            directory.mkdirs();
+        }
+        File file = new File(filePath + dirName + imgName);
+        img.transferTo(file);
+
+        return filePath + dirName + imgName;
+    }
+
+    public void deleteImgUrl(String imgUrl) {
+        File file = new File(imgUrl);
+        if(file.exists()) {
+            file.delete();
+        }
     }
 }
