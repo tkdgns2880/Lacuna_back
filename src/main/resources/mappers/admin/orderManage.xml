@@ -8,10 +8,104 @@
         <result property="orderUserId" column="order_user_id" />
         <result property="totalAmount" column="total_amount" />
         <result property="status" column="status" />
+        <result property="totalCount" column="totalCount" />
         <result property="name" column="name" />
         <result property="createdDate" column="created_date" />
         <result property="roleName" column="roleName" />
+        <result property="paymentId" column="paymentId" />
+        <result property="paymentMethod" column="paymentMethod" />
+        <result property="productName" column="productName" />
+        <association property="orderItemList" resultMap="orderItemResultMap" />
     </resultMap>
+    <resultMap id="orderItemResultMap" type="LacunaMatata.Lacuna.entity.order.OrderItem">
+        <id property="orderItemId" column="order_item_id" />
+        <result property="orderId" column="order_id" />
+        <result property="orderProductId" column="order_product_id" />
+        <result property="quantity" column="quantity" />
+        <result property="priceAtPurchase" column="price_at_purchase" />
+    </resultMap>
+    <resultMap id="paymentResultMap" type="LacunaMatata.Lacuna.entity.order.Payment">
+        <id property="paymentId" column="payment_id" />
+        <result property="paymentOrderId" column="payment_order_id" />
+        <result property="paymentApproveId" column="payment_approve_id" />
+        <result property="paymentMethod" column="payment_method" />
+        <result property="amount" column="amount" />
+        <result property="paymentStatus" column="payment_status" />
+        <result property="createdDate" column="created_date" />
+        <result property="name" column="name" />
+    </resultMap>
+    <insert id="cancelAccountPayment" useGeneratedKeys="true" keyProperty="paymentId">
+        insert into tb_payment
+        values(
+            default,
+            #{orderId},
+            #{paymentApproveId},
+            "계좌이체",
+            0,
+            "failed",
+            now()
+        )
+    </insert>
+    <insert id="approveAccountPayment">
+        insert into tb_payment
+        values(
+            default,
+            #{orderId},
+            #{paymentApproveId},
+            "계좌이체",
+            #{amount},
+            "completed",
+            now()
+        )
+    </insert>
+    <delete id="deleteOrder">
+        delete
+        from
+            tb_order
+        where
+            order_id = #{orderId}
+    </delete>
+    <delete id="deleteOrderList">
+        delete
+        from
+            tb_order
+        where
+            order_id in
+            <foreach item="orderId" collection="orderIdList" open="(" separator="," close=")">
+                #{orderId}
+            </foreach>
+    </delete>
+
+    <update id="cancelSystemOrder">
+        update tb_order
+        set
+            status = "cancelled"
+        where
+            order_id = (select p.payment_order_id
+                from tb_payment p
+                where p.payment_id = #{paymentId})
+    </update>
+    <update id="cancelSystemPayment">
+        update tb_payment
+        set
+            payment_status = "failed"
+        where
+            payment_id = #{paymentId}
+    </update>
+    <update id="cancelAccountOrder">
+        update tb_order
+        set
+            status = "cancelled"
+        where
+            order_id = #{orderId}
+    </update>
+    <update id="approveAccountOrder">
+        update tb_order
+        set
+            status = "completed"
+        where
+            order_id = #{orderId}
+    </update>
 
     <select id="getOrderList" resultMap="orderResultMap">
         select
@@ -20,6 +114,7 @@
             o.total_amount,
             o.status,
             o.created_date,
+            count(*) over () as totalCount,
             (select name
             from tb_user u
             where u.user_id = o.order_user_id) as name,
@@ -29,7 +124,10 @@
                 from tb_user_role_met urm
                 where o.order_user_id = urm.role_user_id
                 order by urm.role_id desc
-                limit 1)) as roleName
+                limit 1)) as roleName,
+            (select payment_id
+            from tb_payment p
+            where p.payment_order_id = o.order_id) as paymentId
         from
             tb_order o
             left outer join tb_user u on u.user_id = o.order_user_id
@@ -66,5 +164,50 @@
             status
         from
             tb_order
+    </select>
+
+    <select id="findOrderById" resultMap="orderResultMap">
+        select
+            o.order_id,
+            o.order_user_id,
+            o.total_amount,
+            o.status,
+            o.created_date,
+            (select name
+            from tb_user u
+            where u.user_id = o.order_user_id) as name,
+            (select payment_method
+            from tb_payment p
+            where p.payment_order_id = o.order_id) as paymentMethod,
+            oi.order_item_id,
+            oi.order_id,
+            oi.order_product_id,
+            oi.quantity,
+            oi.price_at_purchase,
+            (select product_name
+            from tb_product p
+            where p.product_id = oi.order_product_id) as productName
+        from
+            tb_order o
+            left outer join tb_order_item oi on oi.order_id = o.order_id
+    </select>
+    <select id="getPaymentDetail" resultMap="paymentResultMap">
+        select
+            payment_id,
+            payment_order_id,
+            payment_approve_id,
+            payment_method,
+            amount,
+            payment_status,
+            created_date,
+            (select u.name
+            from tb_user u
+            where u.user_id = (select o.order_user_id
+                from tb_order o
+                where o.order_id = payment_order_id)) as name
+        from
+            tb_payment
+        where
+            payment_id = #{paymentId}
     </select>
 </mapper>

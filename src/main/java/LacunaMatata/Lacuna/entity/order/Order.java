@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +20,14 @@ public class Order {
     private String status;
     private LocalDateTime createdDate;
 
+    //계산용
+    private int totalCount;
+
     // 조인용
     private String name;
     private String roleName;
+    private int paymentId;
+    private String paymentMethod;
+    private String productName;
+    private List<OrderItem> orderItemList;
 }

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class RespGetOrderListDto {
     private int orderId;
+    private int paymentId;
     private String name;
     private String roleName;
     private BigDecimal totalAmount;

@@ -1,14 +1,21 @@
 package LacunaMatata.Lacuna.service.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.order.ReqApprovePaymentAccountDto;
+import LacunaMatata.Lacuna.dto.request.admin.order.ReqCancelOrderAccountDto;
+import LacunaMatata.Lacuna.dto.request.admin.order.ReqDeleteOrderListDto;
 import LacunaMatata.Lacuna.dto.request.admin.order.ReqGetOrderListDto;
-import LacunaMatata.Lacuna.dto.response.admin.order.RespCountAndOderListDto;
-import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderListDto;
-import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderStatusFilterDto;
+import LacunaMatata.Lacuna.dto.response.admin.order.*;
 import LacunaMatata.Lacuna.entity.order.Order;
+import LacunaMatata.Lacuna.entity.order.OrderItem;
+import LacunaMatata.Lacuna.entity.order.Payment;
 import LacunaMatata.Lacuna.repository.admin.OrderManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +41,7 @@ public class OrderManageService {
         for(Order order : orderList) {
             RespGetOrderListDto respGetOrderListDto = RespGetOrderListDto.builder()
                     .orderId(order.getOrderId())
+                    .paymentId(order.getPaymentId())
                     .name(order.getName())
                     .roleName(order.getRoleName())
                     .totalAmount(order.getTotalAmount())
@@ -42,47 +50,14 @@ public class OrderManageService {
                     .build();
             respGetOrderListDtos.add(respGetOrderListDto);
         }
+        int totalCount = orderList.isEmpty() ? 0 : orderList.get(0).getTotalCount();
+
         RespCountAndOderListDto respCountAndOderListDto = RespCountAndOderListDto.builder()
-                .totalCount(respGetOrderListDtos.size())
+                .totalCount(totalCount)
                 .orderList(respGetOrderListDtos)
                 .build();
 
         return respCountAndOderListDto;
-    }
-
-    // 회원 주문 항목 상세 출력
-    public void getOrderDetail() {
-
-    }
-
-    // 회원 결제 항목 상세 출력
-    public void getPaymentDetail() {
-
-    }
-
-    // 회원 결제 취소하기 (결제 취소하기)
-    public void cancelSystemOrder() {
-
-    }
-
-    // 주문 수정 - 회원 결제 취소하기 (계좌 이체)
-    public void cancelAccountOrder() {
-
-    }
-
-    // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
-    public void approveAccountOrder() {
-
-    }
-
-    // 회원 주문 항목 삭제
-    public void deleteOrder() {
-
-    }
-
-    // 회원 주문 항목 복수개 삭제
-    public void deleteOrderList() {
-
     }
 
     // 회원 주문 정보 상태 출력(필터)
@@ -98,4 +73,95 @@ public class OrderManageService {
         }
         return orderStatusFilter;
     }
+
+    // 회원 주문 항목 상세 출력
+    public RespGetOrderDetailDto getOrderDetail(int orderId) {
+        Order order = orderManageMapper.findOrderById(orderId);
+        List<OrderItem> orderItemList = order.getOrderItemList();
+        List<RespGetOrderItemDetailDto> orderItemDetailList = new ArrayList<>();
+
+        for(OrderItem orderItem : orderItemList) {
+            RespGetOrderItemDetailDto respGetOrderItemDetailDto = RespGetOrderItemDetailDto.builder()
+                    .orderItemId(orderItem.getOrderItemId())
+                    .orderId(orderItem.getOrderId())
+                    .orderProductId(orderItem.getOrderProductId())
+                    .quantity(orderItem.getQuantity())
+                    .priceAtPurchase(orderItem.getPriceAtPurchase())
+                    .build();
+            orderItemDetailList.add(respGetOrderItemDetailDto);
+        }
+
+        RespGetOrderDetailDto respGetOrderDetailDto = RespGetOrderDetailDto.builder()
+                .orderId(order.getOrderId())
+                .name(order.getName())
+                .totalAmount(order.getTotalAmount())
+                .paymentMethod(order.getPaymentMethod())
+                .status(order.getStatus())
+                .createdDate(order.getCreatedDate())
+                .orderDetailItem(orderItemDetailList)
+                .build();
+        return respGetOrderDetailDto;
+    }
+
+    // 회원 결제 항목 상세 출력
+    public RespGetPaymentDetailDto getPaymentDetail(int paymentId) {
+        Payment payment = orderManageMapper.getPaymentDetail(paymentId);
+        RespGetPaymentDetailDto respGetPaymentDetailDto = RespGetPaymentDetailDto.builder()
+                .paymentId(payment.getPaymentId())
+                .paymentApproveId(payment.getPaymentApproveId())
+                .name(payment.getName())
+                .paymentMethod(payment.getPaymentMethod())
+                .amount(payment.getAmount())
+                .paymentStatus(payment.getPaymentStatus())
+                .createdDate(payment.getCreatedDate())
+                .build();
+        return respGetPaymentDetailDto;
+    }
+
+    // 회원 결제 취소하기 (결제 취소하기)
+    @Transactional(rollbackFor = Exception.class)
+    public void cancelSystemOrder(int paymentId) {
+        orderManageMapper.cancelSystemPayment(paymentId);
+        orderManageMapper.cancelSystemOrder(paymentId);
+    }
+
+    // 주문 수정 - 회원 결제 취소하기 (계좌 이체)
+    @Transactional(rollbackFor = Exception.class)
+    public void cancelAccountOrder(ReqCancelOrderAccountDto dto) {
+        int orderId = dto.getOrderId();
+        LocalDateTime now = LocalDateTime.now();
+        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        orderManageMapper.cancelAccountPayment(orderId, paymentApproveId);
+        orderManageMapper.cancelAccountOrder(orderId);
+    }
+
+    // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
+    public void approveAccountOrder(ReqApprovePaymentAccountDto dto) {
+        int orderId = dto.getOrderId();
+        BigDecimal amount = dto.getAmount();
+        LocalDateTime now = LocalDateTime.now();
+        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        Map<String, Object> params = Map.of(
+            "orderId", orderId,
+            "amount", amount,
+            "paymentApproveId", paymentApproveId
+        );
+        orderManageMapper.approveAccountPayment(params);
+        orderManageMapper.approveAccountOrder(orderId);
+    }
+
+    // 회원 주문 항목 삭제
+    public void deleteOrder(int orderId) {
+        orderManageMapper.deleteOrder(orderId);
+    }
+
+    // 회원 주문 항목 복수개 삭제
+    public void deleteOrderList(ReqDeleteOrderListDto dto) {
+        List<Integer> orderIdList = dto.getOrderIdList();
+        orderManageMapper.deleteOrderList(orderIdList);
+    }
+
+
 }
