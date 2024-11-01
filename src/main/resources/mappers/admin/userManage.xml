@@ -17,6 +17,8 @@
         <result property="updateDate" column="update_date" />
         <result property="inactive" column="inactive" />
         <result property="loginIp" column="loginIp" />
+        <result property="roleId" column="roleId" />
+        <result property="roleName" column="roleName" />
         <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
         <association property="loginHistory" resultMap="loginHistoryResultMap" />
         <collection property="userRoleMets" resultMap="userRoleMetResultMap" />
@@ -93,6 +95,18 @@
             now()
         )
     </insert>
+    <update id="modifyUserRoleMetDate">
+        update
+            tb_user_role_met
+        set
+            update_date = now()
+        where
+            role_user_id = #{userId} and
+            role_id in
+            <foreach item="roleId" collection="roleIdList" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+    </update>
     <delete id="deleteByUserId">
         delete
         from
@@ -109,6 +123,17 @@
         <foreach item="userId" collection="userIdList" open="(" separator="," close=")">
             #{userId}
         </foreach>
+    </delete>
+    <delete id="deleteUserRoleMet">
+        delete
+        from
+            tb_user_role_met
+        where
+            role_user_id = #{userId} and
+            role_id in
+            <foreach item="roleId" collection="roleIdList" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
     </delete>
     <select id="getUserList" resultMap="userResultMap">
         select
@@ -134,7 +159,7 @@
                 from tb_user_role_met urm
                 where urm.role_user_id = u.user_id
                 order by urm.role_id desc
-                limit 1 )) as role_name,
+                limit 1 )) as roleName,
             uoi.user_id,
             uoi.gender,
             uoi.birth_date
@@ -159,5 +184,41 @@
                     and u.name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                 </if>
             </if>
+    </select>
+    <select id="findUserById" resultMap="userResultMap">
+        select
+            u.user_id,
+            u.username,
+            u.name,
+            u.email,
+            u.password,
+            u.created_date,
+            u.last_login_date,
+            (select ur.role_id
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+            from tb_user_role_met urm
+            where urm.role_user_id = u.user_id
+            order by urm.role_id desc
+            limit 1 )) as roleId,
+            (select ur.role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+                from tb_user_role_met urm
+                where urm.role_user_id = u.user_id
+                order by urm.role_id desc
+                limit 1 )) as roleName,
+            case when (datediff(now(), u.last_login_date)) > 365
+            then "휴면 계정" else "활성화 계정" end as inactive,
+            urm.user_role_met_id,
+            urm.role_user_id,
+            urm.role_id,
+            urm.create_date,
+            urm.update_date
+        from
+            tb_user u
+            left outer join tb_user_role_met urm on u.user_id = urm.role_user_id
+        where
+            user_id = #{userId}
     </select>
 </mapper>

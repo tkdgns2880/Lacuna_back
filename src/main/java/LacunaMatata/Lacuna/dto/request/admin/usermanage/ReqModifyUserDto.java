@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ReqModifyUserDto {
-    private int inactiveFlag;
+    private int userId;
     private int roleId;
 }
