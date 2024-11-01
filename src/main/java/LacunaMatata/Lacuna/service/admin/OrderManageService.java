@@ -3,12 +3,12 @@ package LacunaMatata.Lacuna.service.admin;
 import LacunaMatata.Lacuna.dto.request.admin.order.ReqGetOrderListDto;
 import LacunaMatata.Lacuna.dto.response.admin.order.RespCountAndOderListDto;
 import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderListDto;
+import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderStatusFilterDto;
 import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.repository.admin.OrderManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,5 +83,19 @@ public class OrderManageService {
     // 회원 주문 항목 복수개 삭제
     public void deleteOrderList() {
 
+    }
+
+    // 회원 주문 정보 상태 출력(필터)
+    public List<RespGetOrderStatusFilterDto> getOrderStatusFilter() {
+        List<Order> orderFilter = orderManageMapper.getOrderStatusFilter();
+        List<RespGetOrderStatusFilterDto> orderStatusFilter = new ArrayList<>();
+        for(Order order : orderFilter) {
+            RespGetOrderStatusFilterDto orderFilter2 = RespGetOrderStatusFilterDto.builder()
+                    .orderId(order.getOrderId())
+                    .status(order.getStatus())
+                    .build();
+            orderStatusFilter.add(orderFilter2);
+        }
+        return orderStatusFilter;
     }
 }

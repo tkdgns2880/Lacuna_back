@@ -60,4 +60,11 @@
                 </if>
             </if>
     </select>
+    <select id="getOrderStatusFilter" resultMap="orderResultMap">
+        select
+            order_id,
+            status
+        from
+            tb_order
+    </select>
 </mapper>

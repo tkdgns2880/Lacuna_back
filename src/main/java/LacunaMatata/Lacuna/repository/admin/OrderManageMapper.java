@@ -12,4 +12,6 @@ public interface OrderManageMapper {
     /** orderManage(회원 주문 관리) 관련 Mapper */
     // 1. 사용자 주문 출력_2024.10.30
     List<Order> getOrderList(Map<String, Object> params);
+    // 2. 회원 주문 상태 출력(필터)_2024.10.31
+    List<Order> getOrderStatusFilter();
 }
