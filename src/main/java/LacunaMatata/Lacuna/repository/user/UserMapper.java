@@ -35,5 +35,5 @@ public interface UserMapper {
     // 5. userId로 로그인 기록 정보 찾기
     List<LoginHistory> findLoginHistoryByUserId(int userId);
     // 6. oAuth2Name(고유값)으로 사용자 찾기
-    SocialLogin findBySocialId(String socialId);
+    User findUserBySocialId(String socialId);
 }

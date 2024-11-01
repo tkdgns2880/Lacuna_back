@@ -17,6 +17,7 @@
         <result property="name" column="name" />
         <result property="lastLoginDate" column="last_login_date" />
         <result property="createDate" column="created_date" />
+        <result property="roleName" column="roleName" />
         <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
     </resultMap>
@@ -234,15 +235,23 @@
         where
             role_id = #{roleId}
     </select>
-    <select id="findBySocialId" resultMap="socialLoginResultMap">
+    <select id="findUserBySocialId" resultMap="UserResultMap">
         select
-            social_login_id,
-            social_user_id,
-            social_id,
-            provider
+            (select u.user_id
+            from tb_user
+            where u.user_id = (select sl.social_user_id
+                from tb_social_login sl
+                where sl.social_id #{socialId}) as userId,
+            (select ur.role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+            from tb_user_role_met urm
+            where urm.role_user_id = (select sl.social_user_id
+                from tb_social_login sl
+                where sl.social_id = #{socialId})
+            order by urm.role_id desc
+            limit 1 )) as roleName
         from
-            tb_social_login
-        where
-            social_id = #{socialId}
+            tb_user u
     </select>
 </mapper>

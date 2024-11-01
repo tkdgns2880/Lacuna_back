@@ -3,6 +3,8 @@ package LacunaMatata.Lacuna.config;
 
 import LacunaMatata.Lacuna.security.filter.JwtTokenFilter;
 import LacunaMatata.Lacuna.security.handler.InAccountExceptionHandler;
+import LacunaMatata.Lacuna.security.handler.OAuth2SuccessHandler;
+import LacunaMatata.Lacuna.service.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private InAccountExceptionHandler inAccountExceptionHandler;
 
+    @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    @Autowired
+    private OAuth2Service oAuth2Service;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().disable();
@@ -29,6 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.headers().frameOptions().disable();
+
+        http.oauth2Login()
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(oAuth2Service);
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

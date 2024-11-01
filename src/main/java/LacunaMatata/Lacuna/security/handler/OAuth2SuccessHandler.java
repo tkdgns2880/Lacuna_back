@@ -32,14 +32,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String socialId = attributes.get("socialId").toString();
         String provider = attributes.get("provider").toString();
 
-        SocialLogin socialLogin = userMapper.findBySocialId(socialId);
-        if(socialLogin == null) {
+        User user = userMapper.findUserBySocialId(socialId);
+        if(user == null) {
             response.sendRedirect("http://localhost:3000/auth/signup/oauth2?socialid=" + socialId +
                     "&provider=" + provider);
             return;
         }
 
-//        String accessToken = jwtProvider.generateAccessToken(user);
-//        response.sendRedirect("http://localhost:3000/user/login/oauth2?accessToken=" + accessToken);
+        String accessToken = jwtProvider.generateAccessToken(user.getUserId(), user.getRoleName());
+        response.sendRedirect("http://localhost:3000/auth/signin/oauth2?accessToken=" + accessToken);
     }
 }
