@@ -17,6 +17,7 @@
         <result property="name" column="name" />
         <result property="lastLoginDate" column="last_login_date" />
         <result property="createDate" column="created_date" />
+        <result property="roleName" column="roleName" />
         <association property="userOptionalInfo" resultMap="userOptionalInfoResultMap" />
         <collection property="userRoleMets" javaType="java.util.Set" resultMap="userRoleMetsResultMap" />
     </resultMap>
@@ -43,6 +44,12 @@
         <result property="marketingReceiveAgreement" column="marketing_receive_agreement" />
         <result property="thirdPartyInfoSharingAgreement" column="third_party_info_sharing_agreement" />
         <result property="useConditionAgreement" column="use_condition_agreement" />
+    </resultMap>
+    <resultMap id="socialLoginResultMap" type="LacunaMatata.Lacuna.entity.user.SocialLogin">
+        <id property="socialLoginId" column="social_login_id" />
+        <result property="socialUserId" column="social_user_id" />
+        <result property="socialId" column="social_id" />
+        <result property="provider" column="provider" />
     </resultMap>
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
@@ -72,6 +79,25 @@
             #{marketingReceiveAgreement},
             #{thirdPartyInfoSharingAgreement},
             #{useConditionAgreement}
+        )
+    </insert>
+    <insert id="saveUserRoleMet" useGeneratedKeys="true" keyProperty="userRoleMetId">
+        insert into tb_user_role_met
+        values(
+            default,
+            #{roleUserId},
+            #{roleId},
+            now(),
+            now()
+        )
+    </insert>
+    <insert id="saveOauthInfo" useGeneratedKeys="true" keyProperty="socialLoginId">
+        insert into tb_social_login
+        values(
+            default,
+            #{socialUserId},
+            #{socialId},
+            #{provider}
         )
     </insert>
     <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginHistoryId">
@@ -208,5 +234,24 @@
             tb_user_role
         where
             role_id = #{roleId}
+    </select>
+    <select id="findUserBySocialId" resultMap="UserResultMap">
+        select
+            (select u.user_id
+            from tb_user
+            where u.user_id = (select sl.social_user_id
+                from tb_social_login sl
+                where sl.social_id #{socialId}) as userId,
+            (select ur.role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+            from tb_user_role_met urm
+            where urm.role_user_id = (select sl.social_user_id
+                from tb_social_login sl
+                where sl.social_id = #{socialId})
+            order by urm.role_id desc
+            limit 1 )) as roleName
+        from
+            tb_user u
     </select>
 </mapper>
