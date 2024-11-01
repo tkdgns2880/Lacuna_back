@@ -20,4 +20,7 @@ public class Payment {
     private BigDecimal amount;
     private String paymentStatus;
     private LocalDateTime createdDate;
+
+    // 조인용
+    private String name;
 }
