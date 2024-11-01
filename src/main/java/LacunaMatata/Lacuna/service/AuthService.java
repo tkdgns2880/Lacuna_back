@@ -2,10 +2,10 @@ package LacunaMatata.Lacuna.service;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
+import LacunaMatata.Lacuna.dto.request.user.auth.ReqOauthSignupDto;
 import LacunaMatata.Lacuna.entity.user.*;
 import LacunaMatata.Lacuna.exception.InactiveAccountException;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
-import LacunaMatata.Lacuna.repository.user.UserRoleMetMapper;
 import LacunaMatata.Lacuna.security.ip.IpUtils;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,6 @@ public class AuthService {
     @Autowired private JwtProvider jwtProvider;
 
     @Autowired private UserMapper userMapper;
-    @Autowired private UserRoleMetMapper userRoleMetMapper;
 
     // 일반 회원 가입
     public void signup(ReqGeneralSignupDto dto) {
@@ -40,8 +39,8 @@ public class AuthService {
                 .password(dto.getPassword())
                 .name(dto.getName())
                 .build();
-        userMapper.saveUser(user);
-        int userId = user.getUserId();
+        int userId = userMapper.saveUser(user);
+
         int thirdPartyInfoSharingAgreement = 0;
         int marketingReceiveAgreement = 0;
         int useConditionAgreement = 0;
@@ -61,7 +60,7 @@ public class AuthService {
             useConditionAgreement = 2;
         }
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
-                .userId(user.getUserId())
+                .userId(userId)
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
@@ -72,10 +71,13 @@ public class AuthService {
                 .build();
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 
-        UserRoleMet userRoleMet = UserRoleMet.builder()
-                .roleUserId(user.getUserId())
-                .build();
-        userRoleMetMapper.saveUserRoleMat(userRoleMet);
+        for(int i = 1; i < 3; i++) {
+            UserRoleMet userRoleMet = UserRoleMet.builder()
+                    .roleUserId(userId)
+                    .roleId(i)
+                    .build();
+            userMapper.saveUserRoleMet(userRoleMet);
+        }
     }
 
     // 일반 로그인
@@ -104,6 +106,61 @@ public class AuthService {
         userMapper.saveLoginHistory(loginHistory);
 
         return accessToken;
+    }
+
+    public void oauthSignup(ReqOauthSignupDto dto) {
+        User user = User.builder()
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .name(dto.getName())
+                .build();
+        int userId = userMapper.saveUser(user);
+
+        int thirdPartyInfoSharingAgreement = 0;
+        int marketingReceiveAgreement = 0;
+        int useConditionAgreement = 0;
+        if(dto.getThirdPartyInfoSharingAgreement() == true) {
+            thirdPartyInfoSharingAgreement = 1;
+        } else {
+            thirdPartyInfoSharingAgreement = 2;
+        }
+        if(dto.getMarketingReceiveAgreement() == true) {
+            marketingReceiveAgreement = 1;
+        } else {
+            marketingReceiveAgreement = 2;
+        }
+        if(dto.getUseConditionAgreement() == true) {
+            useConditionAgreement = 1;
+        } else {
+            useConditionAgreement = 2;
+        }
+        UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
+                .userId(userId)
+                .birthDate(dto.getBirthDate())
+                .gender(dto.getGender())
+                .phoneNumber(dto.getPhoneNumber())
+                .address(dto.getAddress())
+                .marketingReceiveAgreement(marketingReceiveAgreement)
+                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
+                .useConditionAgreement(useConditionAgreement)
+                .build();
+        userMapper.saveUserOptionalInfo(userOptionalInfo);
+
+        SocialLogin socialLogin = SocialLogin.builder()
+                .socialUserId(userId)
+                .socialId(dto.getOauthName())
+                .provider(dto.getProvider())
+                .build();
+        userMapper.saveOauthInfo(socialLogin);
+
+        for(int i = 1; i < 3; i++) {
+            UserRoleMet userRoleMet = UserRoleMet.builder()
+                    .roleUserId(userId)
+                    .roleId(i)
+                    .build();
+            userMapper.saveUserRoleMet(userRoleMet);
+        }
     }
 
     // username이 있는 지 검사 -> AuthAspect로 들어감

@@ -44,6 +44,12 @@
         <result property="thirdPartyInfoSharingAgreement" column="third_party_info_sharing_agreement" />
         <result property="useConditionAgreement" column="use_condition_agreement" />
     </resultMap>
+    <resultMap id="socialLoginResultMap" type="LacunaMatata.Lacuna.entity.user.SocialLogin">
+        <id property="socialLoginId" column="social_login_id" />
+        <result property="socialUserId" column="social_user_id" />
+        <result property="socialId" column="social_id" />
+        <result property="provider" column="provider" />
+    </resultMap>
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
         values(
@@ -72,6 +78,25 @@
             #{marketingReceiveAgreement},
             #{thirdPartyInfoSharingAgreement},
             #{useConditionAgreement}
+        )
+    </insert>
+    <insert id="saveUserRoleMet" useGeneratedKeys="true" keyProperty="userRoleMetId">
+        insert into tb_user_role_met
+        values(
+            default,
+            #{roleUserId},
+            #{roleId},
+            now(),
+            now()
+        )
+    </insert>
+    <insert id="saveOauthInfo" useGeneratedKeys="true" keyProperty="socialLoginId">
+        insert into tb_social_login
+        values(
+            default,
+            #{socialUserId},
+            #{socialId},
+            #{provider}
         )
     </insert>
     <insert id="saveLoginHistory" useGeneratedKeys="true" keyProperty="loginHistoryId">
@@ -208,5 +233,16 @@
             tb_user_role
         where
             role_id = #{roleId}
+    </select>
+    <select id="findBySocialId" resultMap="socialLoginResultMap">
+        select
+            social_login_id,
+            social_user_id,
+            social_id,
+            provider
+        from
+            tb_social_login
+        where
+            social_id = #{socialId}
     </select>
 </mapper>
