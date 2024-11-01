@@ -90,8 +90,8 @@ public class ConsultingManageService {
 
     }
 
-    // 컨설팅 설문지 항목 출력(필터)
-    public void getServeyFilter() {
+    // 컨설팅 설문지 선택지 타입 항목 출력
+    public void getServeyOption() {
 
     }
 
