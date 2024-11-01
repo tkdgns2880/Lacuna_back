@@ -91,6 +91,7 @@ public class ProductManageController {
     @PostMapping("/lower/regist")
     @ApiOperation(value = "registLowerProductApi")
     public ResponseEntity<?> registLowerProduct(@RequestBody ReqRegistLowerProductCategoryDto dto) {
+        System.out.println("요청 들어옴?" + dto);
         productManageService.registProductlowerCategory(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -139,7 +140,8 @@ public class ProductManageController {
     // 상품 등록
     @PostMapping("/regist")
     @ApiOperation(value = "registProductApi")
-    public ResponseEntity<?> registProduct(@RequestBody ReqRegistProductDto dto) {
+    public ResponseEntity<?> registProduct(@ModelAttribute ReqRegistProductDto dto) {
+        System.out.println("요청 데이터 확인: " + dto );
         productManageService.registProduct(dto);
         return ResponseEntity.ok().body(true);
     }

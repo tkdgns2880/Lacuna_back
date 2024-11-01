@@ -2,6 +2,9 @@ package LacunaMatata.Lacuna.dto.request.admin.mbti;
 
 import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 public class ReqRegistMbtiResultDto {
@@ -12,14 +15,6 @@ public class ReqRegistMbtiResultDto {
     private String mbtiResultContent;
     private int mbtiResultStatus;
 
-    public MbtiResult toMbtiResult() {
-        return MbtiResult.builder()
-                .mbtiResultTitle(mbtiResultTitle)
-                .mbtiResultCategoryName(mbtiResultCategoryName)
-                .mbtiResultImg(mbtiResultImg)
-                .mbtiResultSummary(mbtiResultSummary)
-                .mbtiResultContent(mbtiResultContent)
-                .mbtiResultStatus(mbtiResultStatus)
-                .build();
-    }
+    // MBTI 결과 이미지 파일을 받는 곳
+    private List<MultipartFile> mbtiResultImgs;
 }

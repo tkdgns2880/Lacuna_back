@@ -89,7 +89,7 @@
             #{optionScore}
         )
     </insert>
-    <insert id="saveMbtiResult">
+    <insert id="saveMbtiResult" useGeneratedKeys="true" keyProperty="mbtiResultId">
         insert into tb_mbti_result
         values(
             default,
@@ -104,7 +104,13 @@
             now()
         )
     </insert>
-
+    <insert id="insertMbtiResultImgs">
+        insert into tb_mbti_result
+        values
+        <foreach item="imgPath" collection="insertCompletedImgPaths" separator="," >
+            (default, #{mbtiResultId}, #{imgPath}),
+        </foreach>
+    </insert>
     <update id="modifyMbtiCategory">
         update
             tb_mbti_category
@@ -203,6 +209,16 @@
             mbti_result_id in
             <foreach item="mbtiResultId" collection="mbtiResultIdList" open="(" separator="," close=")">
                 #{mbtiResultId}
+            </foreach>
+    </delete>
+    <delete id="deleteMbtiResultImgs">
+        delete
+        from
+            tb_mbti_result_img
+        where
+            mbti_result_img_id in
+            <foreach item="deleteImgId" collection="deleteImgIds" open="(" separator="," close=")">
+                #{deleteImgId}
             </foreach>
     </delete>
 

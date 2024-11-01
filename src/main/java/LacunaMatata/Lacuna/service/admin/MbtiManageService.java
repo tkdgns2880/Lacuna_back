@@ -9,18 +9,28 @@ import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import LacunaMatata.Lacuna.repository.admin.MbtiManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MbtiManageService {
 
     @Autowired
     private MbtiManageMapper mbtiManageMapper;
+
+    @Value("${file.path}")
+    private String filePath;
 
     // mbti 분류 카테고리 리스트 출력
     public RespCountAndMbtiCategoryDto getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
@@ -257,7 +267,8 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 등록
-    public void registMbtiResult(ReqRegistMbtiResultDto dto) {
+    @Transactional(rollbackFor = Exception.class)
+    public void registMbtiResult(ReqRegistMbtiResultDto dto) throws IOException {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
@@ -266,12 +277,25 @@ public class MbtiManageService {
                 .mbtiResultRegisterId(registerId)
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
-                .mbtiResultImg(dto.getMbtiResultImg())
                 .mbtiResultSummary(dto.getMbtiResultSummary())
                 .mbtiResultContent(dto.getMbtiResultContent())
                 .mbtiResultStatus(dto.getMbtiResultStatus())
                 .build();
+
         mbtiManageMapper.saveMbtiResult(mbtiResult);
+
+        // 1. 이미지 신규 등록할 공간 생성
+        List<MultipartFile> insertImgs = dto.getMbtiResultImgs();
+        List<String> insertCompletedImgPaths = new ArrayList<>();
+
+        // 2. 신규 이미지 저장
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+            for(MultipartFile insertFile: insertImgs) {
+                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
+            }
+            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, mbtiResult.getMbtiResultId());
+        }
     }
 
     // mbti 살문 결과 항목 모달 출력
@@ -289,17 +313,56 @@ public class MbtiManageService {
     }
 
     // mbti 설문 결과 항목 모달 수정
-    public void modifyMbtiResult(ReqModifyMbtiResultDto dto, int resultId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void modifyMbtiResult(ReqModifyMbtiResultDto dto) throws IOException {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
 
-        Map<String, Object> params = Map.of(
-            "registerId", registerId,
-            "resultId", resultId
-        );
+        /* 이미지 삭제 후 이미지 추가 */
+        // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
 
-        mbtiManageMapper.modifyMbtiResult(dto, params);
+        // 1. 이미지 신규 등록할 공간 생성
+        List<MultipartFile> insertImgs = dto.getNewMbitResultImgs();
+        List<String> insertCompletedImgPaths = new ArrayList<>();
+
+        // 1. 이미지 삭제할 공간 생성
+        List<Map<String, Object>> deleteImgs = dto.getDeleteMbtiResultImgs();
+        List<Long> deleteImgIds = deleteImgs.stream().map(deleteImg -> (Long) deleteImg.get("id")).collect(Collectors.toList());
+        List<String> deleteImgPaths = deleteImgs.stream().map(deleteImg -> (String) deleteImg.get("path")).collect(Collectors.toList());
+
+        // 2. 이미지 경로 DB 삭제 및 DB 파일 삭제
+        if(deleteImgs != null && !deleteImgs.get(0).isEmpty()) {
+            // 2-1. 이미지 경로 DB 삭제
+            mbtiManageMapper.deleteMbtiResultImgs(deleteImgIds);
+            // Todo foreach를 돌리는데, where 조건에 id in (deleteImgiIds);
+
+            // 2-2. 이미지 물리 파일 삭제
+            for(String deletePath: deleteImgPaths) {
+                deleteImgUrl(deletePath);
+            }
+        }
+
+        // 3. 신규 이미지 저장
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+            for(MultipartFile insertFile: insertImgs) {
+                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
+            }
+            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, dto.getMbtiResultId());
+        }
+
+        MbtiResult mbtiResult = MbtiResult.builder()
+                .mbtiResultId(dto.getMbtiResultId())
+                .mbtiResultRegisterId(registerId)
+                .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
+                .mbtiResultTitle(dto.getMbtiResultTitle())
+                .mbtiResultSummary(dto.getMbtiResultSummary())
+                .mbtiResultContent(dto.getMbtiResultContent())
+                .mbtiResultStatus(dto.getMbtiResultStatus())
+                .build();
+
+        mbtiManageMapper.modifyMbtiResult(mbtiResult);
     }
 
     // mbti 설문 결과 항목 삭제
@@ -311,5 +374,25 @@ public class MbtiManageService {
     public void deleteMbtiResultList(ReqDeleteMbtiResultListDto dto) {
         List<Integer> mbtiResultIdList = dto.getMbtiResultIdList();
         mbtiManageMapper.deleteMbtiResultList(mbtiResultIdList);
+    }
+
+    public String registerImgUrl(MultipartFile img, String dirName ) throws IOException {
+        String imgName = img.getOriginalFilename();
+        // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+        File directory = new File(filePath + dirName);
+        if(!directory.exists()) {
+            directory.mkdirs();
+        }
+        File file = new File(filePath + dirName + imgName);
+        img.transferTo(file);
+
+        return filePath + dirName + imgName;
+    }
+
+    public void deleteImgUrl(String imgUrl) {
+        File file = new File(imgUrl);
+        if(file.exists()) {
+            file.delete();
+        }
     }
 }
