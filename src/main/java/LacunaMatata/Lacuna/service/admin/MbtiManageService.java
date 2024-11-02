@@ -305,7 +305,6 @@ public class MbtiManageService {
                 .mbtiResultId(mbtiResult.getMbtiResultId())
                 .mbtiResultTitle(mbtiResult.getMbtiResultTitle())
                 .mbtiResultCategoryName(mbtiResult.getMbtiResultCategoryName())
-                .mbtiResultImg(mbtiResult.getMbtiResultImg())
                 .mbtiResultSummary(mbtiResult.getMbtiResultSummary())
                 .mbtiResultContent(mbtiResult.getMbtiResultContent())
                 .build();

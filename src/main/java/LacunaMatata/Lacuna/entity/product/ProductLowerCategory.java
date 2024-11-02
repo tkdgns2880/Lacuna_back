@@ -23,6 +23,8 @@ public class ProductLowerCategory {
     // 서브쿼리 계산용
     private int totalCount;
 
+    private String productUpperCategoryName;
+
     private ProductUpperCategory productUpperCategory;
     private User user;
 }

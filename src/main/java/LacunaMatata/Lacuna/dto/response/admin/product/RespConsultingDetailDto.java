@@ -17,10 +17,11 @@ public class RespConsultingDetailDto{
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String productImg;
-
-    private int repeatCount; // 컨설팅 반복 횟수
-    private String consultingDescription; // 컨설팅 상품 설명
-    private String consultingName; // 컨설팅 상품 이름
-
+    private String description;
     private String etc; // 기타사항
+
+    private int consultingDetailContentId;
+    private int repeatCount; // 컨설팅 반복 횟수
+
+    private String consultingName; // 컨설팅 상품 이름
 }

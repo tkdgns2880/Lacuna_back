@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 @Data
-public class RespCountAndProductDto {
-    private int totalCount;
-    private List<RespProductListDto> respProductListDtoList;
+public class RespLowerCategoryAndProductDto {
+    private int productLowerCategoryId;
+    private String productLowerCategoryName;
 }

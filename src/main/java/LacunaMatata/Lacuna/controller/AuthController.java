@@ -41,7 +41,7 @@ public class AuthController {
      ***********************************/
     @GetMapping("/access")
     @ApiOperation(value = "accessTokenApi")
-    ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
+    public ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
         tokenService.isValidToken(dto.getAccessToken());
         return ResponseEntity.ok().body(true);
     }

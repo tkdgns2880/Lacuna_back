@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.service.admin;
 
+
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.*;
 import LacunaMatata.Lacuna.entity.product.*;
@@ -12,14 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Multipart;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductManageService {
@@ -180,9 +179,9 @@ public class ProductManageService {
                 "limit", dto.getLimit()
         );
         List<Product> productList = productManageMapper.getProductList(params);
-        List<RespProductDto> respProductDtoList = new ArrayList<RespProductDto>();
+        List<RespProductListDto> respProductListDtoList = new ArrayList<RespProductListDto>();
         for(Product product : productList) {
-            RespProductDto respProductDto = RespProductDto.builder()
+            RespProductListDto respProductListDto = RespProductListDto.builder()
                     .productId(product.getProductId())
                     .productCode(product.getProductCode())
                     .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
@@ -192,16 +191,27 @@ public class ProductManageService {
                     .name(product.getUser().getName())
                     .createdDate(product.getCreateDate())
                     .build();
-            respProductDtoList.add(respProductDto);
+            respProductListDtoList.add(respProductListDto);
         }
         int totalCount = productList.isEmpty() ? 0 : productList.get(0).getTotalCount();
 
         RespCountAndProductDto respCountAndProductDto = RespCountAndProductDto.builder()
                 .totalCount(totalCount)
-                .respProductDtoList(respProductDtoList)
+                .respProductListDtoList(respProductListDtoList)
                 .build();
 
         return respCountAndProductDto;
+    }
+
+    // 상품 등록 모달창 출력
+    public RespProductRegistModalDto getRegistModal() {
+        List<RespUpperProductCategoryAndLowerDto> productUpperAndLower = productManageMapper.getProductUpperAndLowerCategoryList();
+        List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
+        RespProductRegistModalDto respProductRegistModalDto = RespProductRegistModalDto.builder()
+                .respUpperProductCategoryAndLowerDto(productUpperAndLower)
+                .productConsultingContentList(consultingContent)
+                .build();
+        return respProductRegistModalDto;
     }
 
     // 상품 등록
@@ -210,28 +220,33 @@ public class ProductManageService {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registeId = principalUser.getId();
 
-        Product product = Product.builder()
-                .productUpperCategoryId(dto.getProductUpperCategoryId())
-                .productLowerCategoryId(dto.getProductLowerCategoryId())
-                .productCode(dto.getProductCode())
-                .price(BigDecimal.valueOf(dto.getPrice()))
-                .productName(dto.getProductName())
-                .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
-                .productRegisterId(registeId)
-                .build();
-
-        productManageMapper.saveProduct(product);
-
         // 이미지 등록
         // 1. 이미지 신규 등록할 공간 생성
         MultipartFile insertImg = dto.getProductImg();
         String insertCompletedImgPath = null;
 
         // 2. 신규 이미지 저장
-        if(insertImg != null) {
-            insertCompletedImgPath = registerImgUrl(insertImg, "product");
-            productManageMapper.insertProductImg(insertCompletedImgPath, product.getProductId());
-        }
+        insertCompletedImgPath = registerImgUrl(insertImg, "product");
+
+        Product product = Product.builder()
+                .productUpperCategoryId(dto.getProductUpperCategoryId())
+                .productLowerCategoryId(dto.getProductLowerCategoryId())
+                .productCode(dto.getProductCode())
+                .productName(dto.getProductName())
+                .price(BigDecimal.valueOf(dto.getPrice()))
+                .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
+                .productImg(insertCompletedImgPath)
+                .productRegisterId(registeId)
+                .description(dto.getDescription())
+                .etc(dto.getEtc())
+                .build();
+
+        productManageMapper.saveProduct(product);
+
+//        // 2. 신규 이미지 저장
+//        if(insertImg != null) {
+//            productManageMapper.insertProductImg(insertCompletedImgPath, product.getProductId());
+//        }
 
         // Todo 상품 세부 정보 컨설팅 분류에 맞게 넣는거 알아서 짜봐여. (dto, enttiy 확인 및 수정 필요
         // Todo insert 된 id는 useGenerator 사용하면 build한 엔티티 변수에 들어있는 것을 사용하면 됨 (위 이미지 넣은 방법 참조)
@@ -243,34 +258,31 @@ public class ProductManageService {
                 int consultingContentId = productManageMapper.saveConsultingContent(consultingContent);
 
                 ConsultingDetail consultingDetail = ConsultingDetail.builder()
-                        .consultingDetailProductId(productId)
+                        .consultingDetailProductId(product.getProductId())
                         .consultingDetailContentId(consultingContentId)
                         .repeatCount(dto.getRepeatCount())
-                        .description(dto.getConsultingDescription())
-                        .etc(dto.getEtc())
                         .build();
                 productManageMapper.saveConsultingDetail(consultingDetail);
                 break;
             case 2:
                 CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
-                        .cosmeticDetailProductId(productId)
+                        .cosmeticDetailProductId(product.getProductId())
                         .volume(dto.getVolume())
                         .ingredient(dto.getIngredient())
                         .skinType(dto.getSkinType())
                         .effect(dto.getEffect())
                         .manufacture(dto.getManufacture())
-                        .productDescription(dto.getCosmeticProductDescription())
                         .productUrl(dto.getProductUrl())
-                        .etc(dto.getEtc())
                         .build();
                 productManageMapper.saveCosmeticDetail(cosmeticDetail);
                 break;
         }
     }
 
-    // 상품 항목 출력
+    // 상품 항목 출력(수정 모달창) -> ProductDetailAspect 로 넘겨줌
     public RespProductDetailDto getProductDetail(int productId) {
         Product product = productManageMapper.getProduct(productId);
+
         RespProductDetailDto productConsultingDetail = RespProductDetailDto.builder()
                 .productId(product.getProductId())
                 .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
@@ -281,6 +293,8 @@ public class ProductManageService {
                 .price(product.getPrice())
                 .promotionPrice(product.getPromotionPrice())
                 .productImg(product.getProductImg())
+                .description(product.getDescription())
+                .etc(product.getEtc())
                 .build();
         return productConsultingDetail;
     }
@@ -294,57 +308,53 @@ public class ProductManageService {
         /* 이미지 삭제 후 이미지 추가 */
         // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
 
-        // 1. 최종 수정될 imgPath 공간 생성
-        String finalImgPath = dto.getPrevImgPath();
+//        // 1. 최종 수정될 imgPath 공간 생성
+//        String finalImgPath = dto.getPrevImgPath();
+//
+//        // 2. 이미지 신규 등록할 공간 생성
+//        MultipartFile insertImg = dto.getNewProductImg();
+//
+//        // 3. 이미지 삭제할 공간 생성
+//        String deleteImgPath = dto.getDeleteProductImgPath();
+//
+//        // 4. 물리 파일 삭제
+//        if(deleteImgPath != null) {
+//            deleteImgUrl(deleteImgPath);
+//            finalImgPath = null;
+//        }
 
-        // 2. 이미지 신규 등록할 공간 생성
-        MultipartFile insertImg = dto.getNewProductImg();
+        // 이미지 등록
+        // 1. 이미지 수정할 공간 생성
+        MultipartFile insertImg = dto.getProductImg();
+        String insertCompletedImgPath = null;
 
-        // 3. 이미지 삭제할 공간 생성
-        String deleteImgPath = dto.getDeleteProductImgPath();
-
-        // 4. 물리 파일 삭제
-        if(deleteImgPath != null) {
-            deleteImgUrl(deleteImgPath);
-            finalImgPath = null;
-        }
-
-        // 4. 신규 이미지 저장
-        if(insertImg != null) {
-            finalImgPath = registerImgUrl(insertImg, "product");
-        }
+        // 2. 신규 이미지 저장
+        insertCompletedImgPath = registerImgUrl(insertImg, "product");
 
         Product product = Product.builder()
                 .productId(dto.getProductId())
+                .productLowerCategoryId(dto.getProductLowerCategoryId())
                 .productCode(dto.getProductCode())
                 .productName(dto.getProductName())
                 .price(BigDecimal.valueOf(dto.getPrice()))
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
-                .productImg(finalImgPath)
+                .productImg(insertCompletedImgPath)
                 .productRegisterId(registerId)
+                .description(dto.getDescription())
+                .etc(dto.getEtc())
                 .build();
 
-        if(productUpperCategory.getProductUpperCategoryId() == 1) {
+        if(product.getProductUpperCategoryId() == 1) {
             productManageMapper.modifyProduct(product);
             ConsultingDetail consultingDetail = ConsultingDetail.builder()
                     .consultingDetailProductId(dto.getProductId())
+                    .consultingDetailContentId(dto.getConsultingDetailContentId())
                     .repeatCount(dto.getRepeatCount())
-                    .description(dto.getConsultingDescription())
-                    .etc(dto.getEtc())
                     .build();
             productManageMapper.modifyConsultingDetail(consultingDetail);
-
-            ConsultingDetail modifyConsultingDetail
-                    = productManageMapper.findByIdConsultingDetail(dto.getProductId());
-
-            ConsultingContent consultingContent = ConsultingContent.builder()
-                    .consultingContentId(modifyConsultingDetail.getConsultingDetailContentId())
-                    .name(dto.getConsultingName())
-                    .build();
-            productManageMapper.modifyConsultingContent(consultingContent);
         }
 
-        if(productUpperCategory.getProductUpperCategoryId() == 2) {
+        if(product.getProductUpperCategoryId() == 2) {
             productManageMapper.modifyProduct(product);
             CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
                     .cosmeticDetailProductId(dto.getProductId())
@@ -353,9 +363,7 @@ public class ProductManageService {
                     .skinType(dto.getSkinType())
                     .effect(dto.getEffect())
                     .manufacture(dto.getManufacture())
-                    .productDescription(dto.getCosmeticProductDescription())
                     .productUrl(dto.getProductUrl())
-                    .etc(dto.getEtc())
                     .build();
             productManageMapper.modifyCosmeticDetail(cosmeticDetail);
         }

@@ -20,7 +20,6 @@ public class MbtiResult {
     private String mbtiResultTitle;
     private String mbtiResultSummary;
     private String mbtiResultContent;
-    private String mbtiResultImg;
     private int mbtiResultStatus;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;

@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.repository.admin;
 
+import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryAndLowerDto;
 import LacunaMatata.Lacuna.entity.product.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -36,6 +37,10 @@ public interface ProductManageMapper {
     int deleteProductLowerCategory(int lowerId);
     // 6. 상품 하위 분류 복수 삭제_2024.10.26
     int deleteProductLowerCategoryList(List<Integer> lowerIdList);
+    // 7. 상위 분류 항목과 하위 분류 항목 리스트 출력
+    List<RespUpperProductCategoryAndLowerDto> getProductUpperAndLowerCategoryList();
+    // 8. 컨설팅 상품의 콘텐츠 내용 리스트 출력
+    List<ConsultingContent> getConsultingContent();
 
     /** 상품 관련 Mapper */
     // 1. 상품 리스트 출력_2024.10.26

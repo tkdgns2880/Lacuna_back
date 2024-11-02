@@ -21,11 +21,6 @@ public class RespProductDetailDto {
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String productImg;
-
-
-
-    private String etc; // 기타사항
-
-
-
+    private String description;
+    private String etc;
 }
