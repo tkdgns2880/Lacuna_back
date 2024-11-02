@@ -25,14 +25,14 @@ public class SettingController {
 
     // 설정(약관 email, phone, sns 주소 등) 정보 불러오기
     @GetMapping("/")
-    ResponseEntity<?> getSettingList() {
+    public ResponseEntity<?> getSettingList() {
         List<RespSettingInfoDto> settingInfo = settingService.getSettingInfo();
         return ResponseEntity.ok().body(settingInfo);
     }
 
     // 설정(약관 email, phone, sns 주소 등) 항목 수정
     @PutMapping("/modify/{settingId}")
-    ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
+    public ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
         System.out.println("요청 데이터: "+dto);
         settingService.modifySettingInfo(dto);
         return ResponseEntity.ok().body(true);

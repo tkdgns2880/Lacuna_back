@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class StatisticsController {
 
     @PostMapping("/service/statistic")
-    ResponseEntity<?> registCounting() {return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> registCounting() {return ResponseEntity.ok().body(null);
     }
 }

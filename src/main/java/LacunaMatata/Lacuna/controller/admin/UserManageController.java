@@ -28,35 +28,35 @@ public class UserManageController {
 
     // 사용자 목록 출력
     @GetMapping("/list")
-    ResponseEntity<?> getUserList(ReqGetUserListDto dto) {
+    public ResponseEntity<?> getUserList(ReqGetUserListDto dto) {
         RespCountAndUserListDto respCountAndUserListDto = userManageService.getUserInfoList(dto);
         return ResponseEntity.ok().body(respCountAndUserListDto);
     }
 
     // 사용자 등록
     @PostMapping("/regist")
-    ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) {
+    public ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) {
         userManageService.registUser(dto);
         return ResponseEntity.ok().body(true);
     }
 
     // 사용자 항목 출력
     @GetMapping("/{userId}")
-    ResponseEntity<?> getUserDetail(@PathVariable int userId) {
+    public ResponseEntity<?> getUserDetail(@PathVariable int userId) {
         RespUserDetailDto userDetail = userManageService.getUserDetail(userId);
         return ResponseEntity.ok().body(userDetail);
     }
 
     // 사용자 권한 목록 출력(필터)
     @GetMapping("/role/list/filter")
-    ResponseEntity<?> getUserRoleList() {
+    public ResponseEntity<?> getUserRoleList() {
 
         return ResponseEntity.ok().body(true);
     }
 
     // 사용자 수정(권한, 활성화)
     @PutMapping("/modify/{userId}")
-    ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) {
+    public ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) {
         userManageService.modifyUser(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -64,7 +64,7 @@ public class UserManageController {
     // 사용자 삭제
     @PostMapping("/delete/{userId}")
     @ApiOperation(value = "deleteUserApi")
-    ResponseEntity<?> deleteUser(@PathVariable int userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable int userId) {
         userManageService.deleteUser(userId);
         return ResponseEntity.ok().body(true);
     }
@@ -72,7 +72,7 @@ public class UserManageController {
     // 사용자 복수개 삭제
     @PostMapping("/delete")
     @ApiOperation(value = "deleteUserListApi")
-    ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
+    public ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
         userManageService.deleteUserList(dto);
         return ResponseEntity.ok().body(true);
     }

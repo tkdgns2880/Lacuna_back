@@ -139,7 +139,9 @@ public class ProductManageController {
     }
 
     // 상품 등록 모달창 출력
-    public ResponseEntity<?> getProductUpperAndLowerCategoryList() {
+    @GetMapping("/regist/modal")
+    @ApiOperation(value = "getRegistModalApi")
+    public ResponseEntity<?> getRegistModal() {
         return ResponseEntity.ok().body(productManageService.getRegistModal());
     }
 
