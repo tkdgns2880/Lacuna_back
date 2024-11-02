@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /************************************************
@@ -137,10 +138,15 @@ public class ProductManageController {
         return ResponseEntity.ok().body(respCountAndProductDto);
     }
 
+    // 상품 등록 모달창 출력
+    public ResponseEntity<?> getProductUpperAndLowerCategoryList() {
+        return ResponseEntity.ok().body(productManageService.getRegistModal());
+    }
+
     // 상품 등록
     @PostMapping("/regist")
     @ApiOperation(value = "registProductApi")
-    public ResponseEntity<?> registProduct(@ModelAttribute ReqRegistProductDto dto) {
+    public ResponseEntity<?> registProduct(@ModelAttribute ReqRegistProductDto dto) throws Exception {
         System.out.println("요청 데이터 확인: " + dto );
         productManageService.registProduct(dto);
         return ResponseEntity.ok().body(true);
@@ -157,7 +163,7 @@ public class ProductManageController {
     // 상품 수정
     @PutMapping("/modify/{productId}")
     @ApiOperation(value = "modifyProductApi")
-    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto, @PathVariable int productId) {
+    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto, @PathVariable int productId) throws IOException {
         productManageService.modifyProduct(dto);
         return ResponseEntity.ok().body(true);
     }

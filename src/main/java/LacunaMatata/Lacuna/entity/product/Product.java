@@ -23,6 +23,8 @@ public class Product {
     private BigDecimal promotionPrice;
     private String productImg;
     private int productRegisterId;
+    private String description;
+    private String etc;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

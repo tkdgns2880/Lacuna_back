@@ -18,7 +18,6 @@ public class ConsultingResponse {
     private int consultingResponseLowerCategoryId;
     private int responseConsultingId;
     private int consultingOptionId;
-    private String consultingOptionValue;
     private int consultingResponseLifestyleResultId;
     private int consultingResponseStatus;
     private LocalDateTime createDate;

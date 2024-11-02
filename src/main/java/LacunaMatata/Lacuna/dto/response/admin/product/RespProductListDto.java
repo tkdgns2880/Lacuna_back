@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class RespProductDto {
+public class RespProductListDto {
     private int productId;
     private String productCode;
     private String productUpperCategoryName;

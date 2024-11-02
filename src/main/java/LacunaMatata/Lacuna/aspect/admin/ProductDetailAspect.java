@@ -1,8 +1,7 @@
 package LacunaMatata.Lacuna.aspect.admin;
 
-import LacunaMatata.Lacuna.dto.response.admin.product.RespConsultingDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespCosmeticDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.product.RespProductDetailDto;
+import LacunaMatata.Lacuna.dto.response.admin.product.*;
+import LacunaMatata.Lacuna.entity.product.ConsultingContent;
 import LacunaMatata.Lacuna.entity.product.ConsultingDetail;
 import LacunaMatata.Lacuna.entity.product.CosmeticDetail;
 import LacunaMatata.Lacuna.entity.product.Product;
@@ -14,6 +13,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Aspect
@@ -33,6 +34,13 @@ public class ProductDetailAspect {
 
         int productId = (int) proceedingJoinPoint.getArgs()[0];
 
+        List<RespUpperProductCategoryAndLowerDto> productUpperAndLower = productManageMapper.getProductUpperAndLowerCategoryList();
+        List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
+        RespProductRegistModalDto respProductRegistModalDto = RespProductRegistModalDto.builder()
+                .respUpperProductCategoryAndLowerDto(productUpperAndLower)
+                .productConsultingContentList(consultingContent)
+                .build();
+
         if (body instanceof RespProductDetailDto) {
 
             Product product = productManageMapper.getProduct(productId);
@@ -49,12 +57,17 @@ public class ProductDetailAspect {
                         .price(product.getPrice())
                         .promotionPrice(product.getPromotionPrice())
                         .productImg(product.getProductImg())
+                        .description(product.getDescription())
+                        .etc(product.getEtc())
                         .repeatCount(consultingDetail.getRepeatCount())
-                        .consultingDescription(consultingDetail.getDescription())
+                        .consultingDetailContentId(consultingDetail.getConsultingDetailContentId())
                         .consultingName(consultingDetail.getConsultingContent().getName())
-                        .etc(consultingDetail.getEtc())
                         .build();
-                return ResponseEntity.ok().body(respConsultingDetailDto);
+                RespModifyConsultingProductModalDto modifyConsultingProductDto = RespModifyConsultingProductModalDto.builder()
+                        .respProductRegistModalDto(respProductRegistModalDto)
+                        .respConsultingDetailDto(respConsultingDetailDto)
+                        .build();
+                return ResponseEntity.ok().body(modifyConsultingProductDto);
             }
 
             // 만약 화장품 관련 상품이면 화장품 내용만 담아서 보냄
@@ -71,16 +84,20 @@ public class ProductDetailAspect {
                         .price(product.getPrice())
                         .promotionPrice(product.getPromotionPrice())
                         .productImg(product.getProductImg())
+                        .description(product.getDescription())
+                        .etc(product.getEtc())
                         .volume(cosmeticDetail.getVolume())
                         .ingredient(cosmeticDetail.getIngredient())
                         .skinType(cosmeticDetail.getSkinType())
                         .effect(cosmeticDetail.getEffect())
                         .manufacture(cosmeticDetail.getManufacture())
-                        .cosmeticProductDescription(cosmeticDetail.getProductDescription())
                         .productUrl(cosmeticDetail.getProductUrl())
-                        .etc(cosmeticDetail.getEtc())
                         .build();
-                return ResponseEntity.ok().body(respCosmeticDetailDto);
+                RespModifyCosmeticProductDto respModifyCosmeticProductDto = RespModifyCosmeticProductDto.builder()
+                        .respProductRegistModalDto(respProductRegistModalDto)
+                        .respCosmeticDetailDto(respCosmeticDetailDto)
+                        .build();
+                return ResponseEntity.ok().body(respModifyCosmeticProductDto);
             }
         }
 

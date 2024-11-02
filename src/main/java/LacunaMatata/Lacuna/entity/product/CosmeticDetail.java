@@ -17,7 +17,5 @@ public class CosmeticDetail {
     private String skinType; // 피부타입
     private String effect; // 효능, 효과
     private String manufacture; // 제조사
-    private String productDescription;
     private String productUrl; // 상품 url
-    private String etc;
 }

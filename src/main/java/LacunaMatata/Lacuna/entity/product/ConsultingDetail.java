@@ -14,8 +14,6 @@ public class ConsultingDetail {
     private int consultingDetailProductId; // productId
     private int consultingDetailContentId; // consultingContentId
     private int repeatCount;
-    private String description;
-    private String etc;
 
     private ConsultingContent consultingContent;
 }
