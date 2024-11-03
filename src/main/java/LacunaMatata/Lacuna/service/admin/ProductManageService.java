@@ -222,11 +222,13 @@ public class ProductManageService {
 
         // 이미지 등록
         // 1. 이미지 신규 등록할 공간 생성
-        MultipartFile insertImg = dto.getProductImg();
+        List<MultipartFile> insertImgs = dto.getInsertImgs();
         String insertCompletedImgPath = null;
 
         // 2. 신규 이미지 저장
-        insertCompletedImgPath = registerImgUrl(insertImg, "product");
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "product");
+        }
 
         Product product = Product.builder()
                 .productUpperCategoryId(dto.getProductUpperCategoryId())
@@ -243,23 +245,13 @@ public class ProductManageService {
 
         productManageMapper.saveProduct(product);
 
-//        // 2. 신규 이미지 저장
-//        if(insertImg != null) {
-//            productManageMapper.insertProductImg(insertCompletedImgPath, product.getProductId());
-//        }
-
         // Todo 상품 세부 정보 컨설팅 분류에 맞게 넣는거 알아서 짜봐여. (dto, enttiy 확인 및 수정 필요
         // Todo insert 된 id는 useGenerator 사용하면 build한 엔티티 변수에 들어있는 것을 사용하면 됨 (위 이미지 넣은 방법 참조)
         switch (dto.getProductUpperCategoryId()) {
             case 1:
-                ConsultingContent consultingContent = ConsultingContent.builder()
-                        .name(dto.getConsultingName())
-                        .build();
-                int consultingContentId = productManageMapper.saveConsultingContent(consultingContent);
-
                 ConsultingDetail consultingDetail = ConsultingDetail.builder()
                         .consultingDetailProductId(product.getProductId())
-                        .consultingDetailContentId(consultingContentId)
+                        .consultingDetailContentId(dto.getConsultingContentId())
                         .repeatCount(dto.getRepeatCount())
                         .build();
                 productManageMapper.saveConsultingDetail(consultingDetail);
@@ -308,56 +300,55 @@ public class ProductManageService {
         /* 이미지 삭제 후 이미지 추가 */
         // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
 
-//        // 1. 최종 수정될 imgPath 공간 생성
-//        String finalImgPath = dto.getPrevImgPath();
-//
-//        // 2. 이미지 신규 등록할 공간 생성
-//        MultipartFile insertImg = dto.getNewProductImg();
-//
-//        // 3. 이미지 삭제할 공간 생성
-//        String deleteImgPath = dto.getDeleteProductImgPath();
-//
-//        // 4. 물리 파일 삭제
-//        if(deleteImgPath != null) {
-//            deleteImgUrl(deleteImgPath);
-//            finalImgPath = null;
-//        }
+        // 1. 최종 수정될 imgPath 공간 생성
+        String finalImgPath = dto.getPrevImgPath();
+
+        // 2. 이미지 신규 등록할 공간 생성
+        List<MultipartFile> insertImgs = dto.getInsertImgs();
+
+        // 3. 이미지 삭제할 공간 생성
+        String deleteImgPath = dto.getDeleteImgPath();
+
+        // 4. 물리 파일 삭제
+        if(deleteImgPath != null) {
+            deleteImgUrl(deleteImgPath);
+            finalImgPath = null;
+        }
 
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
-        MultipartFile insertImg = dto.getProductImg();
-        String insertCompletedImgPath = null;
-
-        // 2. 신규 이미지 저장
-        insertCompletedImgPath = registerImgUrl(insertImg, "product");
+        if(insertImgs != null && insertImgs.get(0).isEmpty()) {
+            finalImgPath = registerImgUrl(insertImgs.get(0), "product");
+        }
 
         Product product = Product.builder()
                 .productId(dto.getProductId())
+                .productUpperCategoryId(dto.getProductUpperCategoryId())
                 .productLowerCategoryId(dto.getProductLowerCategoryId())
                 .productCode(dto.getProductCode())
                 .productName(dto.getProductName())
                 .price(BigDecimal.valueOf(dto.getPrice()))
                 .promotionPrice(BigDecimal.valueOf(dto.getPromotionPrice()))
-                .productImg(insertCompletedImgPath)
+                .productImg(finalImgPath)
                 .productRegisterId(registerId)
                 .description(dto.getDescription())
                 .etc(dto.getEtc())
                 .build();
+        productManageMapper.modifyProduct(product);
 
         if(product.getProductUpperCategoryId() == 1) {
-            productManageMapper.modifyProduct(product);
             ConsultingDetail consultingDetail = ConsultingDetail.builder()
-                    .consultingDetailProductId(dto.getProductId())
-                    .consultingDetailContentId(dto.getConsultingDetailContentId())
+                    .consultingDetailProductId(dto.getConsultingDetailProductId())
+                    .consultingDetailContentId(dto.getConsultingContentId())
                     .repeatCount(dto.getRepeatCount())
                     .build();
             productManageMapper.modifyConsultingDetail(consultingDetail);
         }
 
         if(product.getProductUpperCategoryId() == 2) {
-            productManageMapper.modifyProduct(product);
             CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
-                    .cosmeticDetailProductId(dto.getProductId())
+                    .cosmeticDetailId(dto.getCosmeticDetailId())
+                    .cosmeticDetailProductId(dto.getCosmeticDetailProductId())
                     .volume(dto.getVolume())
                     .ingredient(dto.getIngredient())
                     .skinType(dto.getSkinType())

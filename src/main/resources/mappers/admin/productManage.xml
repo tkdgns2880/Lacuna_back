@@ -38,7 +38,7 @@
     <resultMap id="UpperAndLowerResultMap" type="LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryAndLowerDto">
         <result property="productUpperCategoryId" column="product_upper_category_id" />
         <result property="productUpperCategoryName" column="product_upper_category_name" />
-        <association property="productLowerCategoryList" resultMap="productLowerCategoryResultMap3" />
+        <association property="productLowerCategoryAndProduct" resultMap="productLowerCategoryResultMap3" />
     </resultMap>
     <resultMap id="productLowerCategoryResultMap3" type="LacunaMatata.Lacuna.dto.response.admin.product.RespLowerProductCategoryDto">
         <result property="productLowerCategoryId" column="product_lower_category_id" />
@@ -122,13 +122,6 @@
             now()
         )
     </insert>
-    <insert id="saveConsultingContent" useGeneratedKeys="true" keyProperty="consultingContentId">
-        insert into tb_consulting_content
-        values(
-            default,
-            #{name}
-        )
-    </insert>
     <insert id="saveConsultingDetail" useGeneratedKeys="true" keyProperty="consultingDetailId">
         insert into tb_consulting_detail
         values(
@@ -142,7 +135,7 @@
         insert into tb_cosmetic_detail
         values(
             default,
-            #{productId},
+            #{cosmeticDetailProductId},
             #{volume},
             #{ingredient},
             #{skinType},
@@ -175,6 +168,7 @@
         update
             tb_product
         set
+            product_upper_category_id = #{productUpperCategoryId},
             product_lower_category_id = #{productLowerCategoryId},
             product_code = #{productCode},
             product_name = #{productName},
@@ -192,23 +186,16 @@
         update
             tb_consulting_detail
         set
-            repeat_count = #{repeatCount},
             consulting_detail_content_id = #{consultingDetailContentId}
+            repeat_count = #{repeatCount},
         where
             consulting_detail_product_id = #{consultingDetailProductId}
-    </update>
-    <update id="modifyConsultingContent">
-        update
-            tb_consulting_content
-        set
-            name = #{name}
-        where
-            consulting_content_id = #{consultingContentId}
     </update>
     <update id="modifyCosmeticDetail">
         update
             tb_cosmetic_detail
         set
+            cosmetic_detail_product_id = #{cosmeticDetailProductId},
             volume = #{volume},
             ingredient = #{ingredient},
             skin_type = #{skinType},
@@ -216,7 +203,7 @@
             manufacture = #{manufacture},
             product_url = #{productUrl}
         where
-            cosmetic_detail_product_id = #{cosmeticDetailProductId}
+            cosmetic_detail_id = #{cosmeticDetailId}
     </update>
     <delete id="deleteProduct">
         delete
