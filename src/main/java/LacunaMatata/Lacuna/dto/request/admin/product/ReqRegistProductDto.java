@@ -18,8 +18,8 @@ public class ReqRegistProductDto {
     private String etc;
 
     // 상위 분류가 컨설팅일때 받을 곳
+    private int consultingContentId; // 컨설팅 상품 컨텐츠 ID
     private int repeatCount; // 컨설팅 반복 횟수
-    private String consultingName; // 컨설팅 상품 이름
 
     // 상위 분류가 화장품일 때 받을 곳
     private String volume; // 화장품 상품 용량
@@ -30,5 +30,5 @@ public class ReqRegistProductDto {
     private String productUrl; // 화장품 상품 url
 
     // 상품 이미지 파일을 받는 곳
-    private MultipartFile productImg;
+    private List<MultipartFile> insertImgs;
 }
