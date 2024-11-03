@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 public class RespCountAndProductDto {
     private int totalCount;
-    private List<RespProductListDto> respProductListDtoList;
+    private List<RespProductListDto> productList;
 }
