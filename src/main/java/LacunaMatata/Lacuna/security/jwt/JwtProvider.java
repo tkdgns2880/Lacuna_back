@@ -58,6 +58,16 @@ public class JwtProvider {
                 .compact();
     }
 
+    // 이메일 인증용 토큰 생성
+    public String generateEmailValidToken(String toEmail) {
+        Date emailExpireDate = new Date(new Date().getTime() + (1000L * 60 * 5));
+        return Jwts.builder()
+                .claim("toEmail", toEmail)
+                .expiration(emailExpireDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     // 토큰 값에 있는 클레임 꺼내기
     public Claims getClaim(String token) {
         JwtParser jwtParser = Jwts.parser()
