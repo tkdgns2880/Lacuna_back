@@ -54,33 +54,15 @@ public class AuthService {
                 .build();
         int userId = userMapper.saveUser(user);
 
-        int thirdPartyInfoSharingAgreement = 0;
-        int marketingReceiveAgreement = 0;
-        int useConditionAgreement = 0;
-        if(dto.getThirdPartyInfoSharingAgreement() == true) {
-            thirdPartyInfoSharingAgreement = 1;
-        } else {
-            thirdPartyInfoSharingAgreement = 2;
-        }
-        if(dto.getMarketingReceiveAgreement() == true) {
-            marketingReceiveAgreement = 1;
-        } else {
-            marketingReceiveAgreement = 2;
-        }
-        if(dto.getUseConditionAgreement() == true) {
-            useConditionAgreement = 1;
-        } else {
-            useConditionAgreement = 2;
-        }
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
                 .userId(userId)
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingReceiveAgreement(marketingReceiveAgreement)
-                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
-                .useConditionAgreement(useConditionAgreement)
+                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
+                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
+                .useConditionAgreement(dto.getUseConditionAgreement())
                 .build();
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 
@@ -130,39 +112,21 @@ public class AuthService {
                 .build();
         int userId = userMapper.saveUser(user);
 
-        int thirdPartyInfoSharingAgreement = 0;
-        int marketingReceiveAgreement = 0;
-        int useConditionAgreement = 0;
-        if(dto.getThirdPartyInfoSharingAgreement() == true) {
-            thirdPartyInfoSharingAgreement = 1;
-        } else {
-            thirdPartyInfoSharingAgreement = 2;
-        }
-        if(dto.getMarketingReceiveAgreement() == true) {
-            marketingReceiveAgreement = 1;
-        } else {
-            marketingReceiveAgreement = 2;
-        }
-        if(dto.getUseConditionAgreement() == true) {
-            useConditionAgreement = 1;
-        } else {
-            useConditionAgreement = 2;
-        }
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
                 .userId(userId)
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingReceiveAgreement(marketingReceiveAgreement)
-                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
-                .useConditionAgreement(useConditionAgreement)
+                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
+                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
+                .useConditionAgreement(dto.getUseConditionAgreement())
                 .build();
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 
         SocialLogin socialLogin = SocialLogin.builder()
                 .socialUserId(userId)
-                .socialId(dto.getOauthName())
+                .socialId(dto.getSocialId())
                 .provider(dto.getProvider())
                 .build();
         userMapper.saveOauthInfo(socialLogin);
