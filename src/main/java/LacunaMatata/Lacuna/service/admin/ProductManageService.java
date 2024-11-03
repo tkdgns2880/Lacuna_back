@@ -197,7 +197,7 @@ public class ProductManageService {
 
         RespCountAndProductDto respCountAndProductDto = RespCountAndProductDto.builder()
                 .totalCount(totalCount)
-                .respProductListDtoList(respProductListDtoList)
+                .productList(respProductListDtoList)
                 .build();
 
         return respCountAndProductDto;

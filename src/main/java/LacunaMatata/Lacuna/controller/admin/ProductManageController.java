@@ -129,12 +129,12 @@ public class ProductManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // 상품 리스트 출력
-    @GetMapping("/list")
-    @ApiOperation(value = "getProductListApi")
-    public ResponseEntity<?> getProductList(ReqGetProductListDto dto) {
-        System.out.println("요청 데이터" + dto);
-        RespCountAndProductDto respCountAndProductDto = productManageService.getProducts(dto);
+        // 상품 리스트 출력
+        @GetMapping("/list")
+        @ApiOperation(value = "getProductListApi")
+        public ResponseEntity<?> getProductList(ReqGetProductListDto dto) {
+            System.out.println("요청 데이터" + dto);
+            RespCountAndProductDto respCountAndProductDto = productManageService.getProducts(dto);
         return ResponseEntity.ok().body(respCountAndProductDto);
     }
 
