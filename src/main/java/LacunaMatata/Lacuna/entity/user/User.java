@@ -31,7 +31,6 @@ public class User {
     private LocalDateTime lastLoginDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    private int validEmail;
 
     private int roleId;
     private String roleName;
