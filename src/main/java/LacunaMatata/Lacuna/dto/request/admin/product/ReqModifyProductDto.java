@@ -19,9 +19,8 @@ public class ReqModifyProductDto {
     private String etc; // 기타사항
 
     // 상위 분류가 컨설팅일때 받을 곳
-    private int consultingDetailProductId;
-    private int consultingContentId; // 컨설팅 컨텐츠 ID
-    private int repeatCount; // 컨설팅 반복 횟수
+    // 반복횟수, 컨설팅 Id 값 받을 곳
+    List<Map<String, Object>> consultingContent;
 
     // 상위 분류가 화장품일 때 받을 곳
     private int cosmeticDetailId;

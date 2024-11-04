@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductManageService {
@@ -221,10 +222,10 @@ public class ProductManageService {
     // 상품 등록 모달창 출력
     public RespProductRegistModalDto getRegistModal() {
         List<RespUpperProductCategoryAndLowerDto> productUpperAndLower = productManageMapper.getProductUpperAndLowerCategoryList();
-//        List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
+        List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
         RespProductRegistModalDto respProductRegistModalDto = RespProductRegistModalDto.builder()
                 .respUpperProductCategoryAndLowerDto(productUpperAndLower)
-//                .productConsultingContentList(consultingContent)
+                .productConsultingContentList(consultingContent)
                 .build();
         return respProductRegistModalDto;
     }
@@ -264,12 +265,17 @@ public class ProductManageService {
         // Todo insert 된 id는 useGenerator 사용하면 build한 엔티티 변수에 들어있는 것을 사용하면 됨 (위 이미지 넣은 방법 참조)
         switch (dto.getProductUpperCategoryId()) {
             case 1:
-                ConsultingDetail consultingDetail = ConsultingDetail.builder()
-                        .consultingDetailProductId(product.getProductId())
-                        .consultingDetailContentId(dto.getConsultingContentId())
-                        .repeatCount(dto.getRepeatCount())
-                        .build();
-                productManageMapper.saveConsultingDetail(consultingDetail);
+                // ConsultingContent 내용 들어갈 곳
+                List<Map<String, Object>> consultingContent = dto.getConsultingContent();
+                List<Long> contentIdList = consultingContent.stream().map(content -> (Long) content.get("contentId")).collect(Collectors.toList());
+                List<Integer> repeatCountList = consultingContent.stream().map(content -> (Integer) content.get("repeatCount")).collect(Collectors.toList());
+                Map<String, Object> params = Map.of(
+                        "consultingDetailProductId", product.getProductId(),
+                        "contentIdList", contentIdList,
+                        "repeatCountList", repeatCountList
+                );
+
+                productManageMapper.saveConsultingDetail(params);
                 break;
             case 2:
                 CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
@@ -352,12 +358,18 @@ public class ProductManageService {
         productManageMapper.modifyProduct(product);
 
         if(product.getProductProductUpperCategoryId() == 1) {
-            ConsultingDetail consultingDetail = ConsultingDetail.builder()
-                    .consultingDetailProductId(dto.getConsultingDetailProductId())
-                    .consultingDetailContentId(dto.getConsultingContentId())
-                    .repeatCount(dto.getRepeatCount())
-                    .build();
-            productManageMapper.modifyConsultingDetail(consultingDetail);
+            List<Map<String, Object>> consultingContent = dto.getConsultingContent();
+            List<Long> contentIdList = consultingContent.stream().map(content -> (Long) content.get("contentId")).collect(Collectors.toList());
+            List<Integer> repeatCountList = consultingContent.stream().map(content -> (Integer) content.get("repeatCount")).collect(Collectors.toList());
+            List<Integer> deleteConsultingDetailIdList = consultingContent.stream().map(content -> (Integer) content.get("deleteConsultingDetailIdList")).collect(Collectors.toList());
+
+            Map<String, Object> params = Map.of(
+                    "consultingDetailProductId", dto.getProductId(),
+                    "contentIdList", contentIdList,
+                    "repeatCountList", repeatCountList
+            );
+            productManageMapper.deleteConsultingDetail(deleteConsultingDetailIdList);
+            productManageMapper.saveConsultingDetail(params);
         }
 
         if(product.getProductProductUpperCategoryId() == 2) {

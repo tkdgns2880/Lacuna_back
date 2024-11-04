@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Multipart;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ReqRegistProductDto {
@@ -17,10 +18,6 @@ public class ReqRegistProductDto {
     private String description;
     private String etc;
 
-    // 상위 분류가 컨설팅일때 받을 곳
-    private int consultingContentId; // 컨설팅 상품 컨텐츠 ID
-    private int repeatCount; // 컨설팅 반복 횟수
-
     // 상위 분류가 화장품일 때 받을 곳
     private String volume; // 화장품 상품 용량
     private String ingredient; // 화장품 상품 성분
@@ -31,4 +28,6 @@ public class ReqRegistProductDto {
 
     // 상품 이미지 파일을 받는 곳
     private List<MultipartFile> insertImgs;
+    // 반복횟수, 컨설팅 Id 값 받을 곳
+    List<Map<String, Object>> consultingContent;
 }
