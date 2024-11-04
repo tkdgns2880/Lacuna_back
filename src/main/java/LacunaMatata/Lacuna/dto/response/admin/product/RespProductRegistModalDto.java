@@ -9,6 +9,6 @@ import java.util.List;
 @Builder
 @Data
 public class RespProductRegistModalDto {
-    private List<RespUpperProductCategoryAndLowerDto> respUpperProductCategoryAndLowerDto;
+    private List<RespUpperProductCategoryAndLowerDto> upperProductCategoryAndLower;
     private List<ConsultingContent> productConsultingContentList;
 }

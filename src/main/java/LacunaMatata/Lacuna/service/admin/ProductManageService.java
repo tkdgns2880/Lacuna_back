@@ -149,14 +149,29 @@ public class ProductManageService {
         productManageMapper.saveProductLowerCategory(productLowerCategory);
     }
 
-    // 상품 하위 분류 카테고리 항목 출력
-    public RespLowerProductCategoryDto getProductLower(int lowerId) {
+    // 상품 하위 분류 카테고리 수정 모달창 출력
+    public RespLowerCategoryModifyModalDto getProductLower(int lowerId) {
         ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
         RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
                 .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
+                .productUpperCategoryId(respLowerCategory.getProductUpperCategoryId())
                 .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
                 .build();
-        return lowerCategory;
+
+        List<ProductUpperCategory> upperFilter = productManageMapper.getProductUpperCategoryList();
+        List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<>();
+        for(ProductUpperCategory productUpperCategory : upperFilter) {
+            RespUpperProductCategoryDto upperFilter2 = RespUpperProductCategoryDto.builder()
+                    .productUpperCategoryId(productUpperCategory.getProductUpperCategoryId())
+                    .productUpperCategoryName(productUpperCategory.getProductUpperCategoryName())
+                    .build();
+            upperFilterList.add(upperFilter2);
+        }
+        RespLowerCategoryModifyModalDto modifyModalDto = RespLowerCategoryModifyModalDto.builder()
+                .productLowerCategory(lowerCategory)
+                .productUpperCategoryList(upperFilterList)
+                .build();
+        return modifyModalDto;
     }
 
     // 상품 하위 분류 카테고리 수정
@@ -224,7 +239,7 @@ public class ProductManageService {
         List<RespUpperProductCategoryAndLowerDto> productUpperAndLower = productManageMapper.getProductUpperAndLowerCategoryList();
         List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
         RespProductRegistModalDto respProductRegistModalDto = RespProductRegistModalDto.builder()
-                .respUpperProductCategoryAndLowerDto(productUpperAndLower)
+                .upperProductCategoryAndLower(productUpperAndLower)
                 .productConsultingContentList(consultingContent)
                 .build();
         return respProductRegistModalDto;
@@ -401,7 +416,7 @@ public class ProductManageService {
     // 상품 상위 카테고리 분류 출력(필터용)
     public List<RespUpperProductCategoryDto> getUpperProductFilter() {
         List<ProductUpperCategory> upperFilter = productManageMapper.getProductUpperCategoryList();
-        List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<RespUpperProductCategoryDto>();
+        List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<>();
         for(ProductUpperCategory productUpperCategory : upperFilter) {
             RespUpperProductCategoryDto upperFilter2 = RespUpperProductCategoryDto.builder()
                     .productUpperCategoryId(productUpperCategory.getProductUpperCategoryId())

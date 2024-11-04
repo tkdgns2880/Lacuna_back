@@ -92,6 +92,12 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(respCountAndMbtiQuestionDto);
     }
 
+    // MBTI 설문 등록 모달창 출력
+    @GetMapping("/question/regist/modal")
+    public ResponseEntity<?> mbtiQuestionRegistModal() {
+        return ResponseEntity.ok().body(mbtiManageService.mbtiQuestionRegistModal());
+    }
+
     // MBTI 설문 항목 등록
     @ApiOperation(value = "registMbtiQuestionApi")
     @PostMapping("/question/regist")

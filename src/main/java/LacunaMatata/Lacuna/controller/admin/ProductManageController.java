@@ -109,7 +109,7 @@ public class ProductManageController {
     @GetMapping("/lower/{lowerId}")
     @ApiOperation(value = "getLowerProductApi")
     public ResponseEntity<?> getLowerProduct(@PathVariable int lowerId) {
-        RespLowerProductCategoryDto respLowerCategory = productManageService.getProductLower(lowerId);
+        RespLowerCategoryModifyModalDto respLowerCategory = productManageService.getProductLower(lowerId);
         return ResponseEntity.ok().body(respLowerCategory);
     }
 

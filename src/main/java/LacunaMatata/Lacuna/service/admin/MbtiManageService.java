@@ -159,6 +159,20 @@ public class MbtiManageService {
         return respCountAndMbtiQuestionDto;
     }
 
+    // MBTI 설문지 등록 모달창 출력
+    public List<RespMbtiCategoryFilterDto> mbtiQuestionRegistModal() {
+        List<MbtiCategory> mbtiCategoryList  = mbtiManageMapper.getMbtiCategoryFilter();
+        List<RespMbtiCategoryFilterDto> mbtiCategoryFilterDto = new ArrayList<>();
+        for(MbtiCategory mbtiCategory : mbtiCategoryList) {
+            RespMbtiCategoryFilterDto categoryFilter = RespMbtiCategoryFilterDto.builder()
+                    .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
+                    .mbtiCategoryName(mbtiCategory.getMbtiCategoryName())
+                    .build();
+            mbtiCategoryFilterDto.add(categoryFilter);
+        }
+        return mbtiCategoryFilterDto;
+    }
+
     // mbti 설문지 항목 등록
     public void registMbtiQuestion(ReqRegistMbtiQuestionDto dto) {
         PrincipalUser principalUser = (PrincipalUser)
@@ -187,7 +201,7 @@ public class MbtiManageService {
         }
     }
 
-    // mbti 설문지 항목 모달 출력
+    // mbti 설문지 항목 수정 모달창 출력
     public RespMbtiQuestionDto getMbtiQuestion(int mbtiId) {
         Mbti mbtiQuestion = mbtiManageMapper.getMbtiQuestion(mbtiId);
         RespMbtiQuestionDto respMbtiQuestionDto = RespMbtiQuestionDto.builder()

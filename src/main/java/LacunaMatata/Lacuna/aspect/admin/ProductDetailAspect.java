@@ -37,7 +37,7 @@ public class ProductDetailAspect {
         List<RespUpperProductCategoryAndLowerDto> productUpperAndLower = productManageMapper.getProductUpperAndLowerCategoryList();
         List<ConsultingContent> consultingContent = productManageMapper.getConsultingContent();
         RespProductRegistModalDto respProductRegistModalDto = RespProductRegistModalDto.builder()
-                .respUpperProductCategoryAndLowerDto(productUpperAndLower)
+                .upperProductCategoryAndLower(productUpperAndLower)
                 .productConsultingContentList(consultingContent)
                 .build();
 
