@@ -314,6 +314,7 @@
     <select id="getProductLowerDto" resultMap="productLowerCategoryResultMap2">
         select
             product_lower_category_id as plc_product_lower_category_id,
+            product_upper_category_id as plc_product_upper_category_id,
             product_lower_category_name as plc_product_lower_category_name
         from
             tb_product_lower_category

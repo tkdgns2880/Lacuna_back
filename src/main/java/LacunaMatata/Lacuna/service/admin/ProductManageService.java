@@ -149,11 +149,12 @@ public class ProductManageService {
         productManageMapper.saveProductLowerCategory(productLowerCategory);
     }
 
-    // 상품 하위 분류 카테고리 항목 출력
+    // 상품 하위 분류 카테고리 수정 모달창 출력
     public RespLowerCategoryModifyModalDto getProductLower(int lowerId) {
         ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
         RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
                 .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
+                .productUpperCategoryId(respLowerCategory.getProductUpperCategoryId())
                 .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
                 .build();
 
