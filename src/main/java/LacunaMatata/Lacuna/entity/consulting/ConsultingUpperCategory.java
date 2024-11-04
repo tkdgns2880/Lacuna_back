@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ConsultingUpperCategory {
-    private int ConsultingUpperCategoryId;
-    private String ConsultingUpperCategoryName;
-    private String ConsultingUpperCategoryDescription;
-    private String ConsultingUpperCategoryImg;
+    private int consultingUpperCategoryId;
+    private String consultingUpperCategoryName;
+    private String consultingUpperCategoryDescription;
+    private String consultingUpperCategoryImg;
     private int consultingUpperCategoryRegisterId;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
