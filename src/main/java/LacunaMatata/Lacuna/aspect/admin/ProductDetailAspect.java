@@ -73,7 +73,6 @@ public class ProductDetailAspect {
             // 만약 화장품 관련 상품이면 화장품 내용만 담아서 보냄
             if(product.getProductUpperCategory().getProductUpperCategoryId() == 2) {
                 CosmeticDetail cosmeticDetail = productManageMapper.getCosmeticDetail(productId);
-                System.out.println(cosmeticDetail);
                 RespCosmeticDetailDto respCosmeticDetailDto = RespCosmeticDetailDto.builder()
                         .productId(product.getProductId())
                         .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())

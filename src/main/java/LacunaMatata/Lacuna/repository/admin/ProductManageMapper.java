@@ -50,7 +50,7 @@ public interface ProductManageMapper {
     // 3. 상위카테고리가 컨설팅인 상품일 때 컨설팅 Content 등록_2024.10.26
     int saveConsultingContent(ConsultingContent consultingContent);
     // 4. 상위카테고리가 컨설팅인 상품일 때 컨설팅 Detail 등록_2024.10.26
-    int saveConsultingDetail(ConsultingDetail consultingDetail);
+    int saveConsultingDetail(Map<String, Object> params);
     // 5. 상위카테고리가 화장품인 상품일 때 화장품 Detail 등록_2024.10.26
     int saveCosmeticDetail(CosmeticDetail cosmeticDetail);
     // 6. 상품 모잘창 출력(상위 카테고리 컨설팅, 화장품 둘다 해당)_2024.10.26
@@ -61,6 +61,8 @@ public interface ProductManageMapper {
     CosmeticDetail getCosmeticDetail(int productId);
     // 9. 상품 모달창 수정(상위 카테고리 컨설팅, 화장품 둘다 해당)_2024.10.26
     int modifyProduct(Product product);
+    // 15. 상품 수정(consulting 상품일때 삭제 할 consultingDetail
+    int deleteConsultingDetail(List<Integer> consultingDetailIdList);
     // 10-1. 상품 상위카테고리가 컨설팅인 상품일 때 컨설팅 모달창 수정_2024.10.26
     int modifyConsultingDetail(ConsultingDetail consultingDetail);
 //    // 10-2. 상품 상위카테고리가 컨설팅인 상품일 때 컨설팅 모달창 수정_2024.10.26 - 삭제
@@ -73,6 +75,7 @@ public interface ProductManageMapper {
     int deleteProductList(List<Integer> productIdList);
 //    // 14. 상품 이미지 등록 - 삭제
 //    int insertProductImg(String insertCompletedImgPath, int productId);
+
 
     /** 상품 관련 공통으로 필요한 메서드 Mapper */
     // 1. 상품 상위 분류 이름으로 상품 상위 분류 정보 찾기_2024.10.26
