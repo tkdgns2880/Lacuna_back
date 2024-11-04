@@ -45,7 +45,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    //MBTI 분류 카테고리 모달 조회
+    //MBTI 분류 카테고리 수정 모달창 조회
     @ApiOperation(value = "getMbtiCategoryApi")
     @GetMapping("/servey/category/{categoryId}")
     public ResponseEntity<?> getMbtiCategory(@PathVariable int categoryId) {
@@ -55,16 +55,17 @@ public class MbtiManageController {
 
     //MBTI 분류 카테고리 출력(필터용)
     @GetMapping("/servey/category/filter")
+    @ApiOperation(value = "getMbtiCategoryListFilterApi")
     public ResponseEntity<?> getMbtiCategoryListFilter() {
         List<RespMbtiCategoryFilterDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryFilterDto();
         return ResponseEntity.ok().body(mbtiCategoryList);
     }
 
-    // MBTI 분류 카테고리 모달 수정
+    // MBTI 분류 카테고리 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
-    @PutMapping("/servey/category/modify/{mbtiCategoryId}")
-    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int mbtiCategoryId) {
-        mbtiManageService.modifyMbtiCategory(dto, mbtiCategoryId);
+    @PutMapping("/servey/category/modify/{categoryId}")
+    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) {
+        mbtiManageService.modifyMbtiCategory(dto, categoryId);
         return ResponseEntity.ok().body(true);
     }
 
@@ -106,7 +107,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // MBTI 설문 항목 모달 출력
+    // MBTI 설문 항목 수정 모달창 출력
     @ApiOperation(value = "getMbtiQuestionApi")
     @GetMapping("/question/{mbtiId}")
     public ResponseEntity<?> getMbtiQuestion(@PathVariable int mbtiId) {
@@ -154,7 +155,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // MBTI 설문 결과 항목 모달 출력
+    // MBTI 설문 결과 항목 수정 모달창 출력
     @ApiOperation(value = "getMbtiResultApi")
     @GetMapping("/result/{resultId}")
     public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
@@ -162,7 +163,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(mbtiResultDto);
     }
 
-    // MBTI 설문 결과 항목 모달 수정
+    // MBTI 설문 결과 항목 수정
     @ApiOperation(value = "modifyMbtiResultApi")
     @PutMapping("/result/modify/{resultId}")
     public ResponseEntity<?> modifyMbtiResult(@ModelAttribute ReqModifyMbtiResultDto dto, @PathVariable int resultId) throws IOException {

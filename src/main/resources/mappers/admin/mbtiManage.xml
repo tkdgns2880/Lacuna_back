@@ -31,6 +31,15 @@
         <association property="mbtiCategory" resultMap="mbtiCategoryResultMap" />
         <association property="mbtiOption" resultMap="mbtiOptionResultMap" />
     </resultMap>
+
+    <resultMap id="mbtiResultMap2" type="LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiQuestionDto">
+        <id property="mbtiId" column="mbti_id" />
+        <result property="mbtiCode" column="mbti_code" />
+        <result property="mbtiCategoryId" column="mbti_category_id" />
+        <result property="mbtiTitle" column="mbti_title" />
+        <result property="mbtiCategoryName" column="mbtiCategoryName" />
+        <collection property="mbtiOptionList" javaType="java.util.ArrayList" resultMap="mbtiOptionResultMap" />
+    </resultMap>
     <resultMap id="mbtiOptionResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiOption">
         <id property="mbtiOptionId" column="mbti_option_id" />
         <result property="mbtiId" column="mbti_id" />
@@ -304,7 +313,7 @@
         limit
             #{startIndex}, #{limit}
     </select>
-    <select id="getMbtiQuestion" resultMap="mbtiResultMap">
+    <select id="getMbtiQuestion" resultMap="mbtiResultMap2">
         select
             m.mbti_id,
             m.mbti_code,
@@ -317,7 +326,13 @@
             mo.mbti_option_id,
             mo.mbti_id,
             mo.option_name,
-            mo.option_score
+            mo.option_score,
+            (select u.name
+            from tb_user u
+            where u.user_id = m.mbti_register_id) as name,
+            (select mbti_category_name
+            from tb_mbti_category mc
+            where mc.mbti_category_id = m.mbti_category_id) as mbtiCategoryName
         from
             tb_mbti m
             left outer join

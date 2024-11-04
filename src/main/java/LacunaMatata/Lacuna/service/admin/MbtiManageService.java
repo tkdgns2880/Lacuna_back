@@ -203,13 +203,15 @@ public class MbtiManageService {
 
     // mbti 설문지 항목 수정 모달창 출력
     public RespMbtiQuestionDto getMbtiQuestion(int mbtiId) {
-        Mbti mbtiQuestion = mbtiManageMapper.getMbtiQuestion(mbtiId);
+        RespMbtiQuestionDto mbtiQuestion = mbtiManageMapper.getMbtiQuestion(mbtiId);
+        System.out.println(mbtiQuestion);
+
         RespMbtiQuestionDto respMbtiQuestionDto = RespMbtiQuestionDto.builder()
                 .mbtiId(mbtiQuestion.getMbtiId())
-                .mbtiCategoryName(mbtiQuestion.getMbtiCategory().getMbtiCategoryName())
+                .mbtiCategoryId(mbtiQuestion.getMbtiCategoryId())
+                .mbtiCategoryName(mbtiQuestion.getMbtiCategoryName())
+                .mbtiCode(mbtiQuestion.getMbtiCode())
                 .mbtiTitle(mbtiQuestion.getMbtiTitle())
-                .name(mbtiQuestion.getUser().getName())
-                .createdDate(mbtiQuestion.getCreateDate())
                 .build();
         return respMbtiQuestionDto;
     }

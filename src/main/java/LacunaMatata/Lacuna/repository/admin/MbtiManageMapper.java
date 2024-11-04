@@ -4,6 +4,7 @@ import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqDeleteMbtiQuestionDto;
 import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqModifyMbtiCategoryDto;
 import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqModifyMbtiQuestionDto;
 import LacunaMatata.Lacuna.dto.request.admin.mbti.ReqModifyMbtiResultDto;
+import LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiQuestionDto;
 import LacunaMatata.Lacuna.entity.mbti.Mbti;
 import LacunaMatata.Lacuna.entity.mbti.MbtiCategory;
 import LacunaMatata.Lacuna.entity.mbti.MbtiOption;
@@ -37,7 +38,7 @@ public interface MbtiManageMapper {
     // 2-2. MBTI 설문 선택지 등록_2024.10.27
     int saveMbtiOption(MbtiOption mbtiOption);
     // 3. MBTI 설문 항목 모달 출력_2024.10.27
-    Mbti getMbtiQuestion(int mbtiId);
+    RespMbtiQuestionDto getMbtiQuestion(int mbtiId);
     // 4-1. MBTI 설문 항목 모달 수정_2024.10.28
     int modifyMbtiQuestion(ReqModifyMbtiQuestionDto dto, Map<String, Object> params);
     // 4-2. MBTI 설문 항목 모달 선택지 삭제_2024.10.28
