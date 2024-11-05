@@ -28,6 +28,9 @@ public class MbtiResult {
     // 서브쿼리 계산용
     private int totalCount;
 
+    // 조인용
+    private String name;
+
     // 매핑용
     private User user;
 }

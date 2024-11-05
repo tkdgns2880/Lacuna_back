@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -179,7 +180,8 @@ public class MbtiManageService {
                 "limit", dto.getLimit()
         );
         List<Mbti> mbtiQuestionList = mbtiManageMapper.getMbtiQuestionList(params);
-        List<RespMbtiQuestionListDto> respMbtiQuestionList = new ArrayList<RespMbtiQuestionListDto>();
+
+        List<RespMbtiQuestionListDto> respMbtiQuestionList = new ArrayList<>();
         for(Mbti mbti : mbtiQuestionList) {
             RespMbtiQuestionListDto respMbtiQuestionListDto = RespMbtiQuestionListDto.builder()
                     .mbtiId(mbti.getMbtiId())
@@ -215,6 +217,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 등록
+    @Transactional(rollbackFor = Exception.class)
     public void registMbtiQuestion(ReqRegistMbtiQuestionDto dto) throws IOException {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -258,6 +261,7 @@ public class MbtiManageService {
     }
 
     // mbti 설문지 항목 모달 수정
+    @Transactional(rollbackFor = Exception.class)
     public void modifyMbtiQuestion(ReqModifyMbtiQuestionDto dto, int mbtiId) throws IOException {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -332,14 +336,15 @@ public class MbtiManageService {
                 "limit", dto.getLimit()
         );
         List<MbtiResult> mbtiResultList = mbtiManageMapper.getMbtiResultList(params);
-        List<RespGetMbtiResultListDto> respGetMbtiResultListDtoList = new ArrayList<RespGetMbtiResultListDto>();
+
+        List<RespGetMbtiResultListDto> respGetMbtiResultListDtoList = new ArrayList<>();
         for(MbtiResult mbtiResult : mbtiResultList) {
             RespGetMbtiResultListDto respGetMbtiResultListDto = RespGetMbtiResultListDto.builder()
                     .mbtiResultId(mbtiResult.getMbtiResultId())
                     .mbtiResultCategoryName(mbtiResult.getMbtiResultCategoryName())
                     .mbtiResultTitle(mbtiResult.getMbtiResultTitle())
                     .mbtiResultStatus(mbtiResult.getMbtiResultStatus())
-                    .name(mbtiResult.getUser().getName())
+                    .name(mbtiResult.getName())
                     .createdDate(mbtiResult.getCreateDate())
                     .build();
             respGetMbtiResultListDtoList.add(respGetMbtiResultListDto);
@@ -360,12 +365,20 @@ public class MbtiManageService {
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
 
+        String insertCompletedImgPath = null;
+        MultipartFile insertImg = dto.getInsertImg();
+
+        if(insertImg != null && insertImg.isEmpty()) {
+            insertCompletedImgPath = registerImgUrl(insertImg, "product");
+        }
+
         MbtiResult mbtiResult = MbtiResult.builder()
                 .mbtiResultRegisterId(registerId)
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultCategoryName(dto.getMbtiResultCategoryName())
                 .mbtiResultSummary(dto.getMbtiResultSummary())
                 .mbtiResultContent(dto.getMbtiResultContent())
+                .mbtiResultImg(insertCompletedImgPath)
                 .mbtiResultStatus(dto.getMbtiResultStatus())
                 .build();
 
@@ -385,7 +398,7 @@ public class MbtiManageService {
         }
     }
 
-    // mbti 살문 결과 항목 모달 출력
+    // mbti 살문 결과 항목 수정 모달창 출력
     public RespGetMbtiResultDto getMbtiResultDto(int resultId) {
         MbtiResult mbtiResult = mbtiManageMapper.getMbtiResult(resultId);
         RespGetMbtiResultDto respGetMbtiResultDto = RespGetMbtiResultDto.builder()
@@ -394,6 +407,7 @@ public class MbtiManageService {
                 .mbtiResultCategoryName(mbtiResult.getMbtiResultCategoryName())
                 .mbtiResultSummary(mbtiResult.getMbtiResultSummary())
                 .mbtiResultContent(mbtiResult.getMbtiResultContent())
+                .mbtiResultImg(mbtiResult.getMbtiResultImg())
                 .build();
         return respGetMbtiResultDto;
     }
@@ -438,6 +452,13 @@ public class MbtiManageService {
             mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, dto.getMbtiResultId());
         }
 
+        String insertCompletedImgPath = null;
+        MultipartFile insertImg = dto.getInsertImg();
+
+        if(insertImg != null && insertImg.isEmpty()) {
+            insertCompletedImgPath = registerImgUrl(insertImg, "product");
+        }
+
         MbtiResult mbtiResult = MbtiResult.builder()
                 .mbtiResultId(dto.getMbtiResultId())
                 .mbtiResultRegisterId(registerId)
@@ -445,6 +466,7 @@ public class MbtiManageService {
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultSummary(dto.getMbtiResultSummary())
                 .mbtiResultContent(dto.getMbtiResultContent())
+                .mbtiResultImg(insertCompletedImgPath)
                 .mbtiResultStatus(dto.getMbtiResultStatus())
                 .build();
 

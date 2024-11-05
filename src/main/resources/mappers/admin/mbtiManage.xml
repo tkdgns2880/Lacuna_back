@@ -53,7 +53,9 @@
         <result property="mbtiResultTitle" column="mbti_result_title" />
         <result property="mbtiResultSummary" column="mbti_result_summary" />
         <result property="mbtiResultContent" column="mbti_result_content" />
+        <result property="mbtiResultImg" column="mbti_result_img" />
         <result property="mbtiResultStatus" column="mbti_result_status" />
+        <result property="name" column="name" />
         <result property="totalCount" column="totalCount" />
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
@@ -353,7 +355,7 @@
             mr.update_date,
             (select u.name
             from tb_user u
-            where u.user_id = mr.mbti_result_register_id)
+            where u.user_id = mr.mbti_result_register_id) as name
         from
             tb_mbti_result mr
         where
