@@ -221,4 +221,13 @@
         where
             user_id = #{userId}
     </select>
+    <select id="getUserRole" resultMap="userRoleResultMap">
+        select
+            role_id,
+            role_name,
+            role_description,
+            role_img
+        from
+            tb_user_role
+    </select>
 </mapper>
