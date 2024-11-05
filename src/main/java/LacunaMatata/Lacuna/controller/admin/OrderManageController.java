@@ -9,6 +9,8 @@ import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderDetailDto;
 import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderStatusFilterDto;
 import LacunaMatata.Lacuna.dto.response.admin.order.RespGetPaymentDetailDto;
 import LacunaMatata.Lacuna.service.admin.OrderManageService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import java.util.List;
  ************************************************/
 @RestController
 @RequestMapping("/api/v1/admin")
+@Api(tags = {"OrderManageController"})
 public class OrderManageController {
 
     @Autowired
@@ -31,6 +34,7 @@ public class OrderManageController {
 
     // 회원 주문 리스트 출력
     @GetMapping("/order/list")
+    @ApiOperation(value = "getOrderListApi")
     public ResponseEntity<?> getOrderList(@RequestBody ReqGetOrderListDto dto) {
         RespCountAndOderListDto respCountAndOderListDto = orderManageService.getOrderList(dto);
         return ResponseEntity.ok().body(respCountAndOderListDto);
@@ -38,6 +42,7 @@ public class OrderManageController {
 
     // 회원 주문 상태 목록 출력(필터)
     @GetMapping("/status/filter")
+    @ApiOperation(value = "getOrderStatusFilterApi")
     public ResponseEntity<?> getOrderStatusFilter() {
         List<RespGetOrderStatusFilterDto> orderFilter = orderManageService.getOrderStatusFilter();
         return ResponseEntity.ok().body(orderFilter);
@@ -45,6 +50,7 @@ public class OrderManageController {
 
     // 회원 주문 항목 상세 출력
     @GetMapping("/order/detail/{orderId}")
+    @ApiOperation(value = "getOrderDetailApi")
     public ResponseEntity<?> getOrderDetail(@PathVariable int orderId) {
         RespGetOrderDetailDto orderDetail = orderManageService.getOrderDetail(orderId);
         return ResponseEntity.ok().body(orderDetail);
@@ -52,6 +58,7 @@ public class OrderManageController {
 
     // 회원 결제 항목 상세 출력
     @GetMapping("/pay/detail/{paymentId}")
+    @ApiOperation(value = "getPaymentDetailApi")
     public ResponseEntity<?> getPaymentDetail(@PathVariable int paymentId) {
         RespGetPaymentDetailDto paymentDetail = orderManageService.getPaymentDetail(paymentId);
         return ResponseEntity.ok().body(paymentDetail);
@@ -59,6 +66,7 @@ public class OrderManageController {
 
     // 회원 결제 취소하기(결제 시스템)
     @PutMapping("/pay/system/cancel/{paymentId}")
+    @ApiOperation(value = "cancelSystemPaymentApi")
     public ResponseEntity<?> cancelSystemPayment(@PathVariable int paymentId) {
         orderManageService.cancelSystemOrder(paymentId);
         return ResponseEntity.ok().body(true);
@@ -66,6 +74,7 @@ public class OrderManageController {
 
     // 주문 수정 - 회원 결제 취소하기(계좌 이체)
     @PostMapping("/pay/account/cancel")
+    @ApiOperation(value = "cancelAccountPaymentApi")
     public ResponseEntity<?> cancelAccountPayment(@RequestBody ReqCancelOrderAccountDto dto) {
         orderManageService.cancelAccountOrder(dto);
         return ResponseEntity.ok().body(true);
@@ -73,6 +82,7 @@ public class OrderManageController {
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
     @PostMapping("/pay/account/approve")
+    @ApiOperation(value = "approveAccountPaymentApi")
     public ResponseEntity<?> approveAccountPayment(@RequestBody ReqApprovePaymentAccountDto dto) {
         orderManageService.approveAccountOrder(dto);
         return ResponseEntity.ok().body(true);
@@ -80,6 +90,7 @@ public class OrderManageController {
 
     // 회원 주문 항목 삭제
     @DeleteMapping("/pay/account/order/delete/{orderId}")
+    @ApiOperation(value = "deleteOrderApi")
     public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
         orderManageService.deleteOrder(orderId);
         return ResponseEntity.ok().body(true);
@@ -87,10 +98,9 @@ public class OrderManageController {
 
     // 회원 주문 항목 복수개 삭제
     @DeleteMapping("/pay/account/order/delete")
+    @ApiOperation(value = "deleteOrderListApi")
     public ResponseEntity<?> deleteOrderList(@RequestBody ReqDeleteOrderListDto dto) {
         orderManageService.deleteOrderList(dto);
         return ResponseEntity.ok().body(true);
     }
-
-
 }

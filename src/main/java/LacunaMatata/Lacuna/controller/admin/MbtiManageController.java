@@ -40,12 +40,12 @@ public class MbtiManageController {
     // MBTI 분류 카테고리 등록
     @ApiOperation(value = "registMbtiCategoryApi")
     @PostMapping("/servey/category/regist")
-    public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) {
+    public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) throws IOException {
         mbtiManageService.registMbtiCategory(dto);
         return ResponseEntity.ok().body(true);
     }
 
-    //MBTI 분류 카테고리 모달 조회
+    //MBTI 분류 카테고리 수정 모달창 조회
     @ApiOperation(value = "getMbtiCategoryApi")
     @GetMapping("/servey/category/{categoryId}")
     public ResponseEntity<?> getMbtiCategory(@PathVariable int categoryId) {
@@ -55,16 +55,17 @@ public class MbtiManageController {
 
     //MBTI 분류 카테고리 출력(필터용)
     @GetMapping("/servey/category/filter")
+    @ApiOperation(value = "getMbtiCategoryListFilterApi")
     public ResponseEntity<?> getMbtiCategoryListFilter() {
         List<RespMbtiCategoryFilterDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryFilterDto();
         return ResponseEntity.ok().body(mbtiCategoryList);
     }
 
-    // MBTI 분류 카테고리 모달 수정
+    // MBTI 분류 카테고리 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
-    @PutMapping("/servey/category/modify/{mbtiCategoryId}")
-    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int mbtiCategoryId) {
-        mbtiManageService.modifyMbtiCategory(dto, mbtiCategoryId);
+    @PutMapping("/servey/category/modify/{categoryId}")
+    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
+        mbtiManageService.modifyMbtiCategory(dto, categoryId);
         return ResponseEntity.ok().body(true);
     }
 
@@ -94,6 +95,7 @@ public class MbtiManageController {
 
     // MBTI 설문 등록 모달창 출력
     @GetMapping("/question/regist/modal")
+    @ApiOperation(value = "mbtiQuestionRegistModalApi")
     public ResponseEntity<?> mbtiQuestionRegistModal() {
         return ResponseEntity.ok().body(mbtiManageService.mbtiQuestionRegistModal());
     }
@@ -101,12 +103,12 @@ public class MbtiManageController {
     // MBTI 설문 항목 등록
     @ApiOperation(value = "registMbtiQuestionApi")
     @PostMapping("/question/regist")
-    public ResponseEntity<?> registMbtiQuestion(@RequestBody ReqRegistMbtiQuestionDto dto) {
+    public ResponseEntity<?> registMbtiQuestion(@RequestBody ReqRegistMbtiQuestionDto dto) throws IOException {
         mbtiManageService.registMbtiQuestion(dto);
         return ResponseEntity.ok().body(true);
     }
 
-    // MBTI 설문 항목 모달 출력
+    // MBTI 설문 항목 수정 모달창 출력
     @ApiOperation(value = "getMbtiQuestionApi")
     @GetMapping("/question/{mbtiId}")
     public ResponseEntity<?> getMbtiQuestion(@PathVariable int mbtiId) {
@@ -117,7 +119,7 @@ public class MbtiManageController {
     // MBTI 설문 항목 모달 수정
     @ApiOperation(value = "modifyMbtiQuestionApi")
     @PutMapping("/question/modify/{mbtiId}")
-    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) {
+    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) throws IOException {
         mbtiManageService.modifyMbtiQuestion(dto, mbtiId);
         return ResponseEntity.ok().body(true);
     }
@@ -154,7 +156,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // MBTI 설문 결과 항목 모달 출력
+    // MBTI 설문 결과 항목 수정 모달창 출력
     @ApiOperation(value = "getMbtiResultApi")
     @GetMapping("/result/{resultId}")
     public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
@@ -162,7 +164,7 @@ public class MbtiManageController {
         return ResponseEntity.ok().body(mbtiResultDto);
     }
 
-    // MBTI 설문 결과 항목 모달 수정
+    // MBTI 설문 결과 항목 수정
     @ApiOperation(value = "modifyMbtiResultApi")
     @PutMapping("/result/modify/{resultId}")
     public ResponseEntity<?> modifyMbtiResult(@ModelAttribute ReqModifyMbtiResultDto dto, @PathVariable int resultId) throws IOException {

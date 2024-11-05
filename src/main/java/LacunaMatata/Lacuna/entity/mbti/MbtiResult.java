@@ -20,12 +20,16 @@ public class MbtiResult {
     private String mbtiResultTitle;
     private String mbtiResultSummary;
     private String mbtiResultContent;
+    private String mbtiResultImg;
     private int mbtiResultStatus;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
     // 서브쿼리 계산용
     private int totalCount;
+
+    // 조인용
+    private String name;
 
     // 매핑용
     private User user;
