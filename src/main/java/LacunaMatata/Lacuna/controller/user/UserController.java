@@ -2,7 +2,9 @@ package LacunaMatata.Lacuna.controller.user;
 
 import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
+import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileDto;
+import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +19,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     // 프로필 페이지 출력
     @ApiOperation(value = "getMyProfileApi")
@@ -40,5 +44,12 @@ public class UserController {
     public ResponseEntity<?> withdrawUser(@RequestBody ReqWithdrawUserDto dto) throws Exception {
         userService.withdrawUser(dto);
         return ResponseEntity.ok().body(true);
+    }
+
+    @GetMapping("/mbti/result")
+    @ApiOperation(value = "getMbtiResultApi")
+    public ResponseEntity<?> getMbtiResult() {
+        RespMyMbtiResultDto myMbtiResult = userService.getMbtiResult();
+        return ResponseEntity.ok().body(myMbtiResult);
     }
 }

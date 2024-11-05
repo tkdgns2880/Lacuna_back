@@ -121,91 +121,91 @@ public class ConsultingManageController {
     }
 
     // 컨설팅 설문지 목록 출력
-    @GetMapping("/servey/list")
-    public ResponseEntity<?> getServeyConsultingListApi() {
-        consultingManageService.getServeyList();
+    @GetMapping("/survey/list")
+    public ResponseEntity<?> getSurveyConsultingListApi() {
+        consultingManageService.getSurveyList();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 선택지 타입 항목 출력
-    @GetMapping("/servey/option/filter/{consultingId}")
-    public ResponseEntity<?> getServeyConsultingOptionFilter(@PathVariable int consultingId) {
-        consultingManageService.getServeyOption();
+    @GetMapping("/survey/option/filter/{consultingId}")
+    public ResponseEntity<?> getSurveyConsultingOptionFilter(@PathVariable int consultingId) {
+        consultingManageService.getSurveyOption();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 항목 등록
-    @PostMapping("servey/regist")
-    public ResponseEntity<?> registServeyConsulting() {
-        consultingManageService.registServey();
+    @PostMapping("survey/regist")
+    public ResponseEntity<?> registSurveyConsulting() {
+        consultingManageService.registSurvey();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 항목 출력
-    @GetMapping("/servey/{consultingId}")
-    public ResponseEntity<?> getServeyConsulting(@PathVariable int consultingId) {
-        consultingManageService.getServey();
+    @GetMapping("/survey/{consultingId}")
+    public ResponseEntity<?> getSurveyConsulting(@PathVariable int consultingId) {
+        consultingManageService.getSurvey();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 항목 수정
-    @PutMapping("/servey/modify")
-    public ResponseEntity<?> modifyServeyConsulting() {
-        consultingManageService.modifyServey();
+    @PutMapping("/survey/modify")
+    public ResponseEntity<?> modifySurveyConsulting() {
+        consultingManageService.modifySurvey();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 항목 삭제
-    @DeleteMapping("/servey/delete/{consultingId}")
-    public ResponseEntity<?> deleteServeyConsulting(@PathVariable int consultingId) {
-        consultingManageService.deleteServey();
+    @DeleteMapping("/survey/delete/{consultingId}")
+    public ResponseEntity<?> deleteSurveyConsulting(@PathVariable int consultingId) {
+        consultingManageService.deleteSurvey();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 설문지 항목 복수개 삭제
-    @DeleteMapping("/servey/delete")
-    public ResponseEntity<?> deleteServeyConsultingList() {
-        consultingManageService.deleteServeyList();
+    @DeleteMapping("/survey/delete")
+    public ResponseEntity<?> deleteSurveyConsultingList() {
+        consultingManageService.deleteSurveyList();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 목록 출력
-    @GetMapping("/servey/result/list")
+    @GetMapping("/survey/result/list")
     public ResponseEntity<?> getResultConsultingListApi() {
         consultingManageService.getResultList();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 항목 등록
-    @PostMapping("/servey/result/regist")
+    @PostMapping("/survey/result/regist")
     public ResponseEntity<?> registResultConsulting() {
         consultingManageService.registResult();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 항목 출력
-    @GetMapping("/servey/result/{resultId}")
+    @GetMapping("/survey/result/{resultId}")
     public ResponseEntity<?> getResultConsulting(@PathVariable int resultId) {
         consultingManageService.getResult();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 항목 수정
-    @PutMapping("/servey/result/modify/{resultId}")
+    @PutMapping("/survey/result/modify/{resultId}")
     public ResponseEntity<?> modifyResultConsulting( ) {
         consultingManageService.modifyResult();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 항목 삭제
-    @DeleteMapping("/servey/result/delete/{resultId}")
+    @DeleteMapping("/survey/result/delete/{resultId}")
     public ResponseEntity<?> deleteResultConsulting(@PathVariable int resultId) {
         consultingManageService.deleteResult();
         return ResponseEntity.ok().body(null);
     }
 
     // 컨설팅 결과지 항목 복수개 삭제
-    @DeleteMapping("/servey/result/delete")
+    @DeleteMapping("/survey/result/delete")
     public ResponseEntity<?> deleteResultConsultingList() {
         consultingManageService.deleteResultList();
         return ResponseEntity.ok().body(null);

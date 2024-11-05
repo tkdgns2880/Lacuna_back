@@ -393,6 +393,8 @@
             p.product_name,
             p.price,
             p.promotion_price,
+            p.description,
+            p.etc,
             p.product_img,
             p.product_register_id,
             u.user_id,

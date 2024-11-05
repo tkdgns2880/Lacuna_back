@@ -51,6 +51,14 @@
         <result property="socialId" column="social_id" />
         <result property="provider" column="provider" />
     </resultMap>
+    <resultMap id="mbtiResultResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiResult">
+        <id property="mbtiResultId" column="mbti_result_id" />
+        <result property="mbtiResultCategoryName" column="mbti_result_category_name" />
+        <result property="mbtiResultTitle" column="mbti_result_title" />
+        <result property="mbtiResultSummary" column="mbti_result_summary" />
+        <result property="mbtiResultContent" column="mbti_result_content" />
+        <result property="mbtiResultImg" column="mbti_result_img" />
+    </resultMap>
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
         values(
@@ -299,5 +307,22 @@
             limit 1 )) as roleName
         from
             tb_user u
+    </select>
+    <select id="getMyMbtiResult" resultMap="mbtiResultResultMap">
+        select
+            mbti_result_id,
+            mbti_result_category_name,
+            mbti_result_title,
+            mbti_result_summary,
+            mbti_result_content,
+            mbti_result_img
+        from
+            tb_mbti_result
+        where
+            mbti_result_id = (select mbti_result_id
+                from tb_mbti_response
+                where mbti_response_user_id = #{userId}
+                order by create_date desc
+                limit 1)
     </select>
 </mapper>
