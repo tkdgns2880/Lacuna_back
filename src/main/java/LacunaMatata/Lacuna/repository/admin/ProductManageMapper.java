@@ -65,7 +65,7 @@ public interface ProductManageMapper {
     // 15. 상품 수정(consulting 상품일때 삭제 할 consultingDetail
     int deleteConsultingDetail(List<Integer> consultingDetailIdList);
     // 10-1. 상품 상위카테고리가 컨설팅인 상품일 때 컨설팅 모달창 수정_2024.10.26
-    int modifyConsultingDetail(ConsultingDetail consultingDetail);
+    int modifyConsultingDetail(List<ConsultingDetail> consultingDetails);
 //    // 10-2. 상품 상위카테고리가 컨설팅인 상품일 때 컨설팅 모달창 수정_2024.10.26 - 삭제
 //    int modifyConsultingContent(ConsultingContent consultingContent);
     // 11. 상품 상위카테고리가 화장품인 상품일 때 화장품 모달창_2024.10.26

@@ -347,14 +347,14 @@ public class ProductManageService {
         String deleteImgPath = dto.getDeleteImgPath();
 
         // 4. 물리 파일 삭제
-        if(deleteImgPath != null) {
+        if(deleteImgPath != null && !deleteImgPath.isEmpty()) {
             deleteImgUrl(deleteImgPath);
             finalImgPath = null;
         }
 
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
-        if(insertImgs != null && insertImgs.get(0).isEmpty()) {
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
             finalImgPath = registerImgUrl(insertImgs.get(0), "product/");
         }
 
@@ -376,8 +376,8 @@ public class ProductManageService {
         if(product.getProductProductUpperCategoryId() == 1) {
 
             // Todo 나중에 확인 필요
-            List<ConsultingDetail> consultingContents = objectMapper.readValue(dto.getConsultingContent(), new TypeReference<>() {});
-            productManageMapper.saveConsultingDetail(consultingContents);
+            List<ConsultingDetail> consultingDetails = objectMapper.readValue(dto.getConsultingContent(), new TypeReference<>() {});
+            productManageMapper.modifyConsultingDetail(consultingDetails);
         }
 
         if(product.getProductProductUpperCategoryId() == 2) {

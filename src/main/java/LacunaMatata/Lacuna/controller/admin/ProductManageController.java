@@ -172,9 +172,10 @@ public class ProductManageController {
     }
 
     // 상품 수정
-    @PutMapping("/modify/{productId}")
+    @PostMapping("/modify/{productId}")
     @ApiOperation(value = "modifyProductApi")
-    public ResponseEntity<?> modifyProduct(@RequestBody ReqModifyProductDto dto, @PathVariable int productId) throws IOException {
+    public ResponseEntity<?> modifyProduct(@ModelAttribute ReqModifyProductDto dto, @PathVariable int productId) throws IOException {
+        System.out.println("상품 수정 dto: "+dto);
         productManageService.modifyProduct(dto);
         return ResponseEntity.ok().body(true);
     }

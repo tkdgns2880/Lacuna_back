@@ -131,7 +131,6 @@
         <foreach item="consultingDetail" collection="consultingDetails" separator=",">
             (default, #{consultingDetail.consultingDetailProductId}, #{consultingDetail.consultingDetailContentId}, #{consultingDetail.repeatCount})
         </foreach>
-
     </insert>
     <insert id="saveCosmeticDetail" useGeneratedKeys="true" keyProperty="cosmeticDetailId">
         insert into tb_cosmetic_detail
@@ -188,10 +187,17 @@
         update
             tb_consulting_detail
         set
-            consulting_detail_content_id = #{consultingDetailContentId}
-            repeat_count = #{repeatCount},
+            repeat_count = case
+            <foreach collection="consultingDetails" item="consultingDetail" separator=" ">
+                when consulting_detail_id = #{consultingDetail.consultingDetailId} then #{consultingDetail.repeatCount}
+            </foreach>
+        end
         where
-            consulting_detail_product_id = #{consultingDetailProductId}
+            consulting_detail_id in (
+            <foreach collection="consultingDetails" item="consultingDetail" separator=",">
+                #{consultingDetail.consultingDetailId}
+            </foreach>
+        )
     </update>
     <update id="modifyCosmeticDetail">
         update
