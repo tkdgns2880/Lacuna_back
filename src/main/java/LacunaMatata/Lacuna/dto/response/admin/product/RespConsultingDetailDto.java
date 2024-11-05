@@ -12,6 +12,7 @@ import java.util.List;
 public class RespConsultingDetailDto{
     private int productId;
     private int productUpperCategoryId;
+    private int productLowerCategoryId;
     private String productUpperCategoryName;
     private String productLowerCategoryName;
     private String productCode;
