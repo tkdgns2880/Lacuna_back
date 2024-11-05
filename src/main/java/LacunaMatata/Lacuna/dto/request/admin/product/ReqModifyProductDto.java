@@ -18,10 +18,6 @@ public class ReqModifyProductDto {
     private String description;
     private String etc; // 기타사항
 
-    // 상위 분류가 컨설팅일때 받을 곳
-    // 반복횟수, 컨설팅 Id 값 받을 곳
-    List<Map<String, Object>> consultingContent;
-
     // 상위 분류가 화장품일 때 받을 곳
     private int cosmeticDetailId;
     private int cosmeticDetailProductId;
@@ -31,6 +27,11 @@ public class ReqModifyProductDto {
     private String effect; // 화장품 상품 효능
     private String manufacture; // 화장품 상품 제조사
     private String productUrl; // 화장품 상품 url
+
+
+    // 상위 분류가 컨설팅일때 받을 곳
+    // 반복횟수, 컨설팅 Id 값 받을 곳
+    private String consultingContent;
 
     // 상품 이미지 파일을 받는 곳 (신규 업로드, 삭제)
     private List<MultipartFile> insertImgs;

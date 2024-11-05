@@ -6,6 +6,8 @@ import LacunaMatata.Lacuna.dto.response.admin.product.*;
 import LacunaMatata.Lacuna.entity.product.*;
 import LacunaMatata.Lacuna.repository.admin.ProductManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,9 @@ public class ProductManageService {
 
     @Autowired
     private ProductManageMapper productManageMapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${file.path}")
     private String filePath;
@@ -209,7 +215,6 @@ public class ProductManageService {
                 "limit", dto.getLimit()
         );
         List<Product> productList = productManageMapper.getProductList(params);
-        System.out.println(productList);
         List<RespProductListDto> respProductListDtoList = new ArrayList<RespProductListDto>();
         for(Product product : productList) {
             RespProductListDto respProductListDto = RespProductListDto.builder()
@@ -258,7 +263,7 @@ public class ProductManageService {
 
         // 2. 신규 이미지 저장
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "product");
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "product/");
         }
 
         Product product = Product.builder()
@@ -281,16 +286,12 @@ public class ProductManageService {
         switch (dto.getProductUpperCategoryId()) {
             case 1:
                 // ConsultingContent 내용 들어갈 곳
-                List<Map<String, Object>> consultingContent = dto.getConsultingContent();
-                List<Long> contentIdList = consultingContent.stream().map(content -> (Long) content.get("contentId")).collect(Collectors.toList());
-                List<Integer> repeatCountList = consultingContent.stream().map(content -> (Integer) content.get("repeatCount")).collect(Collectors.toList());
-                Map<String, Object> params = Map.of(
-                        "consultingDetailProductId", product.getProductId(),
-                        "contentIdList", contentIdList,
-                        "repeatCountList", repeatCountList
-                );
+                List<ConsultingDetail> consultingDetails = objectMapper.readValue(dto.getConsultingContent(), new TypeReference<>() {});
 
-                productManageMapper.saveConsultingDetail(params);
+                productManageMapper.saveConsultingDetail(consultingDetails.stream().map(consultingDetail -> {
+                    consultingDetail.setConsultingDetailProductId(product.getProductId());
+                    return consultingDetail;
+                }).collect(Collectors.toList()));
                 break;
             case 2:
                 CosmeticDetail cosmeticDetail = CosmeticDetail.builder()
@@ -354,7 +355,7 @@ public class ProductManageService {
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
         if(insertImgs != null && insertImgs.get(0).isEmpty()) {
-            finalImgPath = registerImgUrl(insertImgs.get(0), "product");
+            finalImgPath = registerImgUrl(insertImgs.get(0), "product/");
         }
 
         Product product = Product.builder()
@@ -373,18 +374,10 @@ public class ProductManageService {
         productManageMapper.modifyProduct(product);
 
         if(product.getProductProductUpperCategoryId() == 1) {
-            List<Map<String, Object>> consultingContent = dto.getConsultingContent();
-            List<Long> contentIdList = consultingContent.stream().map(content -> (Long) content.get("contentId")).collect(Collectors.toList());
-            List<Integer> repeatCountList = consultingContent.stream().map(content -> (Integer) content.get("repeatCount")).collect(Collectors.toList());
-            List<Integer> deleteConsultingDetailIdList = consultingContent.stream().map(content -> (Integer) content.get("deleteConsultingDetailIdList")).collect(Collectors.toList());
 
-            Map<String, Object> params = Map.of(
-                    "consultingDetailProductId", dto.getProductId(),
-                    "contentIdList", contentIdList,
-                    "repeatCountList", repeatCountList
-            );
-            productManageMapper.deleteConsultingDetail(deleteConsultingDetailIdList);
-            productManageMapper.saveConsultingDetail(params);
+            // Todo 나중에 확인 필요
+            List<ConsultingDetail> consultingContents = objectMapper.readValue(dto.getConsultingContent(), new TypeReference<>() {});
+            productManageMapper.saveConsultingDetail(consultingContents);
         }
 
         if(product.getProductProductUpperCategoryId() == 2) {
@@ -442,7 +435,9 @@ public class ProductManageService {
     }
 
     public String registerImgUrl(MultipartFile img, String dirName ) throws IOException {
-        String imgName = img.getOriginalFilename();
+        String originalFilenameAndExtension = img.getOriginalFilename();
+        String imgName = UUID.randomUUID() + "_" + originalFilenameAndExtension;
+//        System.out.println("originalFilename: " + imgName);
         // Todo 디렉토리 경로 잘 확인해서 넣어야 함
         File directory = new File(filePath + dirName);
         if(!directory.exists()) {

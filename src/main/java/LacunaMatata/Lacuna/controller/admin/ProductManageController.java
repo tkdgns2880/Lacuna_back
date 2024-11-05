@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.aspect.annotation.Log;
 import LacunaMatata.Lacuna.aspect.annotation.admin.ProductDetailAop;
 import LacunaMatata.Lacuna.dto.request.admin.product.*;
 import LacunaMatata.Lacuna.dto.response.admin.product.*;
@@ -141,7 +142,6 @@ public class ProductManageController {
     @GetMapping("/list")
     @ApiOperation(value = "getProductListApi")
     public ResponseEntity<?> getProductList(ReqGetProductListDto dto) {
-        System.out.println("요청 데이터" + dto);
         RespCountAndProductDto respCountAndProductDto = productManageService.getProducts(dto);
     return ResponseEntity.ok().body(respCountAndProductDto);
     }
@@ -155,8 +155,10 @@ public class ProductManageController {
 
     // 상품 등록
     @PostMapping("/regist")
+    @Log
     @ApiOperation(value = "registProductApi")
     public ResponseEntity<?> registProduct(@ModelAttribute ReqRegistProductDto dto) throws Exception {
+        System.out.println("상품 데이터 요청"+ dto);
         productManageService.registProduct(dto);
         return ResponseEntity.ok().body(true);
     }

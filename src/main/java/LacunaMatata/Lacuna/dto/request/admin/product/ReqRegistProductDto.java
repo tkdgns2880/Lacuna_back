@@ -2,10 +2,8 @@ package LacunaMatata.Lacuna.dto.request.admin.product;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.mail.Multipart;
 import java.util.List;
-import java.util.Map;
+
 
 @Data
 public class ReqRegistProductDto {
@@ -29,5 +27,5 @@ public class ReqRegistProductDto {
     // 상품 이미지 파일을 받는 곳
     private List<MultipartFile> insertImgs;
     // 반복횟수, 컨설팅 Id 값 받을 곳
-    List<Map<String, Object>> consultingContent;
+    private String consultingContent;
 }

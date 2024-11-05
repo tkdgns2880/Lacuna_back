@@ -3,6 +3,7 @@ package LacunaMatata.Lacuna.repository.admin;
 import LacunaMatata.Lacuna.dto.response.admin.product.RespUpperProductCategoryAndLowerDto;
 import LacunaMatata.Lacuna.entity.product.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -48,9 +49,9 @@ public interface ProductManageMapper {
     // 2. 상품 등록_2024.10.26
     int saveProduct(Product product);
     // 3. 상위카테고리가 컨설팅인 상품일 때 컨설팅 Content 등록_2024.10.26
-    int saveConsultingContent(ConsultingContent consultingContent);
+//    int saveConsultingContent(ConsultingContent consultingContent);
     // 4. 상위카테고리가 컨설팅인 상품일 때 컨설팅 Detail 등록_2024.10.26
-    int saveConsultingDetail(Map<String, Object> params);
+    int saveConsultingDetail(List<ConsultingDetail> consultingDetails);
     // 5. 상위카테고리가 화장품인 상품일 때 화장품 Detail 등록_2024.10.26
     int saveCosmeticDetail(CosmeticDetail cosmeticDetail);
     // 6. 상품 모잘창 출력(상위 카테고리 컨설팅, 화장품 둘다 해당)_2024.10.26
