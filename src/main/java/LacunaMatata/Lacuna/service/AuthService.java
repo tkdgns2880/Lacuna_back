@@ -1,9 +1,6 @@
 package LacunaMatata.Lacuna.service;
 
-import LacunaMatata.Lacuna.dto.request.user.auth.ReqAuthEmailDto;
-import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
-import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
-import LacunaMatata.Lacuna.dto.request.user.auth.ReqOauthSignupDto;
+import LacunaMatata.Lacuna.dto.request.user.auth.*;
 import LacunaMatata.Lacuna.entity.user.*;
 import LacunaMatata.Lacuna.exception.InactiveAccountException;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
@@ -224,5 +221,44 @@ public class AuthService {
         } catch (Exception e) {
             return "validFail";
         }
+    }
+
+    public void findUsername(ReqFindUsernameDto dto) throws Exception {
+        String toEmail = dto.getToEmail();
+
+        User user = userMapper.findUserByEmail(toEmail);
+        if(user == null) {
+            throw new Exception("없는 계정");
+        }
+
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
+                + "width:400px'>");
+        htmlContent.append("<h2>Lacuna 사용자 계정찾기 안내</h2>");
+        htmlContent.append("<h3>회원님의 계정 아이디는");
+        htmlContent.append(user.getUsername());
+        htmlContent.append("입니다.</h3>");
+        htmlContent.append("</div>");
+
+        send(toEmail, "Lacuna 아이디 찾기", htmlContent.toString());
+    }
+
+    public void findPassword(ReqFindPasswordDto dto) throws Exception {
+        User user = userMapper.findUserByUsername(dto.getUsername());
+        if(user == null) {
+            throw new Exception("없는 계정");
+        }
+
+        String toEmail = dto.getToEmail();
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
+                + "width:400px'>");
+        htmlContent.append("<h2>Lacuna 사용자 비밀번호 찾기 안내</h2>");
+        htmlContent.append("<h3>회원님의 계정 비밀번호는");
+        htmlContent.append(user.getPassword());
+        htmlContent.append("입니다.</h3>");
+        htmlContent.append("</div>");
+
+        send(toEmail, "Lacuna 비밀번호 찾기", htmlContent.toString());
     }
 }
