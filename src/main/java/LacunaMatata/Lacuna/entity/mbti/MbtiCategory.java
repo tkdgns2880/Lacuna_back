@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,4 +27,6 @@ public class MbtiCategory {
     private int totalCount;
 
     private User user; // resultMap association 용도
+    private List<Mbti> mbtiList;
+    private Mbti mbti;
 }
