@@ -196,7 +196,7 @@ public class MbtiManageService {
 
         RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = RespCountAndMbtiQuestionDto.builder()
                 .totalCount(totalCount)
-                .respMbtiQuestionList(respMbtiQuestionList)
+                .mbtiQuestionList(respMbtiQuestionList)
                 .build();
 
         return respCountAndMbtiQuestionDto;

@@ -40,7 +40,7 @@ public class MbtiManageController {
     // MBTI 분류 카테고리 등록
     @ApiOperation(value = "registMbtiCategoryApi")
     @PostMapping("/survey/category/regist")
-    public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) throws IOException {
+    public ResponseEntity<?> registMbtiCategory(@ModelAttribute ReqRegistMbtiCategoryDto dto) throws IOException {
         mbtiManageService.registMbtiCategory(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -64,7 +64,7 @@ public class MbtiManageController {
     // MBTI 분류 카테고리 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
     @PutMapping("/survey/category/modify/{categoryId}")
-    public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
+    public ResponseEntity<?> modifyMbtiCategory(@ModelAttribute ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
         mbtiManageService.modifyMbtiCategory(dto, categoryId);
         return ResponseEntity.ok().body(true);
     }
@@ -87,7 +87,7 @@ public class MbtiManageController {
 
     // MBTI 설문 항목 리스트 출력
     @ApiOperation(value = "getMbtiQuestionListApi")
-    @GetMapping("/question")
+    @GetMapping("/question/list")
     public ResponseEntity<?> getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
         RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = mbtiManageService.getMbtiQuestionList(dto);
         return ResponseEntity.ok().body(respCountAndMbtiQuestionDto);
