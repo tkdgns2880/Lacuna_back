@@ -64,7 +64,7 @@ public class ProductDetailAspect {
                         .build();
                 RespModifyConsultingProductModalDto modifyConsultingProduct = RespModifyConsultingProductModalDto.builder()
                         .productRegistModal(respProductRegistModalDto)
-                        .consultingDetail(respConsultingDetailDto)
+                        .consultingProduct(respConsultingDetailDto)
                         .build();
                 return ResponseEntity.ok().body(modifyConsultingProduct);
             }
@@ -94,7 +94,7 @@ public class ProductDetailAspect {
                         .build();
                 RespModifyCosmeticProductDto modifyCosmeticProduct = RespModifyCosmeticProductDto.builder()
                         .productRegistModal(respProductRegistModalDto)
-                        .cosmeticDetail(respCosmeticDetailDto)
+                        .cosmeticProduct(respCosmeticDetailDto)
                         .build();
                 return ResponseEntity.ok().body(modifyCosmeticProduct);
             }
