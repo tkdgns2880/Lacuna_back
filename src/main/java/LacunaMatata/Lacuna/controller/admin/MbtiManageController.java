@@ -31,7 +31,7 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 리스트 출력
     @ApiOperation(value = "getMbtiCategoryListApi")
-    @GetMapping("/servey/category/list")
+    @GetMapping("/survey/category/list")
     public ResponseEntity<?> getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
         RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = mbtiManageService.getMbtiCategoryList(dto);
         return ResponseEntity.ok().body(respCountAndMbtiCategoryDto);
@@ -39,7 +39,7 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 등록
     @ApiOperation(value = "registMbtiCategoryApi")
-    @PostMapping("/servey/category/regist")
+    @PostMapping("/survey/category/regist")
     public ResponseEntity<?> registMbtiCategory(@RequestBody ReqRegistMbtiCategoryDto dto) throws IOException {
         mbtiManageService.registMbtiCategory(dto);
         return ResponseEntity.ok().body(true);
@@ -47,14 +47,14 @@ public class MbtiManageController {
 
     //MBTI 분류 카테고리 수정 모달창 조회
     @ApiOperation(value = "getMbtiCategoryApi")
-    @GetMapping("/servey/category/{categoryId}")
+    @GetMapping("/survey/category/{categoryId}")
     public ResponseEntity<?> getMbtiCategory(@PathVariable int categoryId) {
         RespMbtiCategoryDto mbtiCategory = mbtiManageService.getMbtiCategory(categoryId);
         return ResponseEntity.ok().body(mbtiCategory);
     }
 
     //MBTI 분류 카테고리 출력(필터용)
-    @GetMapping("/servey/category/filter")
+    @GetMapping("/survey/category/filter")
     @ApiOperation(value = "getMbtiCategoryListFilterApi")
     public ResponseEntity<?> getMbtiCategoryListFilter() {
         List<RespMbtiCategoryFilterDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryFilterDto();
@@ -63,7 +63,7 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
-    @PutMapping("/servey/category/modify/{categoryId}")
+    @PutMapping("/survey/category/modify/{categoryId}")
     public ResponseEntity<?> modifyMbtiCategory(@RequestBody ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
         mbtiManageService.modifyMbtiCategory(dto, categoryId);
         return ResponseEntity.ok().body(true);
@@ -71,7 +71,7 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 삭제
     @ApiOperation(value = "deleteMbtiCategoryApi")
-    @DeleteMapping("/servey/category/delete/{categoryId}")
+    @DeleteMapping("/survey/category/delete/{categoryId}")
     public ResponseEntity<?> deleteMbtiCategory(@PathVariable int categoryId) {
         mbtiManageService.deleteMbtiCategory(categoryId);
         return ResponseEntity.ok().body(true);
@@ -79,7 +79,7 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 복수개 삭제
     @ApiOperation(value = "deleteMbtiCategoryListApi")
-    @DeleteMapping("/servey/category/delete")
+    @DeleteMapping("/survey/category/delete")
     public ResponseEntity<?> deleteMbtiCategoryList(@RequestBody ReqDeleteMbtiCategoryListDto dto) {
         mbtiManageService.deleteMbtiCategoryList(dto);
         return ResponseEntity.ok().body(true);

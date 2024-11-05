@@ -86,37 +86,37 @@ public class ConsultingManageService {
     }
 
     // 컨설팅 설문지 목록 출력
-    public void getServeyList() {
+    public void getSurveyList() {
 
     }
 
     // 컨설팅 설문지 선택지 타입 항목 출력
-    public void getServeyOption() {
+    public void getSurveyOption() {
 
     }
 
     // 컨설팅 설문지 항목 등록
-    public void registServey() {
+    public void registSurvey() {
 
     }
 
     // 컨설팅 설문지 항목 출력
-    public void getServey() {
+    public void getSurvey() {
 
     }
 
     // 컨설팅 설문지 항목 수정
-    public void modifyServey() {
+    public void modifySurvey() {
 
     }
 
     // 컨설팅 설문지 항목 삭제
-    public void deleteServey() {
+    public void deleteSurvey() {
 
     }
 
     // 컨설팅 설문지 항목 복수개 삭제
-    public void deleteServeyList() {
+    public void deleteSurveyList() {
 
     }
 

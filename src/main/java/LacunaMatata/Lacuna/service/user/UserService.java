@@ -2,7 +2,9 @@ package LacunaMatata.Lacuna.service.user;
 
 import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
+import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileDto;
+import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import LacunaMatata.Lacuna.entity.user.PasswordHistory;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
@@ -74,4 +76,20 @@ public class UserService {
         // 나머지 정보는 그대로 보존
     }
 
+    // 마이페이지 - mbti 결과
+    public RespMyMbtiResultDto getMbtiResult() {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = principalUser.getId();
+
+        MbtiResult mbtiResult = userMapper.getMyMbtiResult(userId);
+        RespMyMbtiResultDto myMbtiResultDto = RespMyMbtiResultDto.builder()
+                .mbtiResultId(mbtiResult.getMbtiResultId())
+                .mbtiResultCategoryName(mbtiResult.getMbtiResultCategoryName())
+                .mbtiResultTitle(mbtiResult.getMbtiResultTitle())
+                .mbtiResultSummary(mbtiResult.getMbtiResultSummary())
+                .mbtiResultContent(mbtiResult.getMbtiResultContent())
+                .mbtiResultImg(mbtiResult.getMbtiResultImg())
+                .build();
+        return myMbtiResultDto;
+    }
 }
