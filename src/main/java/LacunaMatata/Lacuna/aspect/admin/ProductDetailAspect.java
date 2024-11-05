@@ -46,7 +46,7 @@ public class ProductDetailAspect {
             Product product = productManageMapper.getProduct(productId);
             // 만약 컨설팅 관련 상품이면 컨설팅 내용만 담아서 보냄
             if(product.getProductUpperCategory().getProductUpperCategoryId() == 1) {
-                ConsultingDetail consultingDetail = productManageMapper.getConsultingDetail(productId);
+                List<ConsultingDetail> consultingDetail = productManageMapper.getConsultingDetail(productId);
                 RespConsultingDetailDto respConsultingDetailDto = RespConsultingDetailDto.builder()
                         .productId(product.getProductId())
                         .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
@@ -59,15 +59,13 @@ public class ProductDetailAspect {
                         .productImg(product.getProductImg())
                         .description(product.getDescription())
                         .etc(product.getEtc())
-                        .repeatCount(consultingDetail.getRepeatCount())
-                        .consultingDetailContentId(consultingDetail.getConsultingDetailContentId())
-                        .consultingName(consultingDetail.getConsultingContent().getName())
+                        .consultingDetail(consultingDetail)
                         .build();
-                RespModifyConsultingProductModalDto modifyConsultingProductDto = RespModifyConsultingProductModalDto.builder()
-                        .respProductRegistModalDto(respProductRegistModalDto)
-                        .respConsultingDetailDto(respConsultingDetailDto)
+                RespModifyConsultingProductModalDto modifyConsultingProduct = RespModifyConsultingProductModalDto.builder()
+                        .productRegistModal(respProductRegistModalDto)
+                        .consultingDetail(respConsultingDetailDto)
                         .build();
-                return ResponseEntity.ok().body(modifyConsultingProductDto);
+                return ResponseEntity.ok().body(modifyConsultingProduct);
             }
 
             // 만약 화장품 관련 상품이면 화장품 내용만 담아서 보냄
@@ -92,11 +90,11 @@ public class ProductDetailAspect {
                         .manufacture(cosmeticDetail.getManufacture())
                         .productUrl(cosmeticDetail.getProductUrl())
                         .build();
-                RespModifyCosmeticProductDto respModifyCosmeticProductDto = RespModifyCosmeticProductDto.builder()
-                        .respProductRegistModalDto(respProductRegistModalDto)
-                        .respCosmeticDetailDto(respCosmeticDetailDto)
+                RespModifyCosmeticProductDto modifyCosmeticProduct = RespModifyCosmeticProductDto.builder()
+                        .productRegistModal(respProductRegistModalDto)
+                        .cosmeticDetail(respCosmeticDetailDto)
                         .build();
-                return ResponseEntity.ok().body(respModifyCosmeticProductDto);
+                return ResponseEntity.ok().body(modifyCosmeticProduct);
             }
         }
 

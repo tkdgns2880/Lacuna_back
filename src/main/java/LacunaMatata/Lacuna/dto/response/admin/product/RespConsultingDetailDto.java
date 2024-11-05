@@ -1,9 +1,11 @@
 package LacunaMatata.Lacuna.dto.response.admin.product;
 
+import LacunaMatata.Lacuna.entity.product.ConsultingDetail;
 import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 @Data
@@ -20,8 +22,5 @@ public class RespConsultingDetailDto{
     private String description;
     private String etc; // 기타사항
 
-    private int consultingDetailContentId;
-    private int repeatCount; // 컨설팅 반복 횟수
-
-    private String consultingName; // 컨설팅 상품 이름
+    private List<ConsultingDetail> consultingDetail;
 }

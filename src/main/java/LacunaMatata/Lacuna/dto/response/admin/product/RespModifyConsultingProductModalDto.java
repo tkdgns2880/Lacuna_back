@@ -9,6 +9,6 @@ import java.util.List;
 @Builder
 @Data
 public class RespModifyConsultingProductModalDto {
-    RespConsultingDetailDto respConsultingDetailDto;
-    RespProductRegistModalDto respProductRegistModalDto;
+    RespConsultingDetailDto consultingDetail;
+    RespProductRegistModalDto productRegistModal;
 }
