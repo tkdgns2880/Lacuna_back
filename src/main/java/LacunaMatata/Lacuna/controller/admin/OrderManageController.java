@@ -25,7 +25,7 @@ import java.util.List;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/admin/order")
 @Api(tags = {"OrderManageController"})
 public class OrderManageController {
 
@@ -33,7 +33,7 @@ public class OrderManageController {
     private OrderManageService orderManageService;
 
     // 회원 주문 리스트 출력
-    @GetMapping("/order/list")
+    @GetMapping("/list")
     @ApiOperation(value = "getOrderListApi")
     public ResponseEntity<?> getOrderList(@RequestBody ReqGetOrderListDto dto) {
         RespCountAndOderListDto respCountAndOderListDto = orderManageService.getOrderList(dto);
@@ -57,7 +57,7 @@ public class OrderManageController {
     }
 
     // 회원 결제 항목 상세 출력
-    @GetMapping("/pay/detail/{paymentId}")
+    @GetMapping("/payment/detail/{paymentId}")
     @ApiOperation(value = "getPaymentDetailApi")
     public ResponseEntity<?> getPaymentDetail(@PathVariable int paymentId) {
         RespGetPaymentDetailDto paymentDetail = orderManageService.getPaymentDetail(paymentId);
@@ -65,15 +65,23 @@ public class OrderManageController {
     }
 
     // 회원 결제 취소하기(결제 시스템)
-    @PutMapping("/pay/system/cancel/{paymentId}")
+    @PutMapping("/payment/cancel/{paymentId}")
     @ApiOperation(value = "cancelSystemPaymentApi")
     public ResponseEntity<?> cancelSystemPayment(@PathVariable int paymentId) {
         orderManageService.cancelSystemOrder(paymentId);
         return ResponseEntity.ok().body(true);
     }
 
+    // Todo 주문 관리 모달창 데이터 가져오는 API 추가 구축 필요
+    @GetMapping("/modify{orderId}")
+    @ApiOperation(value = "getModifyOrderApi")
+    public ResponseEntity<?> getModifyOrder(@PathVariable int orderId) {
+        // Todo service, Dto, Repositry 등 구축 필요
+        return ResponseEntity.ok().body(null);
+    }
+
     // 주문 수정 - 회원 결제 취소하기(계좌 이체)
-    @PostMapping("/pay/account/cancel")
+    @PostMapping("/management/transfer/cancel")
     @ApiOperation(value = "cancelAccountPaymentApi")
     public ResponseEntity<?> cancelAccountPayment(@RequestBody ReqCancelOrderAccountDto dto) {
         orderManageService.cancelAccountOrder(dto);
@@ -81,7 +89,7 @@ public class OrderManageController {
     }
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
-    @PostMapping("/pay/account/approve")
+    @PostMapping("/management/transfer/approve")
     @ApiOperation(value = "approveAccountPaymentApi")
     public ResponseEntity<?> approveAccountPayment(@RequestBody ReqApprovePaymentAccountDto dto) {
         orderManageService.approveAccountOrder(dto);
@@ -89,7 +97,7 @@ public class OrderManageController {
     }
 
     // 회원 주문 항목 삭제
-    @DeleteMapping("/pay/account/order/delete/{orderId}")
+    @DeleteMapping("/order/delete/{orderId}")
     @ApiOperation(value = "deleteOrderApi")
     public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
         orderManageService.deleteOrder(orderId);
@@ -97,7 +105,7 @@ public class OrderManageController {
     }
 
     // 회원 주문 항목 복수개 삭제
-    @DeleteMapping("/pay/account/order/delete")
+    @DeleteMapping("/order/delete")
     @ApiOperation(value = "deleteOrderListApi")
     public ResponseEntity<?> deleteOrderList(@RequestBody ReqDeleteOrderListDto dto) {
         orderManageService.deleteOrderList(dto);
