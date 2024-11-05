@@ -3,6 +3,7 @@ package LacunaMatata.Lacuna.dto.request.admin.mbti;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class ReqModifyMbtiResultDto {
     private int mbtiResultStatus;
 
     // MBTI 신규 이미지 등록 dto
-    private List<MultipartFile> newMbitResultImgs;
+    private Multipart insertImg;
+    private List<MultipartFile> insertImgs;
     private List<Map<String, Object>> DeleteMbtiResultImgs;
 }

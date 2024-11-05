@@ -74,7 +74,6 @@ public class UserManageService {
                 .userList(respGetUserListDtos)
                 .build();
 
-
         return respCountAndUserListDto;
     }
 
