@@ -109,6 +109,15 @@
             #{loginIp}
         )
     </insert>
+    <insert id="savePasswordHistory">
+        insert into tb_password_history
+        values(
+            default,
+            #{historyUserId},
+            #{password},
+            now()
+        )
+    </insert>
     <update id="modifyLoginDate">
         update tb_user
         set
@@ -116,6 +125,43 @@
         where
             user_id = #{userId}
     </update>
+    <update id="modifyPassword">
+        update tb_user
+        set
+            password = #{modifyPassword},
+            password_last_changed = now(),
+            update_date = now()
+        where
+            user_id = #{userId}
+    </update>
+    <delete id="deleteUser">
+        delete
+        from
+            tb_user
+        where
+            user_id = {userId}
+    </delete>
+    <delete id="deleteUserOptionalInfo">
+        delete
+        from
+            tb_user_optional_info
+        where
+            user_id = {userId}
+    </delete>
+    <delete id="deleteUserRoleMet">
+        delete
+        from
+            tb_user_role_met
+        where
+            user_id = {userId}
+    </delete>
+    <delete id="deleteOauthInfo">
+        delete
+        from
+            tb_social_login
+        where
+            user_id = {userId}
+    </delete>
     <select id="findLoginHistoryByUserId" resultMap="loginHistoryResultMap">
         select
             *

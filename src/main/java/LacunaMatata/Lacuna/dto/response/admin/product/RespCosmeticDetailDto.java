@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class RespCosmeticDetailDto {
     private int productId;
     private int productUpperCategoryId;
+    private int productLowerCategoryId;
     private String productUpperCategoryName;
     private String productLowerCategoryName;
     private String productCode;

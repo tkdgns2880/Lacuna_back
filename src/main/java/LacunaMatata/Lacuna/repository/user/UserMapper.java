@@ -22,6 +22,18 @@ public interface UserMapper {
     int saveLoginHistory(LoginHistory loginHistory);
     // 2-2. 로그인
     int modifyLoginDate(int userId);
+    // 3-1. 비밀번호 변경하기(User)_2024.11.05
+    int modifyPassword(int userId, String modifyPassword);
+    // 3-2. 비밀번호 변경하기(PasswordHistory)_2024.11.05
+    int savePasswordHistory(PasswordHistory passwordHistory);
+    // 4-1. 회원 탈퇴(User)_2024.11.05
+    int deleteUser(int userId);
+    // 4-2. 회원 탈퇴(UserOptionalInfo)_2024.11.05
+    int deleteUserOptionalInfo(int userId);
+    // 4-3. 회원 탈퇴(UserRoleMet)_2024.11.05
+    int deleteUserRoleMet(int userId);
+    // 4-4. 회원 탈퇴(SocialLogin)_2024.11.05
+    int deleteOauthInfo(int userId);
 
     /** 공통으로 사용할 userMapper */
     // 1. userId로 User 정보 찾기
