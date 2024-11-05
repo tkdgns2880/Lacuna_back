@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/************************************
+ * version: 1.0.3                   *
+ * author: 손경태                    *
+ * description: accessToken()       *
+ * createDate: 2024-10-11           *
+ * updateDate: 2024-11-05           *
+ ***********************************/
 @Slf4j
 @RestController
 @Api(tags = "AuthController")
@@ -30,13 +37,6 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    /************************************
-     * version: 1.0.3                   *
-     * author: 손경태                    *
-     * description: accessToken()       *
-     * createDate: 2024-10-11           *
-     * updateDate: 2024-10-11           *
-     ***********************************/
     @GetMapping("/access")
     @ApiOperation(value = "accessTokenApi")
     public ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
@@ -44,13 +44,6 @@ public class AuthController {
         return ResponseEntity.ok().body(true);
     }
 
-    /************************************
-     * version: 1.0.4                   *
-     * author: 손경태                    *
-     * description: signin() -세팅       *
-     * createDate: 2024-10-16           *
-     * updateDate: 2024-10-16           *
-     ***********************************/
     @PostMapping("/signin")
     @ApiOperation(value = "signinApi")
     @AuthAop
@@ -62,13 +55,6 @@ public class AuthController {
         return ResponseEntity.ok().body(bearerToken);
     }
 
-    /************************************
-     * version: 1.0.4                   *
-     * author: 손경태                    *
-     * description: signup() -세팅       *
-     * createDate: 2024-10-16           *
-     * updateDate: 2024-10-16           *
-     ***********************************/
     @PostMapping("/signup")
     @ApiOperation(value = "signupApi")
     @AuthAop
@@ -136,5 +122,20 @@ public class AuthController {
         sb.append("</html>");
 
         return sb.toString();
+    }
+
+    // 사용자 아이디 찾기
+    @PostMapping("/findusername")
+    @ApiOperation(value = "findUsernameApi")
+    public ResponseEntity<?> findUsername(@RequestBody ReqFindUsernameDto dto) throws Exception {
+        authService.findUsername(dto);
+        return ResponseEntity.ok().body(true);
+    }
+
+    @PostMapping("/findpassword")
+    @ApiOperation(value = "findPasswordApi")
+    public ResponseEntity<?> findPassword(@RequestBody ReqFindPasswordDto dto) throws Exception {
+        authService.findPassword(dto);
+        return ResponseEntity.ok().body(true);
     }
 }
