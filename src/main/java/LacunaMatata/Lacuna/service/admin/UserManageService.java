@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,16 +39,12 @@ public class UserManageService {
         );
         List<User> userList = userManageMapper.getUserList(params);
         List<RespGetUserListDto> respGetUserListDtos = new ArrayList<>();
-        System.out.println(userList);
         for(User user : userList) {
-            Map<Integer, String> roleMap = user.getUserRoleMets().stream()
-                    .collect(Collectors.toMap(
-                    rolemet -> rolemet.getUserRole().getRoleId(), rolemet -> rolemet.getUserRole().getRoleName()
+            Map<Integer, String> roleMap = user.getUserRoleMets().stream().collect(Collectors.toMap
+                            (rolemet -> rolemet.getUserRole().getRoleId(), rolemet -> rolemet.getUserRole().getRoleName()
             ));
-
             Integer maxRoleId = roleMap.keySet().stream().max(Integer::compare).orElse(1);
             String roleName = (maxRoleId != null) ? roleMap.get(maxRoleId) : null;
-            System.out.println(roleName);
 
             RespGetUserListDto respGetUserListDto = RespGetUserListDto.builder()
                     .userId(user.getUserId())
@@ -88,10 +81,10 @@ public class UserManageService {
                 .password(dto.getPassword())
                 .name(dto.getName())
                 .build();
-        int userId = userManageMapper.saveUser(user);
+        userManageMapper.saveUser(user);
 
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
-                .userId(userId)
+                .userId(user.getUserId())
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
@@ -100,7 +93,7 @@ public class UserManageService {
 
         for(int i = 1; i < dto.getRoleId() + 1; i++) {
             Map<String, Object> params = Map.of(
-                    "userId", userId,
+                    "userId", user.getUserId(),
                     "roleId", i
             );
             userManageMapper.saveUserRoleMet(params);

@@ -33,7 +33,7 @@ public class UserManageController {
 
     // 사용자 목록 출력
     @GetMapping("/list")
-    @ApiOperation(value = "getUserListApi")
+    @ApiOperation(value = "getUserListApi") // test 완료
     public ResponseEntity<?> getUserList(ReqGetUserListDto dto) {
         RespCountAndUserListDto respCountAndUserListDto = userManageService.getUserInfoList(dto);
         return ResponseEntity.ok().body(respCountAndUserListDto);
@@ -41,7 +41,7 @@ public class UserManageController {
 
     // 사용자 등록
     @PostMapping("/regist")
-    @ApiOperation(value = "registerUserApi")
+    @ApiOperation(value = "registerUserApi") // test 완료
     public ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) {
         userManageService.registUser(dto);
         return ResponseEntity.ok().body(true);
@@ -49,7 +49,7 @@ public class UserManageController {
 
     // 사용자 항목 출력
     @GetMapping("/{userId}")
-    @ApiOperation(value = "getUserDetailApi")
+    @ApiOperation(value = "getUserDetailApi") // test 완료
     public ResponseEntity<?> getUserDetail(@PathVariable int userId) {
         RespUserDetailDto userDetail = userManageService.getUserDetail(userId);
         return ResponseEntity.ok().body(userDetail);
@@ -57,7 +57,7 @@ public class UserManageController {
 
     // 사용자 권한 목록 출력(필터)
     @GetMapping("/role/list/filter")
-    @ApiOperation(value = "getUserRoleListApi")
+    @ApiOperation(value = "getUserRoleListApi") // test 완료
     public ResponseEntity<?> getUserRoleList() {
         List<RespUserRoleFilterDto> userRoleList = userManageService.getUserRoleList();
         return ResponseEntity.ok().body(userRoleList);
@@ -65,7 +65,7 @@ public class UserManageController {
 
     // 사용자 수정(권한, 활성화)
     @PutMapping("/modify/{userId}")
-    @ApiOperation(value = "modifyUserApi")
+    @ApiOperation(value = "modifyUserApi") // test 완료
     public ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) {
         userManageService.modifyUser(dto);
         return ResponseEntity.ok().body(true);
@@ -73,7 +73,7 @@ public class UserManageController {
 
     // 사용자 삭제
     @DeleteMapping("/delete/{userId}")
-    @ApiOperation(value = "deleteUserApi")
+    @ApiOperation(value = "deleteUserApi") // test 완료
     public ResponseEntity<?> deleteUser(@PathVariable int userId) {
         userManageService.deleteUser(userId);
         return ResponseEntity.ok().body(true);
@@ -81,7 +81,7 @@ public class UserManageController {
 
     // 사용자 복수개 삭제
     @DeleteMapping("/delete")
-    @ApiOperation(value = "deleteUserListApi")
+    @ApiOperation(value = "deleteUserListApi") // test 완료
     public ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
         userManageService.deleteUserList(dto);
         return ResponseEntity.ok().body(true);

@@ -165,7 +165,9 @@
             uoi.birth_date
         from
             tb_user u
-            left outer join tb_user_optional_info uoi on u.user_id = uoi.user_id
+            left outer join tb_user_optional_info uoi on uoi.user_id = u.user_id
+            left outer join tb_user_role_met urm on urm.role_user_id = u.user_id
+            left outer join tb_user_role ur on ur.role_id = urm.role_id
         where
             1 = 1
             <if test="filter == 0">
