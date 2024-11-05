@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class ReqFindPasswordDto {
-    private String toEmail;
     private String username;
 }

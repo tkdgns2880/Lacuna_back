@@ -249,7 +249,7 @@ public class AuthService {
             throw new Exception("없는 계정");
         }
 
-        String toEmail = dto.getToEmail();
+        String toEmail = user.getEmail();
         StringBuilder htmlContent = new StringBuilder();
         htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
                 + "width:400px'>");
