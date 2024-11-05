@@ -353,7 +353,7 @@ public class MbtiManageService {
 
         RespCountAndMbtiResultDto respCountAndMbtiResultDto = RespCountAndMbtiResultDto.builder()
                 .totalCount(totalCount)
-                .respGetMbtiResultListDtoList(respGetMbtiResultListDtoList)
+                .mbtiResultList(respGetMbtiResultListDtoList)
                 .build();
         return respCountAndMbtiResultDto;
     }
