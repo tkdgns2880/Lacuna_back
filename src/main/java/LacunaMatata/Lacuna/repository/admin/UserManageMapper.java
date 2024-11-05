@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.repository.admin;
 
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
+import LacunaMatata.Lacuna.entity.user.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface UserManageMapper {
     /** 공통으로 사용할 Mapper */
     // 1. 사용자 ID로 사용자 찾기
     User findUserById(int userId);
+    // 2. 사용자 권한목록 출력(필터)
+    List<UserRole> getUserRole();
 }

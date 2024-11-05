@@ -7,8 +7,10 @@ import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetUserListDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserDetailDto;
+import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserRoleFilterDto;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
+import LacunaMatata.Lacuna.entity.user.UserRole;
 import LacunaMatata.Lacuna.entity.user.UserRoleMet;
 import LacunaMatata.Lacuna.repository.admin.UserManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,8 +122,17 @@ public class UserManageService {
     }
 
     // 사용자 권한 목록 출력(필터)
-    public void getUserRoleList() {
-
+    public List<RespUserRoleFilterDto> getUserRoleList() {
+        List<UserRole> userRole = userManageMapper.getUserRole();
+        List<RespUserRoleFilterDto> userRoleList = new ArrayList<>();
+        for(UserRole ur : userRole) {
+            RespUserRoleFilterDto respUserRoleFilterDto = RespUserRoleFilterDto.builder()
+                    .roleId(ur.getRoleId())
+                    .roleName(ur.getRoleName())
+                    .build();
+            userRoleList.add(respUserRoleFilterDto);
+        }
+        return userRoleList;
     }
 
     // 사용자 수정(권한)
