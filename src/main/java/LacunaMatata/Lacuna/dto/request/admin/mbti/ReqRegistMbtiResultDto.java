@@ -16,5 +16,6 @@ public class ReqRegistMbtiResultDto {
     private int mbtiResultStatus;
 
     // MBTI 결과 이미지 파일을 받는 곳
-    private List<MultipartFile> mbtiResultImgs;
+    private MultipartFile insertImg; // 대표 이미지
+    private List<MultipartFile> insertImgs; // 퀼 이미지
 }

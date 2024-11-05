@@ -92,12 +92,10 @@
     </insert>
     <insert id="saveMbtiOption">
         insert into tb_mbti_option
-        values(
-            default,
-            #{mbtiId},
-            #{optionName},
-            #{optionScore}
-        )
+        values
+        <foreach item="optionName" index="index" collection="optionNameList" separator=",">
+            (default, #{mbtiId}, #{optionName}, #{optionScoreList[index]})
+        </foreach>
     </insert>
     <insert id="saveMbtiResult" useGeneratedKeys="true" keyProperty="mbtiResultId">
         insert into tb_mbti_result

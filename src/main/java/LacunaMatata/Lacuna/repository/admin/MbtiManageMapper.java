@@ -24,7 +24,7 @@ public interface MbtiManageMapper {
     // 3. MBTI 분류 모달창 조회_2024.10.27
     MbtiCategory findMbtiCategoryByCategoryId(int categoryId);
     // 4. MBTI 분류 모달창 수정_2024.10.27
-    int modifyMbtiCategory(ReqModifyMbtiCategoryDto dto, Map<String, Object> params);
+    int modifyMbtiCategory(MbtiCategory mbtiCategory);
     // 5. MBTI 분류 단일 삭제_2024.10.27
     int deleteMbtiCategory(int categoryId);
     // 6. MBTI 분류 복수 삭제_2024.10.27
@@ -36,11 +36,11 @@ public interface MbtiManageMapper {
     // 2-1. MBTI 설문 항목 등록_2024.10.27
     int saveMbti(Mbti mbti);
     // 2-2. MBTI 설문 선택지 등록_2024.10.27
-    int saveMbtiOption(MbtiOption mbtiOption);
+    int saveMbtiOption(Map<String, Object> params);
     // 3. MBTI 설문 항목 모달 출력_2024.10.27
     RespMbtiQuestionDto getMbtiQuestion(int mbtiId);
     // 4-1. MBTI 설문 항목 모달 수정_2024.10.28
-    int modifyMbtiQuestion(ReqModifyMbtiQuestionDto dto, Map<String, Object> params);
+    int modifyMbtiQuestion(Mbti mbti);
     // 4-2. MBTI 설문 항목 모달 선택지 삭제_2024.10.28
     int deleteMbtiQuestionOptionList(List<Integer> deleteOptionIdList);
     // 4-3. MBTI 설문 항목 모달 선택지 추가_2024.10.28
