@@ -11,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.reactive.TransactionalOperator;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private TransactionalOperator transactionalOperator;
 
     // 프로필 페이지 출력 정보
     public RespMyProfileDto getMyProfile() {
