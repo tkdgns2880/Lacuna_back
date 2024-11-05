@@ -95,6 +95,7 @@ public class MbtiManageController {
 
     // MBTI 설문 등록 모달창 출력
     @GetMapping("/question/regist/modal")
+    @ApiOperation(value = "mbtiQuestionRegistModalApi")
     public ResponseEntity<?> mbtiQuestionRegistModal() {
         return ResponseEntity.ok().body(mbtiManageService.mbtiQuestionRegistModal());
     }
