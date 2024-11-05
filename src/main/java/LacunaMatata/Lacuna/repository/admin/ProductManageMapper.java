@@ -57,7 +57,7 @@ public interface ProductManageMapper {
     // 6. 상품 모잘창 출력(상위 카테고리 컨설팅, 화장품 둘다 해당)_2024.10.26
     Product getProduct(int productId);
     // 7. 상위카테고리가 컨설팅인 상품일 때 컨설팅 모달창 출력_2024.10.26
-    ConsultingDetail getConsultingDetail(int productId);
+    List<ConsultingDetail> getConsultingDetail(int productId);
     // 8. 상위카테고리가 화장품인 상품일 때 화장품 모달창_2024.10.26
     CosmeticDetail getCosmeticDetail(int productId);
     // 9. 상품 모달창 수정(상위 카테고리 컨설팅, 화장품 둘다 해당)_2024.10.26

@@ -6,6 +6,6 @@ import lombok.Data;
 @Builder
 @Data
 public class RespModifyCosmeticProductDto {
-    RespCosmeticDetailDto respCosmeticDetailDto;
-    RespProductRegistModalDto respProductRegistModalDto;
+    RespCosmeticDetailDto cosmeticDetail;
+    RespProductRegistModalDto productRegistModal;
 }
