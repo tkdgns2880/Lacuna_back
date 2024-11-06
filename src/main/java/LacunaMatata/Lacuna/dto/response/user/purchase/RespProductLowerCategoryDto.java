@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.dto.response.admin.product;
+package LacunaMatata.Lacuna.dto.response.user.purchase;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class RespLowerCategoryAndProductDto {
+public class RespProductLowerCategoryDto {
     private int productLowerCategoryId;
-    private int productUpperCategoryId;
     private String productLowerCategoryName;
+
+    private List<RespConsultingProductDto> consultingProduct;
 }

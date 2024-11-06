@@ -21,7 +21,6 @@ public class MbtiController {
     @GetMapping("/question")
     @ApiOperation(value = "getMbtiSurveyApi")
     public ResponseEntity<?> getMbtiSurvey() {
-        System.out.println("왜");
         return ResponseEntity.ok().body(mbtiService.getmbtiSurvey());
     }
 
