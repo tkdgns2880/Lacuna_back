@@ -35,7 +35,8 @@ public class OrderManageController {
     // 회원 주문 리스트 출력
     @GetMapping("/list")
     @ApiOperation(value = "getOrderListApi")
-    public ResponseEntity<?> getOrderList(@RequestBody ReqGetOrderListDto dto) {
+    public ResponseEntity<?> getOrderList(ReqGetOrderListDto dto) {
+
         RespCountAndOderListDto respCountAndOderListDto = orderManageService.getOrderList(dto);
         return ResponseEntity.ok().body(respCountAndOderListDto);
     }
