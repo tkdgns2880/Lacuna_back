@@ -312,7 +312,7 @@ public class ProductManageService {
     public RespProductDetailDto getProductDetail(int productId) {
         Product product = productManageMapper.getProduct(productId);
 
-        RespProductDetailDto productConsultingDetail = RespProductDetailDto.builder()
+        RespProductDetailDto productDetail = RespProductDetailDto.builder()
                 .productId(product.getProductId())
                 .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
                 .productUpperCategoryName(product.getProductUpperCategory().getProductUpperCategoryName())
@@ -325,7 +325,8 @@ public class ProductManageService {
                 .description(product.getDescription())
                 .etc(product.getEtc())
                 .build();
-        return productConsultingDetail;
+        System.out.println(productDetail);
+        return productDetail;
     }
 
     // 상품 수정

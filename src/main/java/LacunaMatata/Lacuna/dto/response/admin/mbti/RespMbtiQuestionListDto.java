@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class RespMbtiQuestionListDto {
     private int mbtiId;
+    private String mbtiCode;
     private String mbtiCategoryName;
     private String mbtiTitle;
     private String name;

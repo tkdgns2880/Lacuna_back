@@ -42,7 +42,7 @@ public interface MbtiManageMapper {
     // 4-1. MBTI 설문 항목 모달 수정_2024.10.28
     int modifyMbtiQuestion(Mbti mbti);
     // 4-2. MBTI 설문 항목 모달 선택지 삭제_2024.10.28
-    int deleteMbtiQuestionOptionList(List<Integer> deleteOptionIdList);
+    int deleteMbtiQuestionOptionList(int mbtiId);
     // 4-3. MBTI 설문 항목 모달 선택지 추가_2024.10.28
     // 2-2 번 이용
 
