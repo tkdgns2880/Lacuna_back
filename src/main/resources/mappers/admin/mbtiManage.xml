@@ -38,11 +38,10 @@
         <result property="mbtiCategoryId" column="mbti_category_id" />
         <result property="mbtiTitle" column="mbti_title" />
         <result property="mbtiCategoryName" column="mbtiCategoryName" />
+        <result property="mbtiImg" column="mbti_img" />
         <collection property="mbtiOptionList" javaType="java.util.ArrayList" resultMap="mbtiOptionResultMap" />
     </resultMap>
-    <resultMap id="mbtiOptionResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiOption">
-        <id property="mbtiOptionId" column="mbti_option_id" />
-        <result property="mbtiId" column="mbti_id" />
+    <resultMap id="mbtiOptionResultMap" type="LacunaMatata.Lacuna.dto.response.admin.mbti.RespMbtiOptionListDto">
         <result property="optionName" column="option_name" />
         <result property="optionScore" column="option_score" />
     </resultMap>
@@ -125,7 +124,7 @@
         update
             tb_mbti_category
         set
-            mbti_category_register_id = #{registerId},
+            mbti_category_register_id = #{mbtiCategoryRegisterId},
             mbti_category_name = #{mbtiCategoryName},
             mbti_category_title = #{mbtiCategoryTitle},
             mbti_category_description = #{mbtiCategoryDescription},
@@ -138,7 +137,7 @@
         update
             tb_mbti
         set
-            mbti_register_id = #{registerId},
+            mbti_register_id = #{mbtiRegisterId},
             mbti_title = #{mbtiTitle},
             mbti_img = #{mbtiImg},
             update_date = now()
@@ -199,10 +198,7 @@
         from
             tb_mbti_option
         where
-            mbti_option_id in
-            <foreach item="mbtiOptionId" collection="deleteOptionIdList" open="(" separator="," close=")">
-                #{mbtiOptionId}
-            </foreach>
+            mbti_id = #{mbtiId}
     </delete>
     <delete id="deleteMbtiResult">
         delete
@@ -359,7 +355,7 @@
         where
             1 = 1
             <if test="searchValue != null and searchValue != ''">
-                and mr.mbti_title like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+                and mr.mbti_result_title like concat('%', trim(ifnull(#{searchValue}, '')), '%')
             </if>
         limit
             #{startIndex}, #{limit}

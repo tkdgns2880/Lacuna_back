@@ -63,8 +63,9 @@ public class MbtiManageController {
 
     // MBTI 분류 카테고리 수정
     @ApiOperation(value = "modifyMbtiCategoryApi")
-    @PutMapping("/survey/category/modify/{categoryId}")
+    @PostMapping("/survey/category/modify/{categoryId}")
     public ResponseEntity<?> modifyMbtiCategory(@ModelAttribute ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
+        System.out.println(dto);
         mbtiManageService.modifyMbtiCategory(dto, categoryId);
         return ResponseEntity.ok().body(true);
     }
@@ -103,7 +104,8 @@ public class MbtiManageController {
     // MBTI 설문 항목 등록
     @ApiOperation(value = "registMbtiQuestionApi")
     @PostMapping("/question/regist")
-    public ResponseEntity<?> registMbtiQuestion(@RequestBody ReqRegistMbtiQuestionDto dto) throws IOException {
+    public ResponseEntity<?> registMbtiQuestion(@ModelAttribute ReqRegistMbtiQuestionDto dto) throws IOException {
+        System.out.println(dto);
         mbtiManageService.registMbtiQuestion(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -118,8 +120,8 @@ public class MbtiManageController {
 
     // MBTI 설문 항목 모달 수정
     @ApiOperation(value = "modifyMbtiQuestionApi")
-    @PutMapping("/question/modify/{mbtiId}")
-    public ResponseEntity<?> modifyMbtiQuestion(@RequestBody ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) throws IOException {
+    @PostMapping("/question/modify/{mbtiId}")
+    public ResponseEntity<?> modifyMbtiQuestion(@ModelAttribute ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) throws IOException {
         mbtiManageService.modifyMbtiQuestion(dto, mbtiId);
         return ResponseEntity.ok().body(true);
     }

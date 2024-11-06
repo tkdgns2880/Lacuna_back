@@ -85,7 +85,7 @@ public class MbtiManageService {
 
         // 2. 신규 이미지 저장
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "product");
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory");
         }
 
         MbtiCategory mbtiCategory = MbtiCategory.builder()
@@ -122,15 +122,18 @@ public class MbtiManageService {
 
         // 1. 최종 수정될 imgPath 공간 생성
         String finalImgPath = dto.getPrevImgPath();
+        System.out.println(finalImgPath);
 
         // 2. 이미지 신규 등록할 공간 생성
         List<MultipartFile> insertImgs = dto.getInsertImgs();
+        System.out.println(insertImgs);
 
         // 3. 이미지 삭제할 공간 생성
         String deleteImgPath = dto.getDeleteImgPath();
+        System.out.println(deleteImgPath);
 
         // 4. 물리 파일 삭제
-        if(deleteImgPath != null) {
+        if(deleteImgPath != null && !deleteImgPath.isEmpty()) {
             deleteImgUrl(deleteImgPath);
             finalImgPath = null;
         }
@@ -138,7 +141,7 @@ public class MbtiManageService {
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
         if(insertImgs != null && insertImgs.get(0).isEmpty()) {
-            finalImgPath = registerImgUrl(insertImgs.get(0), "product");
+            finalImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory");
         }
 
         MbtiCategory modifyMbtiCategory = MbtiCategory.builder()
@@ -180,6 +183,7 @@ public class MbtiManageService {
         for(Mbti mbti : mbtiQuestionList) {
             RespMbtiQuestionListDto respMbtiQuestionListDto = RespMbtiQuestionListDto.builder()
                     .mbtiId(mbti.getMbtiId())
+                    .mbtiCode(mbti.getMbtiCode())
                     .mbtiCategoryName(mbti.getMbtiCategoryName())
                     .mbtiTitle(mbti.getMbtiTitle())
                     .name(mbti.getUser().getName())
@@ -226,7 +230,7 @@ public class MbtiManageService {
 
         // 2. 신규 이미지 저장
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "product");
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbti");
         }
 
         Mbti mbti = Mbti.builder()
@@ -246,7 +250,6 @@ public class MbtiManageService {
                 "optionScoreList", optionScoreList
         );
         mbtiManageMapper.saveMbtiOption(params);
-
     }
 
     // mbti 설문지 항목 수정 모달창 출력
@@ -283,7 +286,7 @@ public class MbtiManageService {
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
         if(insertImgs != null && insertImgs.get(0).isEmpty()) {
-            finalImgPath = registerImgUrl(insertImgs.get(0), "product");
+            finalImgPath = registerImgUrl(insertImgs.get(0), "mbti");
         }
 
         Mbti mbti = Mbti.builder()
@@ -297,11 +300,10 @@ public class MbtiManageService {
 
         mbtiManageMapper.modifyMbtiQuestion(mbti);
 
-        List<Integer> deleteOptionIdList = dto.getDeleteOptionIdList();
         List<String> optionNameList = dto.getOptionName();
         List<Integer> optionScoreList = dto.getOptionScore();
 
-        mbtiManageMapper.deleteMbtiQuestionOptionList(deleteOptionIdList);
+        mbtiManageMapper.deleteMbtiQuestionOptionList(dto.getMbtiId());
 
         Map<String, Object> params = Map.of(
                 "mbtiId", dto.getMbtiId(),
@@ -344,6 +346,7 @@ public class MbtiManageService {
                     .build();
             respGetMbtiResultListDtoList.add(respGetMbtiResultListDto);
         }
+        System.out.println(respGetMbtiResultListDtoList);
         int totalCount = mbtiResultList.isEmpty() ? 0 : mbtiResultList.get(0).getTotalCount();
 
         RespCountAndMbtiResultDto respCountAndMbtiResultDto = RespCountAndMbtiResultDto.builder()
@@ -364,7 +367,7 @@ public class MbtiManageService {
         MultipartFile insertImg = dto.getInsertImg();
 
         if(insertImg != null && insertImg.isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImg, "product");
+            insertCompletedImgPath = registerImgUrl(insertImg, "mbti/mbtiResult");
         }
 
         MbtiResult mbtiResult = MbtiResult.builder()
@@ -451,7 +454,7 @@ public class MbtiManageService {
         MultipartFile insertImg = dto.getInsertImg();
 
         if(insertImg != null && insertImg.isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImg, "product");
+            insertCompletedImgPath = registerImgUrl(insertImg, "mbti/mbtiResult");
         }
 
         MbtiResult mbtiResult = MbtiResult.builder()
