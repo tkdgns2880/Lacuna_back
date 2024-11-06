@@ -311,7 +311,6 @@ public class ProductManageService {
     // 상품 항목 출력(수정 모달창) -> ProductDetailAspect 로 넘겨줌
     public RespProductDetailDto getProductDetail(int productId) {
         Product product = productManageMapper.getProduct(productId);
-
         RespProductDetailDto productDetail = RespProductDetailDto.builder()
                 .productId(product.getProductId())
                 .productUpperCategoryId(product.getProductUpperCategory().getProductUpperCategoryId())
