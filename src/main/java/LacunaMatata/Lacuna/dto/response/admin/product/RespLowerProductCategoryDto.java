@@ -9,4 +9,5 @@ public class RespLowerProductCategoryDto {
     private Integer productLowerCategoryId;
     private Integer productUpperCategoryId;
     private String productLowerCategoryName;
+    private String productUpperCategoryName;
 }

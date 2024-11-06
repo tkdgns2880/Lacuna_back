@@ -156,28 +156,16 @@ public class ProductManageService {
     }
 
     // 상품 하위 분류 카테고리 수정 모달창 출력
-    public RespLowerCategoryModifyModalDto getProductLower(int lowerId) {
+    public RespLowerProductCategoryDto getProductLower(int lowerId) {
         ProductLowerCategory respLowerCategory = productManageMapper.getProductLowerDto(lowerId);
         RespLowerProductCategoryDto lowerCategory = RespLowerProductCategoryDto.builder()
                 .productLowerCategoryId(respLowerCategory.getProductLowerCategoryId())
                 .productUpperCategoryId(respLowerCategory.getProductUpperCategoryId())
                 .productLowerCategoryName(respLowerCategory.getProductLowerCategoryName())
+                .productUpperCategoryName(respLowerCategory.getProductUpperCategoryName())
                 .build();
-
-        List<ProductUpperCategory> upperFilter = productManageMapper.getProductUpperCategoryList();
-        List<RespUpperProductCategoryDto> upperFilterList = new ArrayList<>();
-        for(ProductUpperCategory productUpperCategory : upperFilter) {
-            RespUpperProductCategoryDto upperFilter2 = RespUpperProductCategoryDto.builder()
-                    .productUpperCategoryId(productUpperCategory.getProductUpperCategoryId())
-                    .productUpperCategoryName(productUpperCategory.getProductUpperCategoryName())
-                    .build();
-            upperFilterList.add(upperFilter2);
-        }
-        RespLowerCategoryModifyModalDto modifyModalDto = RespLowerCategoryModifyModalDto.builder()
-                .productLowerCategory(lowerCategory)
-                .productUpperCategoryList(upperFilterList)
-                .build();
-        return modifyModalDto;
+        System.out.println(lowerCategory);
+        return lowerCategory;
     }
 
     // 상품 하위 분류 카테고리 수정
