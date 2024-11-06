@@ -57,7 +57,7 @@ public class MbtiManageService {
 
         RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = RespCountAndMbtiCategoryDto.builder()
                 .totalCount(totalCount)
-                .respMbtiCategoryListDtoList(respMbtiCategoryListDtoList)
+                .mbtiCategoryList(respMbtiCategoryListDtoList)
                 .build();
 
         return respCountAndMbtiCategoryDto;
