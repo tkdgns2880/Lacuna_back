@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class RespGetOrderStatusFilterDto {
     private int orderId;
-    private String status;
+    private String statusName;
 }

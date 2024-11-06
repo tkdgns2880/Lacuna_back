@@ -67,7 +67,7 @@ public class OrderManageService {
         for(Order order : orderFilter) {
             RespGetOrderStatusFilterDto orderFilter2 = RespGetOrderStatusFilterDto.builder()
                     .orderId(order.getOrderId())
-                    .status(order.getStatus())
+                    .statusName(order.getStatus())
                     .build();
             orderStatusFilter.add(orderFilter2);
         }
