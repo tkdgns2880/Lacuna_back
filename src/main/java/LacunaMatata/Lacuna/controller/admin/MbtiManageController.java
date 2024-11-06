@@ -32,8 +32,8 @@ public class MbtiManageController {
     // MBTI 분류 카테고리 리스트 출력
     @ApiOperation(value = "getMbtiCategoryListApi")
     @GetMapping("/survey/category/list")
-    public ResponseEntity<?> getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
-        RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = mbtiManageService.getMbtiCategoryList(dto);
+    public ResponseEntity<?> getMbtiCategoryList() {
+        RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = mbtiManageService.getMbtiCategoryList();
         return ResponseEntity.ok().body(respCountAndMbtiCategoryDto);
     }
 
