@@ -22,6 +22,23 @@
         <result property="orderId" column="order_id" />
         <result property="orderProductId" column="order_product_id" />
         <result property="quantity" column="quantity" />
+        <result property="productName" column="productName" />
+        <result property="priceAtPurchase" column="price_at_purchase" />
+    </resultMap>
+    <resultMap id="orderResultMap2" type="LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderDetailDto">
+        <id property="orderId" column="order_id" />
+        <result property="totalAmount" column="total_amount" />
+        <result property="status" column="status" />
+        <result property="name" column="name" />
+        <result property="createdDate" column="created_date" />
+        <result property="paymentMethod" column="paymentMethod" />
+        <collection property="orderDetailItem" javaType="java.util.ArrayList" resultMap="orderItemResultMap2" />
+    </resultMap>
+    <resultMap id="orderItemResultMap2" type="LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderItemDetailDto">
+        <id property="orderItemId" column="order_item_id" />
+        <result property="orderId" column="order_id" />
+        <result property="quantity" column="quantity" />
+        <result property="productName" column="productName" />
         <result property="priceAtPurchase" column="price_at_purchase" />
     </resultMap>
     <resultMap id="paymentResultMap" type="LacunaMatata.Lacuna.entity.order.Payment">
@@ -34,7 +51,7 @@
         <result property="createdDate" column="created_date" />
         <result property="name" column="name" />
     </resultMap>
-    <insert id="cancelAccountPayment" useGeneratedKeys="true" keyProperty="paymentId">
+    <insert id="cancelAccountPayment">
         insert into tb_payment
         values(
             default,
@@ -135,9 +152,6 @@
             left outer join tb_user_role ur on ur.role_id = urm.role_id
         where
             1 = 1
-            <if test="filter != null and filter != ''">
-                and ur.role_id = #{filter}
-            </if>
             <if test="filter == 1">
                 and o.status = 'pending'
             </if>
@@ -146,11 +160,6 @@
             </if>
             <if test="filter == 3">
                 and o.status = 'cancelled'
-            </if>
-            <if test="option == 0">
-                <if test="searchValue != null and searchValue != ''">
-                    and u.name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
-                </if>
             </if>
             <if test="option == 1">
                 <if test="searchValue != null and searchValue != ''">
@@ -166,10 +175,9 @@
             tb_order
     </select>
 
-    <select id="findOrderById" resultMap="orderResultMap">
+    <select id="findOrderById" resultMap="orderResultMap2">
         select
             o.order_id,
-            o.order_user_id,
             o.total_amount,
             o.status,
             o.created_date,
@@ -181,7 +189,6 @@
             where p.payment_order_id = o.order_id) as paymentMethod,
             oi.order_item_id,
             oi.order_id,
-            oi.order_product_id,
             oi.quantity,
             oi.price_at_purchase,
             (select product_name
@@ -190,6 +197,8 @@
         from
             tb_order o
             left outer join tb_order_item oi on oi.order_id = o.order_id
+        where
+            o.order_id = #{orderId}
     </select>
     <select id="getPaymentDetail" resultMap="paymentResultMap">
         select
@@ -209,5 +218,18 @@
             tb_payment
         where
             payment_id = #{paymentId}
+    </select>
+    <select id="getOrder" resultType="LacunaMatata.Lacuna.entity.order.Order">
+        select
+            o.*,
+            oi.*,
+            pay.*,
+            p.*
+        from
+            tb_order o
+        where
+            left tb_order_item oi on o.order_id = oi.order_id
+            left tb_payment pay on o.order_id = pay.payment_order_id
+            left tb_product p on oi.order_product_id = p.product_id
     </select>
 </mapper>

@@ -29,5 +29,5 @@ public class Order {
     private int paymentId;
     private String paymentMethod;
     private String productName;
-    private List<OrderItem> orderItemList;
+    private OrderItem orderItemList;
 }

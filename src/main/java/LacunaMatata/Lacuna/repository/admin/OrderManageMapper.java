@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.repository.admin;
 
+import LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderDetailDto;
 import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.Payment;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,7 +24,7 @@ public interface OrderManageMapper {
     // 4-2. 회원 주문 취소(시스템 결제)_2024.11.01 - put
     int cancelSystemOrder(int paymentId);
     // 5-1. 회원 결제 취소(계좌이체)_2024.11.01 - insert
-    int cancelAccountPayment(int orderId, String paymentApproveId);
+    int cancelAccountPayment(Map<String, Object> params);
     // 5-2. 회원 주문 취소(계좌이체)_2024.11.01 - put
     int cancelAccountOrder(int orderId);
     // 6-1. 회원 결제 승인(계좌이체)_2024.11.01
@@ -37,5 +38,8 @@ public interface OrderManageMapper {
 
     /** 공통으로 쓸 Mapper */
     // 1. 사용자 주문 항목 상세 출력_2024.11.01
-    Order findOrderById(int orderId);
+    RespGetOrderDetailDto findOrderById(int orderId);
+    // 주문 관리 모달창 데이터
+    Order getOrder (int orderId);
+
 }
