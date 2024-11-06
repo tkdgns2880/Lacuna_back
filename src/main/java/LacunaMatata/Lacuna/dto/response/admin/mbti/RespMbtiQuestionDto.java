@@ -1,6 +1,5 @@
 package LacunaMatata.Lacuna.dto.response.admin.mbti;
 
-import LacunaMatata.Lacuna.entity.mbti.MbtiOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +17,7 @@ public class RespMbtiQuestionDto {
     private String mbtiCategoryName;
     private String mbtiCode;
     private String mbtiTitle;
+    private String mbtiImg;
 
-    private List<MbtiOption> mbtiOptionList;
+    private List<RespMbtiOptionListDto> mbtiOptionList;
 }

@@ -291,7 +291,11 @@
     </select>
     <select id="getproductUpperDto" resultMap="productUpperCategoryResultMap2">
         select
-            *
+            product_upper_category_id as puc_product_upper_category_id,
+            product_upper_category_name as puc_product_upper_category_name,
+            product_upper_category_register_id,
+            create_date,
+            update_date
         from
             tb_product_upper_category
         where

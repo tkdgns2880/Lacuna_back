@@ -13,7 +13,6 @@ public class ReqModifyMbtiQuestionDto {
     private String mbtiTitle;
     private List<String> optionName;
     private List<Integer> optionScore;
-    private List<Integer> deleteOptionIdList;
 
     // 이미지 파일을 받는 곳 (신규 업로드, 삭제)
     private List<MultipartFile> insertImgs;
