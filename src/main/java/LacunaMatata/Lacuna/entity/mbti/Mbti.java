@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -33,4 +34,5 @@ public class Mbti {
     private MbtiCategory mbtiCategory;
     private User user;
     private MbtiOption mbtiOption;
+    List<MbtiOption> mbtiOptions;
 }
