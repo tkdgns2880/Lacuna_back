@@ -1,13 +1,13 @@
 package LacunaMatata.Lacuna.controller.user;
 
+import LacunaMatata.Lacuna.dto.request.user.mbti.ReqMbtiAnswerDto;
+import LacunaMatata.Lacuna.dto.response.user.mbti.RespMbtiSurveyResultDto;
 import LacunaMatata.Lacuna.service.user.MbtiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/mbti/survey")
@@ -27,14 +27,16 @@ public class MbtiController {
     // mbti 설문 답안 등록
     @GetMapping("/submit")
     @ApiOperation(value = "submitMbtiApi")
-    public ResponseEntity<?> submitMbti() {
+    public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto) {
+        mbtiService.submitMbti(dto);
         return ResponseEntity.ok().body(true);
     }
 
     // mbti 설문 결과 출력
-    @GetMapping("/result")
+    @GetMapping("/result/{resultId}")
     @ApiOperation(value = "getMbtiResultApi")
-    public ResponseEntity<?> getMbtiResult() {
-        return ResponseEntity.ok().body(true);
+    public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
+        RespMbtiSurveyResultDto mbtiResult = mbtiService.getMbtiResult(resultId);
+        return ResponseEntity.ok().body(mbtiResult);
     }
 }

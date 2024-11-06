@@ -1,4 +1,4 @@
-package LacunaMatata.Lacuna.dto.response.user.purchase;
+package LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
