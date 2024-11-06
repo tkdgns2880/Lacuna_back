@@ -18,7 +18,7 @@ import java.util.Map;
 public interface MbtiManageMapper {
     /** MBTI 분류 관련 Mapper */
     // 1. MBTI 분류 목록 조회_2024.10.27
-    List<MbtiCategory> getMbtiCategoryList(Map<String, Object> params);
+    List<MbtiCategory> getMbtiCategoryList();
     // 2. MBTI 분류 등록_2024.10.27
     int saveMbtiCategory(MbtiCategory mbtiCategory);
     // 3. MBTI 분류 모달창 조회_2024.10.27

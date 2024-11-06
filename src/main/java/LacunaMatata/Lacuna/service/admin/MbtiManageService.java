@@ -35,14 +35,9 @@ public class MbtiManageService {
     private String filePath;
 
     // mbti 분류 카테고리 리스트 출력
-    public RespCountAndMbtiCategoryDto getMbtiCategoryList(ReqGetMbtiGategoryListDto dto) {
-        int startIndex = (dto.getPage() - 1) * dto.getLimit();
-        Map<String, Object> params = Map.of(
-                "startIndex", startIndex,
-                "limit", dto.getLimit()
-        );
+    public RespCountAndMbtiCategoryDto getMbtiCategoryList() {
 
-        List<MbtiCategory> mbtiCategoryList = mbtiManageMapper.getMbtiCategoryList(params);
+        List<MbtiCategory> mbtiCategoryList = mbtiManageMapper.getMbtiCategoryList();
         List<RespMbtiCategoryListDto> respMbtiCategoryListDtoList = new ArrayList<RespMbtiCategoryListDto>();
         for(MbtiCategory mbtiCategory : mbtiCategoryList){
             RespMbtiCategoryListDto respMbtiCategoryListDto = RespMbtiCategoryListDto.builder()
@@ -57,7 +52,7 @@ public class MbtiManageService {
 
         RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = RespCountAndMbtiCategoryDto.builder()
                 .totalCount(totalCount)
-                .respMbtiCategoryListDtoList(respMbtiCategoryListDtoList)
+                .mbtiCategoryList(respMbtiCategoryListDtoList)
                 .build();
 
         return respCountAndMbtiCategoryDto;

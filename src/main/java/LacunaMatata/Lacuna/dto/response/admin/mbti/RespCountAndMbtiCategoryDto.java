@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 public class RespCountAndMbtiCategoryDto {
     private int totalCount;
-    private List<RespMbtiCategoryListDto> respMbtiCategoryListDtoList;
+    private List<RespMbtiCategoryListDto> mbtiCategoryList;
 }
