@@ -17,4 +17,7 @@ public class OrderItem {
     private int orderProductId;
     private int quantity;
     private BigDecimal priceAtPurchase;
+
+    // 조인용
+    private String productName;
 }

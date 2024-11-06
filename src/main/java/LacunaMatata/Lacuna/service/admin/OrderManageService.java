@@ -76,31 +76,8 @@ public class OrderManageService {
 
     // 회원 주문 항목 상세 출력
     public RespGetOrderDetailDto getOrderDetail(int orderId) {
-        Order order = orderManageMapper.findOrderById(orderId);
-        List<OrderItem> orderItemList = order.getOrderItemList();
-        List<RespGetOrderItemDetailDto> orderItemDetailList = new ArrayList<>();
-
-        for(OrderItem orderItem : orderItemList) {
-            RespGetOrderItemDetailDto respGetOrderItemDetailDto = RespGetOrderItemDetailDto.builder()
-                    .orderItemId(orderItem.getOrderItemId())
-                    .orderId(orderItem.getOrderId())
-                    .orderProductId(orderItem.getOrderProductId())
-                    .quantity(orderItem.getQuantity())
-                    .priceAtPurchase(orderItem.getPriceAtPurchase())
-                    .build();
-            orderItemDetailList.add(respGetOrderItemDetailDto);
-        }
-
-        RespGetOrderDetailDto respGetOrderDetailDto = RespGetOrderDetailDto.builder()
-                .orderId(order.getOrderId())
-                .name(order.getName())
-                .totalAmount(order.getTotalAmount())
-                .paymentMethod(order.getPaymentMethod())
-                .status(order.getStatus())
-                .createdDate(order.getCreatedDate())
-                .orderDetailItem(orderItemDetailList)
-                .build();
-        return respGetOrderDetailDto;
+        RespGetOrderDetailDto orderDetail = orderManageMapper.findOrderById(orderId);
+        return orderDetail;
     }
 
     // 회원 결제 항목 상세 출력
@@ -131,8 +108,11 @@ public class OrderManageService {
         int orderId = dto.getOrderId();
         LocalDateTime now = LocalDateTime.now();
         String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-
-        orderManageMapper.cancelAccountPayment(orderId, paymentApproveId);
+        Map<String, Object> params = Map.of(
+                "orderId", orderId,
+                "paymentApproveId", paymentApproveId
+        );
+        orderManageMapper.cancelAccountPayment(params);
         orderManageMapper.cancelAccountOrder(orderId);
     }
 
