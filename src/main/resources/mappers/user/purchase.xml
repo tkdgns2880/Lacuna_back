@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LacunaMatata.Lacuna.repository.user.PurchaseMapper">
+    <resultMap id="productUpperResultMap" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductUpperCategoryDto">
+        <id property="productUpperCategoryId" column="product_upper_category_id" />
+        <result property="productUpperCategoryName" column="product_upper_category_name" />
+        <collection property="productLowerCategory" javaType="java.util.ArrayList" resultMap="productLowerResultMap" />
+    </resultMap>
+    <resultMap id="productLowerResultMap" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductLowerCategoryDto">
+        <id property="productLowerCategoryId" column="product_lower_category_id" />
+        <result property="productLowerCategoryName" column="product_lower_category_name" />
+        <collection property="consultingProduct" javaType="java.util.ArrayList" resultMap="consultingProductResultMap" />
+    </resultMap>
+    <resultMap id="consultingProductResultMap" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespConsultingProductDto">
+        <id property="productId" column="product_id" />
+        <result property="productName" column="product_name" />
+        <result property="price" column="price" />
+        <result property="promotionPrice" column="promotion_price" />
+        <result property="description" column="description" />
+        <result property="productImg" column="product_img" />
+        <collection property="consultingDetail" javaType="java.util.ArrayList" resultMap="consultingDetailResultMap" />
+    </resultMap>
+    <resultMap id="consultingDetailResultMap" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespConsultingDetailProductDto">
+        <id property="consultingDetailId" column="consulting_detail_id" />
+        <result property="consultingDetailContentId" column="consulting_detail_content_id" />
+        <result property="repeatCount" column="repeat_count" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <resultMap id="consultingProductDetailResultMap" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductDetail.RespConsultingProductDetailDto">
+        <id property="productId" column="product_id" />
+        <result property="productLowerCategoryId" column="product_lower_category_id" />
+        <result property="productLowerCategoryName" column="productLowerCategoryName" />
+        <result property="productCode" column="product_code" />
+        <result property="productName" column="product_name" />
+        <result property="price" column="price" />
+        <result property="promotionPrice" column="promotion_price" />
+        <result property="description" column="description" />
+        <result property="etc" column="etc" />
+        <result property="productImg" column="product_img" />
+        <collection property="consultingDetail" javaType="java.util.ArrayList" resultMap="consultingDetailResultMap2" />
+    </resultMap>
+    <resultMap id="consultingDetailResultMap2" type="LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductDetail.RespConsultingDetailProductDto">
+        <id property="consultingDetailId" column="consulting_detail_id" />
+        <result property="consultingDetailContentId" column="consulting_detail_content_id" />
+        <result property="repeatCount" column="repeat_count" />
+        <result property="name" column="name" />
+    </resultMap>
+
+    <resultMap id="productResultMap" type="LacunaMatata.Lacuna.entity.product.Product">
+        <id property="productId" column="product_id" />
+        <result property="productProductUpperCategoryId" column="product_product_upper_category_id" />
+        <result property="productLowerCategoryId" column="product_lower_category_id" />
+        <result property="productCode" column="product_code" />
+        <result property="productName" column="product_name" />
+        <result property="price" column="price" />
+        <result property="promotionPrice" column="promotion_price" />
+        <result property="productImg" column="product_img" />
+        <result property="productRegisterId" column="product_register_id" />
+        <result property="description" column="description" />
+        <result property="etc" column="etc" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+    </resultMap>
+
+    <insert id="saveOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into tb_order
+        values(
+            default,
+            #{orderUserId},
+            #{totalAmount},
+            #{status},
+            now()
+        )
+    </insert>
+    <insert id="saveOrderItem" useGeneratedKeys="true" keyProperty="orderItemId">
+        insert into tb_order_item
+        values(
+            default,
+            #{orderId},
+            #{orderProductId},
+            #{quantity},
+            #{priceAtPurchase}
+        )
+    </insert>
+
+    <select id="getConsultingProductList" resultMap="productUpperResultMap">
+        select
+            puc.product_upper_category_id,
+            puc.product_upper_category_name,
+            plc.product_lower_category_id,
+            plc.product_lower_category_name,
+            p.product_id,
+            p.product_name,
+            p.price,
+            p.promotion_price,
+            p.description,
+            p.product_img,
+            cd.consulting_detail_id,
+            cd.consulting_detail_content_id,
+            cd.repeat_count,
+            (select name
+            from tb_consulting_content cc
+            where cc.consulting_content_id = cd.consulting_detail_content_id) as name
+        from
+            tb_product_upper_category puc
+            left outer join tb_product_lower_category plc on plc.product_upper_category_id = puc.product_upper_category_id
+            left outer join tb_product p on p.product_lower_category_id = plc.product_lower_category_id
+            left outer join tb_consulting_detail cd on cd.consulting_detail_product_id = p.product_id
+        where
+            puc.product_upper_category_id = 1
+    </select>
+
+    <select id="getConsultingProductDetail" resultMap="consultingProductDetailResultMap">
+        select
+            p.product_id,
+            p.product_lower_category_id,
+            (select plc.product_lower_category_name
+            from tb_product_lower_category plc
+            where plc.product_lower_category_id = p.product_lower_category_id) as productLowerCategoryName,
+            p.product_code,
+            p.product_name,
+            p.price,
+            p.promotion_price,
+            p.description,
+            p.etc,
+            p.product_img,
+            cd.consulting_detail_id,
+            cd.consulting_detail_content_id,
+            cd.repeat_count,
+            (select name
+            from tb_consulting_content cc
+            where cc.consulting_content_id = cd.consulting_detail_content_id) as name
+        from tb_product p
+            left outer join tb_consulting_detail cd on cd.consulting_detail_product_id = p.product_id
+        where
+            p.product_id = #{productId}
+    </select>
+
+    <select id="findProductByProductId" resultMap="productResultMap">
+        select
+            product_id,
+            product_product_upper_category_id,
+            product_lower_category_id,
+            product_code,
+            product_name,
+            price,
+            promotion_price,
+            product_img,
+            product_register_id,
+            description,
+            etc,
+            create_date,
+            update_date
+        from
+            tb_product
+        where
+            product_id = #{productId}
+    </select>
+</mapper>

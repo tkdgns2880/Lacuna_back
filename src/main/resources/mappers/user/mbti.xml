@@ -25,6 +25,22 @@
         <result property="optionName" column="option_name" />
         <result property="optionScore" column="option_score" />
     </resultMap>
+    <resultMap id="skinConcernResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiSkinConcern">
+        <id property="mbtiSkinConcernId" column="mbti_skin_concern_id" />
+        <result property="mbtiSkinConcernName" column="mbti_skin_concern_name" />
+    </resultMap>
+    <resultMap id="mbtiResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiResult">
+        <id property="mbtiResultId" column="mbti_result_id" />
+        <result property="mbtiResultRegisterId" column="mbti_result_register_id" />
+        <result property="mbtiResultCategoryName" column="mbti_result_category_name" />
+        <result property="mbtiResultTitle" column="mbti_result_title" />
+        <result property="mbtiResultSummary" column="mbti_result_summary" />
+        <result property="mbtiResultContent" column="mbti_result_content" />
+        <result property="mbtiResultImg" column="mbti_result_img" />
+        <result property="mbtiResultStatus" column="mbti_result_status" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+    </resultMap>
 
     <select id="getMbtiSurvey" resultMap="mbtiCategoryResultMap">
         select
@@ -46,5 +62,30 @@
             tb_mbti_category mc
             left outer join tb_mbti m on m.mbti_category_id = mc.mbti_category_id
             left outer join tb_mbti_option mo on mo.mbti_id = m.mbti_id
+    </select>
+    <select id="getMbtiSkinConcernList" resultMap="skinConcernResultMap">
+        select
+            mbti_skin_concern_id,
+            mbti_skin_concern_name
+        from
+            tb_mbti_skin_concern
+    </select>
+
+    <select id="getMbtiSurveyResult" resultMap="mbtiResultMap">
+        select
+            mbti_result_id,
+            mbti_result_register_id,
+            mbti_result_category_name,
+            mbti_result_title,
+            mbti_result_summary,
+            mbti_result_content,
+            mbti_result_img,
+            mbti_result_status,
+            create_date,
+            update_date
+        from
+            tb_mbti_result
+        where
+            mbti_result_id = #{mbtiResultId}
     </select>
 </mapper>
