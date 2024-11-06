@@ -142,6 +142,13 @@
         where
             user_id = #{userId}
     </update>
+    <update id="modifyPhoneNumber">
+        update tb_user_optional_info
+        set
+            phone_number = #{phoneNumber}
+        where
+            user_id = #{userId}
+    </update>
     <delete id="deleteUser">
         delete
         from

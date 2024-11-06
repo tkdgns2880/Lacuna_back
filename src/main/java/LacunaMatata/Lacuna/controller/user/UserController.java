@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.controller.user;
 
+import LacunaMatata.Lacuna.dto.request.user.user.ReqChangePhoneNumberDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
@@ -38,6 +39,14 @@ public class UserController {
         return ResponseEntity.ok().body(true);
     }
 
+    // 프로필 페이지 - 내 연락처 바꾸기
+    @PutMapping("/change/phone")
+    @ApiOperation(value = "changeMyPhoneNumberApi")
+    public ResponseEntity<?> changeMyPhoneNumber(@RequestBody ReqChangePhoneNumberDto dto) {
+        userService.changePhoneNumber(dto);
+        return ResponseEntity.ok().body(true);
+    }
+
     // 프로필 페이지 - 회원 탈퇴
     @DeleteMapping("/delete")
     @ApiOperation(value = "withdrawUserApi")
@@ -46,6 +55,7 @@ public class UserController {
         return ResponseEntity.ok().body(true);
     }
 
+    // 프로필 페이지 - 내 mbti 결과 보기
     @GetMapping("/mbti/result")
     @ApiOperation(value = "getMbtiResultApi")
     public ResponseEntity<?> getMbtiResult() {

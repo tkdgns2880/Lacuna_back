@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -27,6 +28,8 @@ public interface UserMapper {
     int modifyPassword(int userId, String modifyPassword);
     // 3-2. 마이페이지 - 비밀번호 변경하기(PasswordHistory)_2024.11.05
     int savePasswordHistory(PasswordHistory passwordHistory);
+    // 4. 마이페이지 - 폰 번호 변경하기
+    int modifyPhoneNumber(Map<String, Object> params);
     // 4-1. 마이페이지 - 회원 탈퇴(User)_2024.11.05
     int deleteUser(int userId);
     // 4-2. 마이페이지 - 회원 탈퇴(UserOptionalInfo)_2024.11.05

@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.service.user;
 
+import LacunaMatata.Lacuna.dto.request.user.user.ReqChangePhoneNumberDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
 import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -55,6 +58,18 @@ public class UserService {
                 .password(modifyPassword)
                 .build();
         userMapper.savePasswordHistory(passwordHistory);
+    }
+
+    // 프로필 페이지 - 내 연락처 바꾸기
+    public void changePhoneNumber(ReqChangePhoneNumberDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = principalUser.getId();
+        Map<String, Object> params = Map.of(
+                "userId", userId,
+                "phoneNumber", dto.getPhoneNumber()
+        );
+
+        userMapper.modifyPhoneNumber(params);
     }
 
     // 프로필페이지 - 회원 탈퇴
