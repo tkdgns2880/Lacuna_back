@@ -85,7 +85,7 @@ public class MbtiManageService {
 
         // 2. 신규 이미지 저장
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory");
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory/");
         }
 
         MbtiCategory mbtiCategory = MbtiCategory.builder()
@@ -122,15 +122,12 @@ public class MbtiManageService {
 
         // 1. 최종 수정될 imgPath 공간 생성
         String finalImgPath = dto.getPrevImgPath();
-        System.out.println(finalImgPath);
 
         // 2. 이미지 신규 등록할 공간 생성
         List<MultipartFile> insertImgs = dto.getInsertImgs();
-        System.out.println(insertImgs);
 
         // 3. 이미지 삭제할 공간 생성
         String deleteImgPath = dto.getDeleteImgPath();
-        System.out.println(deleteImgPath);
 
         // 4. 물리 파일 삭제
         if(deleteImgPath != null && !deleteImgPath.isEmpty()) {
@@ -140,8 +137,8 @@ public class MbtiManageService {
 
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
-        if(insertImgs != null && insertImgs.get(0).isEmpty()) {
-            finalImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory");
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+            finalImgPath = registerImgUrl(insertImgs.get(0), "mbtiCategory/");
         }
 
         MbtiCategory modifyMbtiCategory = MbtiCategory.builder()

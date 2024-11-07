@@ -154,6 +154,7 @@ public class MbtiManageController {
     @ApiOperation(value = "registMbtiResultApi")
     @PostMapping("/result/regist")
     public ResponseEntity<?> registMbtiResult(@ModelAttribute ReqRegistMbtiResultDto dto) throws IOException {
+        System.out.println("설문지 등록 요청 들어옴?"+ dto);
         mbtiManageService.registMbtiResult(dto);
         return ResponseEntity.ok().body(true);
     }
