@@ -59,7 +59,7 @@
             mbti_result_id, mbti_option_id, create_date
             )
         values
-        <foreach item="mbtiResponse" collection="mbtiResponseList">
+        <foreach item="mbtiResponse" collection="mbtiResponseList" separator=",">
             (
                 default,
                 #{mbtiResponse.mbtiResponseUserId},
@@ -83,7 +83,7 @@
         mbti_result_id, mbti_option_id, create_date
         )
         values
-        <foreach item="mbtiResponse" collection="mbtiResponseList">
+        <foreach item="mbtiResponse" collection="mbtiResponseList" separator=",">
             (
                 default,
                 #{mbtiResponse.sessionId},

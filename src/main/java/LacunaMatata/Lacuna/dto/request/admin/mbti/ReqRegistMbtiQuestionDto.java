@@ -7,11 +7,10 @@ import java.util.List;
 
 @Data
 public class ReqRegistMbtiQuestionDto {
-    private String mbtiCategoryName;
+    private int mbtiCategoryId;
     private String mbtiCode;
     private String mbtiTitle;
-    private List<String> optionName;
-    private List<Integer> optionScore;
+    private List<ReqRegistOptionDto> options;
 
     private List<MultipartFile> insertImgs;
 }
