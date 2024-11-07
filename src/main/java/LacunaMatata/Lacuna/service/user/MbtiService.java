@@ -26,6 +26,9 @@ public class MbtiService {
     @Autowired
     private MbtiMapper mbtiMapper;
 
+    @Autowired
+    private StatisticService statisticService;
+
     // mbti 설문지 출력
     public RespMbtiTestDto getmbtiSurvey() {
         List<RespMbtiSurveyDto> mbtiCategoryList = mbtiMapper.getMbtiSurvey();
@@ -97,6 +100,8 @@ public class MbtiService {
         }
 
         mbtiMapper.saveUserMbtiSurvey(mbtiResponseList);
+
+        statisticService.plusServiceCount("mbti"); // 이용통계 이용건수 증가
 
         // 등록 후 결과값 반환
         return mbtiResultId;

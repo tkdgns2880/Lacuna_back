@@ -33,7 +33,7 @@ public class UserManageService {
         Map<String, Object> params = Map.of(
                 "filter", dto.getFilter(),
                 "option", dto.getOption(),
-                "searchValue", dto.getSearchValue(),
+                "searchValue", dto.getSearchValue() == null ? "" : dto.getSearchValue(),
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );

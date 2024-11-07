@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LacunaMatata.Lacuna.repository.user.StatisticMapper">
+    <resultMap id="userCountResultMap" type="LacunaMatata.Lacuna.entity.user.UserCount">
+        <id property="userCountId" column="user_count_id" />
+        <result property="serviceName" column="service_name" />
+        <result property="serviceCount" column="service_count" />
+        <result property="userDate" column="user_date" />
+        <result property="userHour" column="user_hour" />
+    </resultMap>
+
+    <insert id="saveUserCount">
+        insert into tb_user_count
+        values(
+            default,
+            #{serviceName},
+            1,
+            #{userDate},
+            #{userHour}
+        )
+    </insert>
+    <update id="modifyUserCount">
+        update tb_user_count
+        set
+            service_count = service_count + 1
+        where
+            service_name = #{serviceName} and
+            user_date = #{userDate} and
+            user_hour = #{userHour}
+    </update>
+
+    <select id="findServiceByParams" resultMap="userCountResultMap">
+        select
+            user_count_id,
+            service_name,
+            service_count,
+            user_date,
+            user_hour
+        from
+            tb_user_count
+        where
+            service_name = #{serviceName} and
+            user_date = #{userDate} and
+            user_hour = #{userHour}
+    </select>
+</mapper>
