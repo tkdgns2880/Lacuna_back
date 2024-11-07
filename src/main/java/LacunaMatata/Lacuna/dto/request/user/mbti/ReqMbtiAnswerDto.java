@@ -10,5 +10,5 @@ public class ReqMbtiAnswerDto {
     private int gender;
     private Date birthDate;
     private List<Integer> mbtiSkinConcernIdList;
-    private List<ReqMbtiSurveyDto> mbtiCategory;
+    private List<ReqMbtiSurveyDto> mbtiResult;
 }

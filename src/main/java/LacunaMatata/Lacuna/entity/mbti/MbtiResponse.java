@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 public class MbtiResponse {
     private int mbtiResponseId;
-    private int mbtiRequestUserId;
+    private int mbtiResponseUserId;
     private String sessionId;
     private int gender;
     private Date birth;

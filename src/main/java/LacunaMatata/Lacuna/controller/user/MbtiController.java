@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1/mbti/survey")
 @Api(tags = {"MbtiController"})
@@ -27,8 +29,8 @@ public class MbtiController {
     // mbti 설문 답안 등록
     @GetMapping("/submit")
     @ApiOperation(value = "submitMbtiApi")
-    public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto) {
-        mbtiService.submitMbti(dto);
+    public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto, HttpServletRequest request) {
+        mbtiService.submitMbti(dto, request);
         return ResponseEntity.ok().body(true);
     }
 

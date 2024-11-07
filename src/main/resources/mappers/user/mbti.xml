@@ -23,13 +23,12 @@
         <id property="mbtiOptionId" column="mbti_option_id" />
         <result property="mbtiId" column="mo_mbti_id" />
         <result property="optionName" column="option_name" />
-        <result property="optionScore" column="option_score" />
     </resultMap>
     <resultMap id="skinConcernResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiSkinConcern">
         <id property="mbtiSkinConcernId" column="mbti_skin_concern_id" />
         <result property="mbtiSkinConcernName" column="mbti_skin_concern_name" />
     </resultMap>
-    <resultMap id="mbtiResultMap" type="LacunaMatata.Lacuna.entity.mbti.MbtiResult">
+    <resultMap id="mbtiResultMap2" type="LacunaMatata.Lacuna.entity.mbti.MbtiResult">
         <id property="mbtiResultId" column="mbti_result_id" />
         <result property="mbtiResultRegisterId" column="mbti_result_register_id" />
         <result property="mbtiResultCategoryName" column="mbti_result_category_name" />
@@ -41,6 +40,65 @@
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
     </resultMap>
+
+    <resultMap id="mbtiCategoryIdResultMap" type="LacunaMatata.Lacuna.dto.response.user.mbti.RespMbtiCategoryIdDto">
+        <id property="mbtiCategoryId" column="mbti_category_id" />
+        <collection property="mbti" resultMap="mbtiOptionIdResultMap" />
+    </resultMap>
+    <resultMap id="mbtiOptionIdResultMap" type="LacunaMatata.Lacuna.dto.response.user.mbti.RespMbtiOptionIdDto">
+        <id property="optionId" column="mbti_option_id" />
+        <result property="mbtiId" column="mbti_id" />
+        <result property="optionScore" column="option_score" />
+    </resultMap>
+
+    <insert id="saveUserMbtiSurvey" useGeneratedKeys="true" keyProperty="mbtiResponseId">
+        insert into tb_mbti_response(
+            mbti_response_id, mbti_response_user_id, gender,
+            birth, skin_problem_one, skin_problem_two,
+            response_mbti_category_id, response_mbti_id,
+            mbti_result_id, mbti_option_id, create_date
+            )
+        values
+        <foreach item="mbtiResponse" collection="mbtiResponseList">
+            (
+                default,
+                #{mbtiResponse.mbtiResponseUserId},
+                #{mbtiResponse.gender},
+                #{mbtiResponse.birth},
+                #{mbtiResponse.skinProblemOne},
+                #{mbtiResponse.skinProblemTwo},
+                #{mbtiResponse.responseMbtiCategoryId},
+                #{mbtiResponse.responseMbtiId},
+                #{mbtiResponse.mbtiResultId},
+                #{mbtiResponse.mbtiOptionId},
+                now()
+            )
+        </foreach>
+    </insert>
+    <insert id="saveNonUserMbtiSurvey">
+        insert into tb_mbti_response(
+        mbti_response_id, session_id, gender,
+        birth, skin_problem_one, skin_problem_two,
+        response_mbti_category_id, response_mbti_id,
+        mbti_result_id, mbti_option_id, create_date
+        )
+        values
+        <foreach item="mbtiResponse" collection="mbtiResponseList">
+            (
+                default,
+                #{mbtiResponse.sessionId},
+                #{mbtiResponse.gender},
+                #{mbtiResponse.birth},
+                #{mbtiResponse.skinProblemOne},
+                #{mbtiResponse.skinProblemTwo},
+                #{mbtiResponse.responseMbtiCategoryId},
+                #{mbtiResponse.responseMbtiId},
+                #{mbtiResponse.mbtiResultId},
+                #{mbtiResponse.mbtiOptionId},
+                now()
+            )
+        </foreach>
+    </insert>
 
     <select id="getMbtiSurvey" resultMap="mbtiCategoryResultMap">
         select
@@ -56,8 +114,7 @@
             m.mbti_img,
             mo.mbti_option_id,
             mo.mbti_id as mo_mbti_id,
-            mo.option_name,
-            mo.option_score
+            mo.option_name
         from
             tb_mbti_category mc
             left outer join tb_mbti m on m.mbti_category_id = mc.mbti_category_id
@@ -71,7 +128,7 @@
             tb_mbti_skin_concern
     </select>
 
-    <select id="getMbtiSurveyResult" resultMap="mbtiResultMap">
+    <select id="getMbtiSurveyResult" resultMap="mbtiResultMap2">
         select
             mbti_result_id,
             mbti_result_register_id,
@@ -88,4 +145,32 @@
         where
             mbti_result_id = #{mbtiResultId}
     </select>
+
+    <select id="getMbtiOptionScore" resultMap="mbtiCategoryIdResultMap">
+        select
+            m.mbti_category_id,
+            mo.mbti_id,
+            mo.mbti_option_id,
+            mo.option_score
+        from
+            tb_mbti m
+            left outer join tb_mbti_option mo on mo.mbti_id = m.mbti_id
+        where
+            <foreach item="mbtiCategory" collection="mbtiCategoryIdList">
+                m.mbti_category_id = #{mbtiCategory.mbtiCategoryId}
+                <foreach item="mbtiIdOptionId" collection="mbti">
+                    and mo.mbti_id = #{mbtiIdOptionId.mbtiId}
+                    and mo.mbti_option_id = #{mbtiIdOptionId.optionId}
+                </foreach>
+            </foreach>
+    </select>
+    <select id="getMbtiResultId" resultType="java.lang.Integer">
+        select
+            mbti_result_id
+        from
+            tb_mbti_result
+        where
+            mbti_result_category_name = #{mbtiResultCategoryName}
+    </select>
+
 </mapper>
