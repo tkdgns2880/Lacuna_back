@@ -218,7 +218,6 @@ public class MbtiManageService {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
-        MbtiCategory mbtiCategory = mbtiManageMapper.findMbtiCategoryByCategoryName(dto.getMbtiCategoryName());
 
         // 이미지 등록
         // 1. 이미지 신규 등록할 공간 생성
@@ -232,19 +231,18 @@ public class MbtiManageService {
 
         Mbti mbti = Mbti.builder()
                 .mbtiCode(dto.getMbtiCode())
-                .mbtiCategoryId(mbtiCategory.getMbtiCategoryId())
+                .mbtiCategoryId(dto.getMbtiCategoryId())
                 .mbtiRegisterId(registerId)
                 .mbtiTitle(dto.getMbtiTitle())
                 .mbtiImg(insertCompletedImgPath)
                 .build();
-        List<String> optionNameList = dto.getOptionName();
-        List<Integer> optionScoreList = dto.getOptionScore();
 
         int mbtiId = mbtiManageMapper.saveMbti(mbti);
+
+        List<ReqRegistOptionDto> optionList = dto.getOptions();
         Map<String, Object> params = Map.of(
                 "mbtiId", mbtiId,
-                "optionNameList", optionNameList,
-                "optionScoreList", optionScoreList
+                "optionList", optionList
         );
         mbtiManageMapper.saveMbtiOption(params);
     }
@@ -297,15 +295,13 @@ public class MbtiManageService {
 
         mbtiManageMapper.modifyMbtiQuestion(mbti);
 
-        List<String> optionNameList = dto.getOptionName();
-        List<Integer> optionScoreList = dto.getOptionScore();
+        List<ReqModifyMbtiOptionDto> optionList = dto.getOptions();
 
         mbtiManageMapper.deleteMbtiQuestionOptionList(dto.getMbtiId());
 
         Map<String, Object> params = Map.of(
                 "mbtiId", dto.getMbtiId(),
-                "optionNameList", optionNameList,
-                "optionScoreList", optionScoreList
+                "optionList", optionList
         );
         mbtiManageMapper.saveMbtiOption(params);
     }

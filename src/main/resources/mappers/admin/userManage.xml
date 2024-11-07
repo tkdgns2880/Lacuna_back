@@ -87,13 +87,11 @@
     </insert>
     <insert id="saveUserRoleMet">
         insert into tb_user_role_met
-        values(
-            default,
-            #{userId},
-            #{roleId},
-            now(),
-            now()
-        )
+        values
+        <foreach item="roleId" collection="roleIdList" separator=",">
+            ( default, #{userId}, #{roleId}, now(), now() )
+        </foreach>
+
     </insert>
     <update id="modifyUserRoleMetDate">
         update

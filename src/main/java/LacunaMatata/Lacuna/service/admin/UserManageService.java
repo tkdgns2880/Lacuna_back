@@ -91,13 +91,15 @@ public class UserManageService {
                 .build();
         userManageMapper.saveUserOptionalInfo(userOptionalInfo);
 
+        List<Integer> roleIdList = new ArrayList<>();
         for(int i = 1; i < dto.getRoleId() + 1; i++) {
-            Map<String, Object> params = Map.of(
-                    "userId", user.getUserId(),
-                    "roleId", i
-            );
-            userManageMapper.saveUserRoleMet(params);
+            roleIdList.add(i);
         }
+        Map<String, Object> params = Map.of(
+                "userId", user.getUserId(),
+                "roleIdList", roleIdList
+        );
+        userManageMapper.saveUserRoleMet(params);
     }
 
     // 사용자 항목 출력
@@ -149,13 +151,17 @@ public class UserManageService {
         }
 
         if(originalRoleId < modifyRoleId) {
+            List<Integer> roleIdList = new ArrayList<>();
+
             for(int i = modifyRoleId; i > originalRoleId; i--) {
-                Map<String, Object> params = Map.of(
-                        "userId", user.getUserId(),
-                        "roleId", i
-                );
-                userManageMapper.saveUserRoleMet(params);
+                roleIdList.add(i);
             }
+
+            Map<String, Object> params = Map.of(
+                    "userId", user.getUserId(),
+                    "roleIdList", roleIdList
+            );
+            userManageMapper.saveUserRoleMet(params);
         }
 
         if(originalRoleId == modifyRoleId) {
