@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RespMbtiOptionDto {
-    private int mbtiOptionId;
-    private int mbtiId;
-    private String optionName;
+public class RespMbtiCategoryIdDto {
+    private int mbtiCategoryId;
+    private List<RespMbtiOptionIdDto> mbti;
 }

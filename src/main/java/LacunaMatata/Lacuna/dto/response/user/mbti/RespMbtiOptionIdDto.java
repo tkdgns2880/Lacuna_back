@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RespMbtiOptionDto {
-    private int mbtiOptionId;
+public class RespMbtiOptionIdDto {
+    private int optionId;
     private int mbtiId;
-    private String optionName;
+    private int optionScore;
 }
