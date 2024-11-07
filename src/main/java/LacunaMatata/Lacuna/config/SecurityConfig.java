@@ -43,11 +43,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint()
                 .userService(oAuth2Service);
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 기본적으로 세션이 필요한 경우에만 생성
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
+        http.authorizeRequests()
+                .antMatchers("/api/v1/mbti/survey/submit")
+                .authenticated()
+                        .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 
         http.exceptionHandling().authenticationEntryPoint(inAccountExceptionHandler);
 
         http.authorizeRequests()
+                .antMatchers("/api/v1/mbti/survey/submit") // 이 요청에서만 세션 생성
+                .authenticated()
                 .antMatchers(
                         "/test/**",
                         "/auth/**",
