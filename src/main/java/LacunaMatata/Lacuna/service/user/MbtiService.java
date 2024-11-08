@@ -137,9 +137,9 @@ public class MbtiService {
                         totalScore += optionScore;
                     }
                     if(totalScore > 0) {
-                        mbtiResultType.add("A");
+                        mbtiResultType.add("D");
                     } else {
-                        mbtiResultType.add("B");
+                        mbtiResultType.add("O");
                     }
                     break;
                 case 2:
@@ -148,9 +148,9 @@ public class MbtiService {
                         totalScore += optionScore;
                     }
                     if(totalScore > 0) {
-                        mbtiResultType.add("C");
+                        mbtiResultType.add("R");
                     } else {
-                        mbtiResultType.add("D");
+                        mbtiResultType.add("S");
                     }
                     break;
                 case 3:
@@ -159,9 +159,9 @@ public class MbtiService {
                         totalScore += optionScore;
                     }
                     if(totalScore > 0) {
-                        mbtiResultType.add("E");
+                        mbtiResultType.add("N");
                     } else {
-                        mbtiResultType.add("F");
+                        mbtiResultType.add("P");
                     }
                     break;
                 case 4:
@@ -170,9 +170,9 @@ public class MbtiService {
                         totalScore += optionScore;
                     }
                     if(totalScore > 0) {
-                        mbtiResultType.add("G");
+                        mbtiResultType.add("T");
                     } else {
-                        mbtiResultType.add("H");
+                        mbtiResultType.add("W");
                     }
                     break;
                 default:
