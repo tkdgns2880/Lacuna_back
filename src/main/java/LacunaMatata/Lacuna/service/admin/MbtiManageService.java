@@ -414,6 +414,7 @@ public class MbtiManageService {
                 .mbtiResultCategoryName(mbtiResult.getMbtiResultCategoryName())
                 .mbtiResultSummary(mbtiResult.getMbtiResultSummary())
                 .mbtiResultContent(mbtiResult.getMbtiResultContent())
+                .mbtiResultStatus(mbtiResult.getMbtiResultStatus())
                 .mbtiResultImg(mbtiResult.getMbtiResultImg())
                 .build();
         return respGetMbtiResultDto;

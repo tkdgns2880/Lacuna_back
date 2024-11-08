@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ReqMbtiQuestionDto {
     private int mbtiId;
-    private int option;
+    private int optionId;
 }
