@@ -248,7 +248,7 @@ public class MbtiManageService {
 
         System.out.println(dto.getOptions());
         if(dto.getOptions() != null) {
-            String
+            System.out.println("dd");
         }
         List<ReqRegistOptionDto> optionList = objectMapper.readValue(dto.getOptions(), new TypeReference<>() {});
 

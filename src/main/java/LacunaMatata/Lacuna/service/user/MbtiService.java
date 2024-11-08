@@ -29,15 +29,16 @@ public class MbtiService {
     @Autowired
     private StatisticService statisticService;
 
-    // mbti 설문지 출력
-    public RespMbtiTestDto getmbtiSurvey() {
-        List<RespMbtiSurveyDto> mbtiCategoryList = mbtiMapper.getMbtiSurvey();
+    // 설문지 기본정보(피부고민 리스트) 출력
+    public List<MbtiSkinConcern> getMbtiSkinProblemList() {
         List<MbtiSkinConcern> mbtiSkinConcernList = mbtiMapper.getMbtiSkinConcernList();
-        RespMbtiTestDto mbtiTest = RespMbtiTestDto.builder()
-                .mbtiSurvey(mbtiCategoryList)
-                .mbtiSkinConcern(mbtiSkinConcernList)
-                .build();
-        return mbtiTest;
+        return mbtiSkinConcernList;
+    }
+
+    // mbti 설문지 출력
+    public List<RespMbtiSurveyDto> getmbtiSurvey() {
+        List<RespMbtiSurveyDto> mbtiCategoryList = mbtiMapper.getMbtiSurvey();
+        return mbtiCategoryList;
     }
 
     // mbti 설문 답안 등록

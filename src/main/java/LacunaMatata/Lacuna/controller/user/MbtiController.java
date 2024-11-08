@@ -19,6 +19,13 @@ public class MbtiController {
     @Autowired
     private MbtiService mbtiService;
 
+    // mbti 설문지 기본 정보(피부고민 리스트) 출력
+    @GetMapping("/question/skinproblem")
+    @ApiOperation(value = "getMbtiSkinProblemApi")
+    public ResponseEntity<?> getMbtiSkinProblem() {
+        return ResponseEntity.ok().body(mbtiService.getMbtiSkinProblemList());
+    }
+
     // mbti 설문지 출력
     @GetMapping("/question")
     @ApiOperation(value = "getMbtiSurveyApi")
@@ -27,7 +34,7 @@ public class MbtiController {
     }
 
     // mbti 설문 답안 등록
-    @GetMapping("/submit")
+    @PostMapping("/submit")
     @ApiOperation(value = "submitMbtiApi")
     public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto, HttpServletRequest request) {
         mbtiService.submitMbti(dto, request);
