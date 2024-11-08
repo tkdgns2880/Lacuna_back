@@ -107,8 +107,8 @@
             #{mbtiResultTitle},
             #{mbtiResultSummary},
             #{mbtiResultContent},
-            #{mbtiResultImg},
             #{mbtiResultStatus},
+            #{mbtiResultImg},
             now(),
             now()
         )
@@ -148,16 +148,15 @@
         update
             tb_mbti_result
         set
-            mbti_result_register_id = #{registerId},
+            mbti_result_register_id = #{mbtiResultRegisterId},
             mbti_result_title = #{mbtiResultTitle},
             mbti_result_category_name = #{mbtiResultCategoryName},
             mbti_result_img = #{mbtiResultImg},
             mbti_result_summary = #{mbtiResultSummary},
             mbti_result_content = #{mbtiResultContent},
-            mbti_result_status = #{mbtiResultStatus},
             update_date = now()
         where
-            mbti_result_id = #{resultId}
+            mbti_result_id = #{mbtiResultId}
     </update>
     <delete id="deleteMbtiCategory">
         delete
