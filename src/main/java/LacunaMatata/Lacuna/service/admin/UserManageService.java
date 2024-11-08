@@ -4,10 +4,7 @@ import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqDeleteUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqModifyUserDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
-import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
-import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetUserListDto;
-import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserDetailDto;
-import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserRoleFilterDto;
+import LacunaMatata.Lacuna.dto.response.admin.usermanage.*;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.entity.user.UserOptionalInfo;
 import LacunaMatata.Lacuna.entity.user.UserRole;
@@ -33,7 +30,7 @@ public class UserManageService {
         Map<String, Object> params = Map.of(
                 "filter", dto.getFilter(),
                 "option", dto.getOption(),
-                "searchValue", dto.getSearchValue(),
+                "searchValue", dto.getSearchValue() == null ? "" : dto.getSearchValue(),
                 "startIndex", startIndex,
                 "limit", dto.getLimit()
         );
@@ -48,7 +45,7 @@ public class UserManageService {
 
             RespGetUserListDto respGetUserListDto = RespGetUserListDto.builder()
                     .userId(user.getUserId())
-                    .roleName(roleName)
+                    .roleName(user.getRoleName())
                     .username(user.getUsername())
                     .password(user.getPassword())
                     .name(user.getName())
@@ -128,6 +125,31 @@ public class UserManageService {
             userRoleList.add(respUserRoleFilterDto);
         }
         return userRoleList;
+    }
+
+    // 사용자 관리 수정 모달창 출력
+    public RespGetModifyUserModalDto getUserModifyModal(int userId) {
+        User user = userManageMapper.findUserById(userId);
+        List<UserRole> userRole = userManageMapper.getUserRole();
+        List<RespUserRoleFilterDto> userRoleList = new ArrayList<>();
+        for(UserRole ur : userRole) {
+            RespUserRoleFilterDto respUserRoleFilterDto = RespUserRoleFilterDto.builder()
+                    .roleId(ur.getRoleId())
+                    .roleName(ur.getRoleName())
+                    .build();
+            userRoleList.add(respUserRoleFilterDto);
+        }
+        RespGetModifyUserModalDto modifyUserModal = RespGetModifyUserModalDto.builder()
+                .userId(user.getUserId())
+                .roleId(user.getRoleId())
+                .roleName(user.getRoleName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .inactive(user.getInactive())
+                .name(user.getName())
+                .userRoleList(userRoleList)
+                .build();
+        return modifyUserModal;
     }
 
     // 사용자 수정(권한)

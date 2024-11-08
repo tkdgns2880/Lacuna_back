@@ -5,6 +5,7 @@ import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqGetUserListDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqModifyUserDto;
 import LacunaMatata.Lacuna.dto.request.admin.usermanage.ReqRegistUserDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespCountAndUserListDto;
+import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespGetModifyUserModalDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserDetailDto;
 import LacunaMatata.Lacuna.dto.response.admin.usermanage.RespUserRoleFilterDto;
 import LacunaMatata.Lacuna.service.admin.UserManageService;
@@ -61,6 +62,14 @@ public class UserManageController {
     public ResponseEntity<?> getUserRoleList() {
         List<RespUserRoleFilterDto> userRoleList = userManageService.getUserRoleList();
         return ResponseEntity.ok().body(userRoleList);
+    }
+
+    // 사용자 수정창 모달 출력
+    @GetMapping("/modify/modal/{userId}")
+    @ApiOperation(value = "getModifyModalApi")
+    public ResponseEntity<?> getModifyModal(@PathVariable int userId) {
+        RespGetModifyUserModalDto modifyUserModal = userManageService.getUserModifyModal(userId);
+        return ResponseEntity.ok().body(modifyUserModal);
     }
 
     // 사용자 수정(권한, 활성화)
