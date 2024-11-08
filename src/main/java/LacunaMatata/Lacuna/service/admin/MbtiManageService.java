@@ -229,6 +229,8 @@ public class MbtiManageService {
             insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbti");
         }
 
+        System.out.println(dto);
+
         Mbti mbti = Mbti.builder()
                 .mbtiCode(dto.getMbtiCode())
                 .mbtiCategoryId(dto.getMbtiCategoryId())
@@ -273,14 +275,14 @@ public class MbtiManageService {
         String deleteImgPath = dto.getDeleteImgPath();
 
         // 4. 물리 파일 삭제
-        if(deleteImgPath != null) {
+        if(deleteImgPath != null && !deleteImgPath.isEmpty()) {
             deleteImgUrl(deleteImgPath);
             finalImgPath = null;
         }
 
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
-        if(insertImgs != null && insertImgs.get(0).isEmpty()) {
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
             finalImgPath = registerImgUrl(insertImgs.get(0), "mbti");
         }
 
@@ -295,7 +297,9 @@ public class MbtiManageService {
 
         mbtiManageMapper.modifyMbtiQuestion(mbti);
 
+        System.out.println(dto);
         List<ReqModifyMbtiOptionDto> optionList = dto.getOptions();
+        System.out.println(optionList);
 
         mbtiManageMapper.deleteMbtiQuestionOptionList(dto.getMbtiId());
 
@@ -339,7 +343,6 @@ public class MbtiManageService {
                     .build();
             respGetMbtiResultListDtoList.add(respGetMbtiResultListDto);
         }
-        System.out.println(respGetMbtiResultListDtoList);
         int totalCount = mbtiResultList.isEmpty() ? 0 : mbtiResultList.get(0).getTotalCount();
 
         RespCountAndMbtiResultDto respCountAndMbtiResultDto = RespCountAndMbtiResultDto.builder()

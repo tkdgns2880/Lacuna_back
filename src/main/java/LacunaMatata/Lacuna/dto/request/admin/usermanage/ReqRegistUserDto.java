@@ -8,7 +8,6 @@ import java.util.Date;
 @Data
 public class ReqRegistUserDto {
     private int roleId;
-    private int inactiveFlag;
     private String username;
     private String email;
     private String name;

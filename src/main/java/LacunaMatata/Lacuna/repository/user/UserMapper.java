@@ -17,7 +17,7 @@ public interface UserMapper {
     // 1-2. 회원가입
     int saveUserOptionalInfo(UserOptionalInfo userOptionalInfo);
     // 1-3. 회원가입 - 권한 기본값 저장(member)_2024.11.01
-    int saveUserRoleMet(UserRoleMet userRoleMet);
+    int saveUserRoleMet(Map<String, Object> params);
     // 1-4. 회원가입 - oauth 저장_2024.11.01
     int saveOauthInfo(SocialLogin socialLogin);
     // 2-1. 로그인

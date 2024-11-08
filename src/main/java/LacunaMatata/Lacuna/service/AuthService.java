@@ -12,12 +12,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /************************************
  * version: 1.0.5                   *
@@ -42,37 +46,63 @@ public class AuthService {
     @Autowired private UserMapper userMapper;
 
     // 일반 회원 가입
+    @Transactional(rollbackFor = Exception.class)
     public void signup(ReqGeneralSignupDto dto) {
+        System.out.println(dto);
+
         User user = User.builder()
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .name(dto.getName())
                 .build();
-        int userId = userMapper.saveUser(user);
+        userMapper.saveUser(user);
+
+        int useConditionAgreement = 0;
+        int marketingReceiveAgreement = 0;
+        int thirdPartyInfoSharingAgreement = 0;
+
+        if(dto.getUseConditionAgreement() == true) {
+            useConditionAgreement = 1;
+        } else {
+            useConditionAgreement = 2;
+        }
+        if(dto.getMarketingReceiveAgreement() == true) {
+            marketingReceiveAgreement = 1;
+        } else {
+            marketingReceiveAgreement = 2;
+        }
+        if(dto.getThirdPartyInfoSharingAgreement() == true) {
+            thirdPartyInfoSharingAgreement = 1;
+        } else {
+            thirdPartyInfoSharingAgreement = 2;
+        }
 
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
-                .userId(userId)
+                .userId(user.getUserId())
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
-                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
-                .useConditionAgreement(dto.getUseConditionAgreement())
+                .marketingReceiveAgreement(marketingReceiveAgreement)
+                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
+                .useConditionAgreement(useConditionAgreement)
                 .build();
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 
-        for(int i = 1; i < 3; i++) {
-            UserRoleMet userRoleMet = UserRoleMet.builder()
-                    .roleUserId(userId)
-                    .roleId(i)
-                    .build();
-            userMapper.saveUserRoleMet(userRoleMet);
-        }
+        List<Integer> roleIdList = new ArrayList<>();
+        roleIdList.add(1);
+        roleIdList.add(2);
+        Map<String, Object> params = Map.of(
+                "userId", user.getUserId(),
+                "roleIdList", roleIdList
+        );
+        System.out.println(params);
+        userMapper.saveUserRoleMet(params);
     }
 
     // 일반 로그인
+    @Transactional(rollbackFor = Exception.class)
     public String signin(HttpServletRequest request, ReqGeneralSigninDto dto) {
         User user = userMapper.findUserByUsername(dto.getUsername());
 
@@ -100,6 +130,7 @@ public class AuthService {
         return accessToken;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void oauthSignup(ReqOauthSignupDto dto) {
         User user = User.builder()
                 .username(dto.getUsername())
@@ -128,13 +159,14 @@ public class AuthService {
                 .build();
         userMapper.saveOauthInfo(socialLogin);
 
-        for(int i = 1; i < 3; i++) {
-            UserRoleMet userRoleMet = UserRoleMet.builder()
-                    .roleUserId(userId)
-                    .roleId(i)
-                    .build();
-            userMapper.saveUserRoleMet(userRoleMet);
-        }
+        List<Integer> roleIdList = new ArrayList<>();
+        roleIdList.add(1);
+        roleIdList.add(2);
+        Map<String, Object> params = Map.of(
+                "userId", user.getUserId(),
+                "roleIdList", roleIdList
+        );
+        userMapper.saveUserRoleMet(params);
     }
 
     // username이 있는 지 검사 -> AuthAspect로 들어감

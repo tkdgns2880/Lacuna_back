@@ -66,6 +66,7 @@ public class AuthController {
     @ApiOperation(value = "authSignupApi")
     @PostMapping("/oauth2user/signup")
     public ResponseEntity<?> authSignup(@RequestBody ReqOauthSignupDto dto) {
+        System.out.println(dto);
         authService.oauthSignup(dto);
         return ResponseEntity.ok().body(true);
     }
