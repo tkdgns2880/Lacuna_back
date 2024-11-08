@@ -10,6 +10,7 @@ public class RespGetMbtiResultDto {
     private String mbtiResultTitle;
     private String mbtiResultCategoryName;
     private String mbtiResultImg;
+    private int mbtiResultStatus;
     private String mbtiResultSummary;
     private String mbtiResultContent;
 }

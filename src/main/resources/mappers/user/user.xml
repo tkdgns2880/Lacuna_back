@@ -146,6 +146,13 @@
         where
             user_id = #{userId}
     </update>
+    <update id="modifyMyProfileImg">
+        update tb_user_optional_info
+        set
+            profile_img = #{profileImg}
+        where
+            user_id = #{userId}
+    </update>
     <delete id="deleteUser">
         delete
         from
@@ -192,6 +199,13 @@
             u.name,
             u.last_login_date,
             u.created_date,
+            (select role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+                from tb_user_role_met urm
+                where urm.role_user_id = u.user_id
+                order by role_id desc
+                limit 1)) as roleName,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
@@ -225,6 +239,13 @@
             u.name,
             u.last_login_date,
             u.created_date,
+                (select role_name
+                from tb_user_role ur
+                where ur.role_id = (select urm.role_id
+                    from tb_user_role_met urm
+                    where urm.role_user_id = u.user_id
+                    order by role_id desc
+                    limit 1)) as roleName,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
@@ -258,6 +279,14 @@
             u.name,
             u.last_login_date,
             u.created_date,
+            u.created_date,
+            (select role_name
+            from tb_user_role ur
+                where ur.role_id = (select urm.role_id
+                from tb_user_role_met urm
+                where urm.role_user_id = u.user_id
+                order by role_id desc
+                limit 1)) as roleName,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,

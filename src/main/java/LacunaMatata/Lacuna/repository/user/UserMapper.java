@@ -24,21 +24,23 @@ public interface UserMapper {
     int saveLoginHistory(LoginHistory loginHistory);
     // 2-2. 로그인
     int modifyLoginDate(int userId);
-    // 3-1. 마이페이지 - 비밀번호 변경하기(User)_2024.11.05
+    // 3. 프로필 페이지 - 프로필 이미지 변경
+    int modifyMyProfileImg(Map<String, Object> params);
+    // 4-1. 마이페이지 - 비밀번호 변경하기(User)_2024.11.05
     int modifyPassword(int userId, String modifyPassword);
-    // 3-2. 마이페이지 - 비밀번호 변경하기(PasswordHistory)_2024.11.05
+    // 4-2. 마이페이지 - 비밀번호 변경하기(PasswordHistory)_2024.11.05
     int savePasswordHistory(PasswordHistory passwordHistory);
-    // 4. 마이페이지 - 폰 번호 변경하기
+    // 5. 마이페이지 - 폰 번호 변경하기
     int modifyPhoneNumber(Map<String, Object> params);
-    // 4-1. 마이페이지 - 회원 탈퇴(User)_2024.11.05
+    // 6-1. 마이페이지 - 회원 탈퇴(User)_2024.11.05
     int deleteUser(int userId);
-    // 4-2. 마이페이지 - 회원 탈퇴(UserOptionalInfo)_2024.11.05
+    // 6-2. 마이페이지 - 회원 탈퇴(UserOptionalInfo)_2024.11.05
     int deleteUserOptionalInfo(int userId);
-    // 4-3. 마이페이지 - 회원 탈퇴(UserRoleMet)_2024.11.05
+    // 6-3. 마이페이지 - 회원 탈퇴(UserRoleMet)_2024.11.05
     int deleteUserRoleMet(int userId);
-    // 4-4. 마이페이지 - 회원 탈퇴(SocialLogin)_2024.11.05
+    // 6-4. 마이페이지 - 회원 탈퇴(SocialLogin)_2024.11.05
     int deleteOauthInfo(int userId);
-    // 5. 마이페이지 - MBTI 결과_2024.11.05
+    // 7. 마이페이지 - MBTI 결과_2024.11.05
     MbtiResult getMyMbtiResult(int usertId);
 
     /** 공통으로 사용할 userMapper */

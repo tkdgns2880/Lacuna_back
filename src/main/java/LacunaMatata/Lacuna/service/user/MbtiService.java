@@ -70,7 +70,7 @@ public class MbtiService {
                             .skinProblemTwo(mbtiSkinConcernIdList.get(1))
                             .responseMbtiCategoryId(mbtiCategoryId)
                             .responseMbtiId(questionDto.getMbtiId())
-                            .mbtiOptionId(questionDto.getOption())
+                            .mbtiOptionId(questionDto.getOptionId())
                             .mbtiResultId(mbtiResultId)
                             .build();
                     mbtiResponseList.add(mbtiResponse);
@@ -93,7 +93,7 @@ public class MbtiService {
                         .skinProblemTwo(mbtiSkinConcernIdList.get(1))
                         .responseMbtiCategoryId(mbtiCategoryId)
                         .responseMbtiId(questionDto.getMbtiId())
-                        .mbtiOptionId(questionDto.getOption())
+                        .mbtiOptionId(questionDto.getOptionId())
                         .mbtiResultId(mbtiResultId)
                         .build();
                 mbtiResponseList.add(mbtiResponse);
