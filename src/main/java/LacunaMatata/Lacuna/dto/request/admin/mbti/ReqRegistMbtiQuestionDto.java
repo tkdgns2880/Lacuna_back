@@ -10,7 +10,7 @@ public class ReqRegistMbtiQuestionDto {
     private int mbtiCategoryId;
     private String mbtiCode;
     private String mbtiTitle;
-    private List<ReqRegistOptionDto> options;
+    private String options;
 
     private List<MultipartFile> insertImgs;
 }

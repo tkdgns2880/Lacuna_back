@@ -6,14 +6,18 @@ import LacunaMatata.Lacuna.entity.mbti.Mbti;
 import LacunaMatata.Lacuna.entity.mbti.MbtiCategory;
 import LacunaMatata.Lacuna.entity.mbti.MbtiOption;
 import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
+import LacunaMatata.Lacuna.entity.product.ConsultingDetail;
 import LacunaMatata.Lacuna.repository.admin.MbtiManageMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.mail.Multipart;
 import java.io.File;
@@ -33,6 +37,9 @@ public class MbtiManageService {
 
     @Value("${file.path}")
     private String filePath;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // mbti 분류 카테고리 리스트 출력
     public RespCountAndMbtiCategoryDto getMbtiCategoryList() {
@@ -226,10 +233,8 @@ public class MbtiManageService {
 
         // 2. 신규 이미지 저장
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbti");
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbti/");
         }
-
-        System.out.println(dto);
 
         Mbti mbti = Mbti.builder()
                 .mbtiCode(dto.getMbtiCode())
@@ -241,7 +246,13 @@ public class MbtiManageService {
 
         int mbtiId = mbtiManageMapper.saveMbti(mbti);
 
-        List<ReqRegistOptionDto> optionList = dto.getOptions();
+        System.out.println(dto.getOptions());
+        if(dto.getOptions() != null) {
+            String
+        }
+        List<ReqRegistOptionDto> optionList = objectMapper.readValue(dto.getOptions(), new TypeReference<>() {});
+
+
         Map<String, Object> params = Map.of(
                 "mbtiId", mbtiId,
                 "optionList", optionList
@@ -261,6 +272,7 @@ public class MbtiManageService {
         PrincipalUser principalUser = (PrincipalUser)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
+        System.out.println(dto);
 
         /* 이미지 삭제 후 이미지 추가 */
         // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
@@ -283,7 +295,7 @@ public class MbtiManageService {
         // 이미지 등록
         // 1. 이미지 수정할 공간 생성
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            finalImgPath = registerImgUrl(insertImgs.get(0), "mbti");
+            finalImgPath = registerImgUrl(insertImgs.get(0), "mbti/");
         }
 
         Mbti mbti = Mbti.builder()
@@ -297,16 +309,14 @@ public class MbtiManageService {
 
         mbtiManageMapper.modifyMbtiQuestion(mbti);
 
-        System.out.println(dto);
-        List<ReqModifyMbtiOptionDto> optionList = dto.getOptions();
-        System.out.println(optionList);
-
         mbtiManageMapper.deleteMbtiQuestionOptionList(dto.getMbtiId());
 
+        List<ReqModifyMbtiOptionDto> optionList = objectMapper.readValue(dto.getOptions(), new TypeReference<>() {});
         Map<String, Object> params = Map.of(
                 "mbtiId", dto.getMbtiId(),
                 "optionList", optionList
         );
+        System.out.println(params);
         mbtiManageMapper.saveMbtiOption(params);
     }
 
@@ -359,11 +369,14 @@ public class MbtiManageService {
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int registerId = principalUser.getId();
 
+        // 이미지 등록
+        // 1. 이미지 신규 등록할 공간 생성
+        List<MultipartFile> insertImgs = dto.getInsertImgs();
         String insertCompletedImgPath = null;
-        MultipartFile insertImg = dto.getInsertImg();
 
-        if(insertImg != null && insertImg.isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImg, "mbti/mbtiResult");
+        // 2. 신규 이미지 저장
+        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+            insertCompletedImgPath = registerImgUrl(insertImgs.get(0), "mbti/mbtiResult/");
         }
 
         MbtiResult mbtiResult = MbtiResult.builder()
@@ -378,18 +391,18 @@ public class MbtiManageService {
 
         mbtiManageMapper.saveMbtiResult(mbtiResult);
 
-        // 1. 이미지 신규 등록할 공간 생성
-        List<MultipartFile> insertImgs = dto.getInsertImgs();
-        List<String> insertCompletedImgPaths = new ArrayList<>();
-
-        // 2. 신규 이미지 저장
-        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            for(MultipartFile insertFile: insertImgs) {
-                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
-                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
-            }
-            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, mbtiResult.getMbtiResultId());
-        }
+//        // 1. 이미지 신규 등록할 공간 생성
+//        List<MultipartFile> insertImgs = dto.getInsertImgs();
+//        List<String> insertCompletedImgPaths = new ArrayList<>();
+//
+//        // 2. 신규 이미지 저장
+//        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+//            for(MultipartFile insertFile: insertImgs) {
+//                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+//                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
+//            }
+//            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, mbtiResult.getMbtiResultId());
+//        }
     }
 
     // mbti 살문 결과 항목 수정 모달창 출력
@@ -416,41 +429,63 @@ public class MbtiManageService {
         /* 이미지 삭제 후 이미지 추가 */
         // 단계 : 1. 신규 등록, 삭제 공간 생성, 2. 이미지 경로 DB 삭제 및 DB 파일 삭제 3. 신규 데이터 등록
 
-        // 1. 이미지 신규 등록할 공간 생성
+//        // 1. 이미지 신규 등록할 공간 생성
+//        List<MultipartFile> insertImgs = dto.getInsertImgs();
+//        List<String> insertCompletedImgPaths = new ArrayList<>();
+//
+//        // 1. 이미지 삭제할 공간 생성
+//        List<Map<String, Object>> deleteImgs = dto.getDeleteMbtiResultImgs();
+//        List<Long> deleteImgIds = deleteImgs.stream().map(deleteImg -> (Long) deleteImg.get("id")).collect(Collectors.toList());
+//        List<String> deleteImgPaths = deleteImgs.stream().map(deleteImg -> (String) deleteImg.get("path")).collect(Collectors.toList());
+//
+//        // 2. 이미지 경로 DB 삭제 및 DB 파일 삭제
+//        if(deleteImgs != null && !deleteImgs.get(0).isEmpty()) {
+//            // 2-1. 이미지 경로 DB 삭제
+//            mbtiManageMapper.deleteMbtiResultImgs(deleteImgIds);
+//            // Todo foreach를 돌리는데, where 조건에 id in (deleteImgiIds);
+//
+//            // 2-2. 이미지 물리 파일 삭제
+//            for(String deletePath: deleteImgPaths) {
+//                deleteImgUrl(deletePath);
+//            }
+//        }
+//
+//        // 3. 신규 이미지 저장
+//        if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
+//            for(MultipartFile insertFile: insertImgs) {
+//                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
+//                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
+//            }
+//            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, dto.getMbtiResultId());
+//        }
+//
+//
+//        String insertCompletedImgPath = null;
+//        MultipartFile insertImg = dto.getInsertImg();
+//
+//        if(insertImg != null && insertImg.isEmpty()) {
+//            insertCompletedImgPath = registerImgUrl(insertImg, "mbti/mbtiResult");
+//        }
+
+        // 1. 최종 수정될 imgPath 공간 생성
+        String finalImgPath = dto.getPrevImgPath();
+
+        // 2. 이미지 신규 등록할 공간 생성
         List<MultipartFile> insertImgs = dto.getInsertImgs();
-        List<String> insertCompletedImgPaths = new ArrayList<>();
 
-        // 1. 이미지 삭제할 공간 생성
-        List<Map<String, Object>> deleteImgs = dto.getDeleteMbtiResultImgs();
-        List<Long> deleteImgIds = deleteImgs.stream().map(deleteImg -> (Long) deleteImg.get("id")).collect(Collectors.toList());
-        List<String> deleteImgPaths = deleteImgs.stream().map(deleteImg -> (String) deleteImg.get("path")).collect(Collectors.toList());
+        // 3. 이미지 삭제할 공간 생성
+        String deleteImgPath = dto.getDeleteImgPath();
 
-        // 2. 이미지 경로 DB 삭제 및 DB 파일 삭제
-        if(deleteImgs != null && !deleteImgs.get(0).isEmpty()) {
-            // 2-1. 이미지 경로 DB 삭제
-            mbtiManageMapper.deleteMbtiResultImgs(deleteImgIds);
-            // Todo foreach를 돌리는데, where 조건에 id in (deleteImgiIds);
-
-            // 2-2. 이미지 물리 파일 삭제
-            for(String deletePath: deleteImgPaths) {
-                deleteImgUrl(deletePath);
-            }
+        // 4. 물리 파일 삭제
+        if(deleteImgPath != null && !deleteImgPath.isEmpty()) {
+            deleteImgUrl(deleteImgPath);
+            finalImgPath = null;
         }
 
-        // 3. 신규 이미지 저장
+        // 이미지 등록
+        // 1. 이미지 수정할 공간 생성
         if(insertImgs != null && !insertImgs.get(0).isEmpty()) {
-            for(MultipartFile insertFile: insertImgs) {
-                // Todo 디렉토리 경로 잘 확인해서 넣어야 함
-                insertCompletedImgPaths.add(registerImgUrl(insertFile, "mbti/mbtiResult"));
-            }
-            mbtiManageMapper.insertMbtiResultImgs(insertCompletedImgPaths, dto.getMbtiResultId());
-        }
-
-        String insertCompletedImgPath = null;
-        MultipartFile insertImg = dto.getInsertImg();
-
-        if(insertImg != null && insertImg.isEmpty()) {
-            insertCompletedImgPath = registerImgUrl(insertImg, "mbti/mbtiResult");
+            finalImgPath = registerImgUrl(insertImgs.get(0), "mbti/mbtiResult/");
         }
 
         MbtiResult mbtiResult = MbtiResult.builder()
@@ -460,8 +495,7 @@ public class MbtiManageService {
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultSummary(dto.getMbtiResultSummary())
                 .mbtiResultContent(dto.getMbtiResultContent())
-                .mbtiResultImg(insertCompletedImgPath)
-                .mbtiResultStatus(dto.getMbtiResultStatus())
+                .mbtiResultImg(finalImgPath)
                 .build();
 
         mbtiManageMapper.modifyMbtiResult(mbtiResult);

@@ -13,13 +13,10 @@ public class ReqModifyMbtiResultDto {
     private String mbtiResultCategoryName;
     private String mbtiResultSummary;
     private String mbtiResultContent;
-    private int mbtiResultStatus;
 
     // MBTI 신규 이미지 등록 dto
-    private MultipartFile insertImg;
+    // 이미지 파일을 받는 곳 (신규 업로드, 삭제)
     private List<MultipartFile> insertImgs;
-    private List<Map<String, Object>> DeleteMbtiResultImgs;
-
     private String deleteImgPath;
     private String prevImgPath;
 }

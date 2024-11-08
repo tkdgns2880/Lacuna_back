@@ -153,7 +153,6 @@ public class MbtiManageController {
     @PostMapping("/result/regist")
     public ResponseEntity<?> registMbtiResult(@ModelAttribute ReqRegistMbtiResultDto dto) throws IOException {
         System.out.println("설문지 등록 요청 들어옴?"+ dto);
-        mbtiManageService.registMbtiResult(dto);
         return ResponseEntity.ok().body(true);
     }
 
@@ -167,7 +166,7 @@ public class MbtiManageController {
 
     // MBTI 설문 결과 항목 수정
     @ApiOperation(value = "modifyMbtiResultApi")
-    @PutMapping("/result/modify/{resultId}")
+    @PostMapping("/result/modify/{resultId}")
     public ResponseEntity<?> modifyMbtiResult(@ModelAttribute ReqModifyMbtiResultDto dto, @PathVariable int resultId) throws IOException {
         mbtiManageService.modifyMbtiResult(dto);
         return ResponseEntity.ok().body(true);
