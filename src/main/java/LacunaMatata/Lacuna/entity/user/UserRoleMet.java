@@ -22,7 +22,9 @@ public class UserRoleMet {
     private int userRoleMetId;
     private int roleUserId;   // userId
     private int roleId;       // foreign key from UserRole
-    private UserRole userRole;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    // 조인용
+    private UserRole userRole;
 }
