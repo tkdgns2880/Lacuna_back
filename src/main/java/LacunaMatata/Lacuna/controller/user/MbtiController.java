@@ -38,8 +38,8 @@ public class MbtiController {
     @PostMapping("/submit")
     @ApiOperation(value = "submitMbtiApi")
     public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto, HttpServletRequest request) {
-        mbtiService.submitMbti(dto, request);
-        return ResponseEntity.ok().body(true);
+        int mbtiResultId = mbtiService.submitMbti(dto, request);
+        return ResponseEntity.ok().body(mbtiResultId);
     }
 
     // mbti 설문 결과 출력

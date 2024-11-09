@@ -248,7 +248,7 @@ public class MbtiManageService {
         mbtiManageMapper.saveMbti(mbti);
 
         List<ReqRegistOptionDto> optionList = objectMapper.readValue(dto.getOptions(), new TypeReference<>() {});
-        
+
         Map<String, Object> params = Map.of(
                 "mbtiId", mbti.getMbtiId(),
                 "optionList", optionList
