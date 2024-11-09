@@ -27,6 +27,7 @@ public class OAuth2Service implements OAuth2UserService {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         Map<String, Object> oAuth2Attributes = new HashMap<>();
         oAuth2Attributes.put("provider", userRequest.getClientRegistration().getClientName());
+        System.out.println(attributes);
 
         switch (userRequest.getClientRegistration().getClientName()) {
             case "Google":
@@ -36,12 +37,13 @@ public class OAuth2Service implements OAuth2UserService {
                 // 네이버는 Attribue에서 response꺼내서 다시 attribute로 설정
                 attributes = (Map<String, Object>) attributes.get("response");
                 oAuth2Attributes.put("socialId", attributes.get("id").toString());
+                oAuth2Attributes.put("email", attributes.get("email").toString());
                 break;
             case "Kakao":
                 oAuth2Attributes.put("socialId", attributes.get("id").toString());
                 break;
         }
 
-        return new DefaultOAuth2User(new HashSet<>(), oAuth2Attributes, "id");
+        return new DefaultOAuth2User(new HashSet<>(), oAuth2Attributes, "socialId");
     }
 }

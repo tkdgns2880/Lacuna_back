@@ -324,11 +324,7 @@
     </select>
     <select id="findUserBySocialId" resultMap="UserResultMap">
         select
-            (select u.user_id
-            from tb_user
-            where u.user_id = (select sl.social_user_id
-                from tb_social_login sl
-                where sl.social_id #{socialId}) as userId,
+            u.user_id,
             (select ur.role_name
             from tb_user_role ur
             where ur.role_id = (select urm.role_id
@@ -340,6 +336,10 @@
             limit 1 )) as roleName
         from
             tb_user u
+        where
+            u.user_id = (select sl.social_user_id
+            from tb_social_login sl
+            where sl.social_id = #{socialId})
     </select>
     <select id="getMyMbtiResult" resultMap="mbtiResultResultMap">
         select

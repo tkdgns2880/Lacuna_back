@@ -103,12 +103,12 @@ public class AuthService {
 
     // 일반 로그인
     @Transactional(rollbackFor = Exception.class)
-    public String signin(HttpServletRequest request, ReqGeneralSigninDto dto) {
+    public String signin(HttpServletRequest request, ReqGeneralSigninDto dto) throws Exception {
         User user = userMapper.findUserByUsername(dto.getUsername());
 
         // 계정 비활성화인 경우
         if(user.getLastLoginDate().isBefore(LocalDateTime.now().minusYears(1))) {
-            throw new InactiveAccountException();
+            throw new Exception("휴면계정입니다. 이메일 인증으로 휴면 계정을 복구하시고 이용해주세요.");
         }
 
         // 토큰 가져오기
@@ -140,15 +140,35 @@ public class AuthService {
                 .build();
         int userId = userMapper.saveUser(user);
 
+        int useConditionAgreement = 0;
+        int marketingReceiveAgreement = 0;
+        int thirdPartyInfoSharingAgreement = 0;
+
+        if(dto.getUseConditionAgreement() == true) {
+            useConditionAgreement = 1;
+        } else {
+            useConditionAgreement = 2;
+        }
+        if(dto.getMarketingReceiveAgreement() == true) {
+            marketingReceiveAgreement = 1;
+        } else {
+            marketingReceiveAgreement = 2;
+        }
+        if(dto.getThirdPartyInfoSharingAgreement() == true) {
+            thirdPartyInfoSharingAgreement = 1;
+        } else {
+            thirdPartyInfoSharingAgreement = 2;
+        }
+
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
                 .userId(userId)
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
                 .address(dto.getAddress())
-                .marketingReceiveAgreement(dto.getMarketingReceiveAgreement())
-                .thirdPartyInfoSharingAgreement(dto.getThirdPartyInfoSharingAgreement())
-                .useConditionAgreement(dto.getUseConditionAgreement())
+                .marketingReceiveAgreement(marketingReceiveAgreement)
+                .thirdPartyInfoSharingAgreement(thirdPartyInfoSharingAgreement)
+                .useConditionAgreement(useConditionAgreement)
                 .build();
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 

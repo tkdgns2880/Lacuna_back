@@ -47,7 +47,7 @@ public class AuthController {
     @PostMapping("/signin")
     @ApiOperation(value = "signinApi")
     @AuthAop
-    public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto, BindingResult bindingResult) {
+    public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto, BindingResult bindingResult) throws Exception {
         String accessToken = authService.signin(request, dto);
         String bearerToken = "Bearer ".concat(accessToken);
         System.out.println(bindingResult);
@@ -126,14 +126,14 @@ public class AuthController {
     }
 
     // 사용자 아이디 찾기
-    @PostMapping("/findusername")
+    @PostMapping("/find/id")
     @ApiOperation(value = "findUsernameApi")
     public ResponseEntity<?> findUsername(@RequestBody ReqFindUsernameDto dto) throws Exception {
         authService.findUsername(dto);
         return ResponseEntity.ok().body(true);
     }
 
-    @PostMapping("/findpassword")
+    @PostMapping("/find/password")
     @ApiOperation(value = "findPasswordApi")
     public ResponseEntity<?> findPassword(@RequestBody ReqFindPasswordDto dto) throws Exception {
         authService.findPassword(dto);

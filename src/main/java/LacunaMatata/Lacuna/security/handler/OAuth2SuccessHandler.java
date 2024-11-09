@@ -31,11 +31,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Map<String, Object> attributes = defaultOAuth2User.getAttributes();
         String socialId = attributes.get("socialId").toString();
         String provider = attributes.get("provider").toString();
+        String email = attributes.get("email").toString();
 
         User user = userMapper.findUserBySocialId(socialId);
         if(user == null) {
             response.sendRedirect("http://localhost:3000/auth/signup/oauth2?socialid=" + socialId +
-                    "&provider=" + provider);
+                    "&provider=" + provider + "&email=" + email);
             return;
         }
 

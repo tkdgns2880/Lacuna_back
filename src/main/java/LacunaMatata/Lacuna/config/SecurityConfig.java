@@ -2,7 +2,6 @@ package LacunaMatata.Lacuna.config;
 
 
 import LacunaMatata.Lacuna.security.filter.JwtTokenFilter;
-import LacunaMatata.Lacuna.security.handler.InAccountExceptionHandler;
 import LacunaMatata.Lacuna.security.handler.OAuth2SuccessHandler;
 import LacunaMatata.Lacuna.service.OAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
-
-    @Autowired
-    private InAccountExceptionHandler inAccountExceptionHandler;
 
     @Autowired
     private OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -46,8 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 기본적으로 세션이 필요한 경우에만 생성
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-
-        http.exceptionHandling().authenticationEntryPoint(inAccountExceptionHandler);
 
         http.authorizeRequests()
                 .antMatchers("/api/v1/mbti/survey/submit").permitAll() // 이 요청에서만 세션 생성
