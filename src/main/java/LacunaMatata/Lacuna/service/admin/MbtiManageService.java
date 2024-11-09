@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -244,17 +245,12 @@ public class MbtiManageService {
                 .mbtiImg(insertCompletedImgPath)
                 .build();
 
-        int mbtiId = mbtiManageMapper.saveMbti(mbti);
+        mbtiManageMapper.saveMbti(mbti);
 
-        System.out.println(dto.getOptions());
-        if(dto.getOptions() != null) {
-            System.out.println("dd");
-        }
         List<ReqRegistOptionDto> optionList = objectMapper.readValue(dto.getOptions(), new TypeReference<>() {});
-
-
+        
         Map<String, Object> params = Map.of(
-                "mbtiId", mbtiId,
+                "mbtiId", mbti.getMbtiId(),
                 "optionList", optionList
         );
         mbtiManageMapper.saveMbtiOption(params);
@@ -316,7 +312,6 @@ public class MbtiManageService {
                 "mbtiId", dto.getMbtiId(),
                 "optionList", optionList
         );
-        System.out.println(params);
         mbtiManageMapper.saveMbtiOption(params);
     }
 
@@ -327,7 +322,7 @@ public class MbtiManageService {
 
     // mbti 설문지 항목 복수개 삭제
     public void deleteMbtiQuestionList(ReqDeleteMbtiQuestionDto dto) {
-        List<Integer> mbtiIdList = dto.getMbtiIdList();
+        List<Integer> mbtiIdList = dto.getMbtiSurveyIdList();
         mbtiManageMapper.deleteMbtiQuestionList(mbtiIdList);
     }
 
@@ -514,7 +509,9 @@ public class MbtiManageService {
     }
 
     public String registerImgUrl(MultipartFile img, String dirName ) throws IOException {
-        String imgName = img.getOriginalFilename();
+        String originalFilenameAndExtension = img.getOriginalFilename();
+        String imgName = UUID.randomUUID() + "_" + originalFilenameAndExtension;
+//        System.out.println("originalFilename: " + imgName);
         // Todo 디렉토리 경로 잘 확인해서 넣어야 함
         File directory = new File(filePath + dirName);
         if(!directory.exists()) {

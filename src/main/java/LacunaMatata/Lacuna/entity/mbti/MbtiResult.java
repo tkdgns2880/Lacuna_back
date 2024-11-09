@@ -33,4 +33,8 @@ public class MbtiResult {
 
     // 매핑용
     private User user;
+
+    // 전체 유형 중 몇 % 인지 계산용
+    private int totalSubject;
+    private int subject;
 }

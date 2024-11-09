@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,8 +48,9 @@ public class MbtiService {
                 (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         int gender = dto.getGender();
-        Date birthDate = dto.getBirthDate();
-        List<Integer> mbtiSkinConcernIdList = dto.getMbtiSkinConcernIdList();
+        Date birthDate = dto.getBirth();
+        int skinProblemOne = dto.getSkinProblemOne();
+        int skinProblemTwo = dto.getSkinProblemTwo();
 
         int mbtiResultId = caculateMbtiResult(dto);
 
@@ -66,8 +68,8 @@ public class MbtiService {
                             .sessionId(sessionId)
                             .gender(gender)
                             .birth(birthDate)
-                            .skinProblemOne(mbtiSkinConcernIdList.get(0))
-                            .skinProblemTwo(mbtiSkinConcernIdList.get(1))
+                            .skinProblemOne(skinProblemOne)
+                            .skinProblemTwo(skinProblemTwo)
                             .responseMbtiCategoryId(mbtiCategoryId)
                             .responseMbtiId(questionDto.getMbtiId())
                             .mbtiOptionId(questionDto.getOptionId())
@@ -89,8 +91,8 @@ public class MbtiService {
                         .mbtiResponseUserId(principalUser.getId())
                         .gender(gender)
                         .birth(birthDate)
-                        .skinProblemOne(mbtiSkinConcernIdList.get(0))
-                        .skinProblemTwo(mbtiSkinConcernIdList.get(1))
+                        .skinProblemOne(skinProblemOne)
+                        .skinProblemTwo(skinProblemTwo)
                         .responseMbtiCategoryId(mbtiCategoryId)
                         .responseMbtiId(questionDto.getMbtiId())
                         .mbtiOptionId(questionDto.getOptionId())
@@ -109,7 +111,7 @@ public class MbtiService {
     }
 
     // mbti 설문 결과 출력
-    public RespMbtiSurveyResultDto getMbtiResult(int mbtiResultId) {
+    public RespMbtiStatusAndResultDto getMbtiResult(int mbtiResultId) {
         MbtiResult mbtiSurveyResult = mbtiMapper.getMbtiSurveyResult(mbtiResultId);
         RespMbtiSurveyResultDto mbtiResult = RespMbtiSurveyResultDto.builder()
                 .mbtiResultId(mbtiSurveyResult.getMbtiResultId())
@@ -118,8 +120,16 @@ public class MbtiService {
                 .mbtiResultSummary(mbtiSurveyResult.getMbtiResultSummary())
                 .mbtiResultContent(mbtiSurveyResult.getMbtiResultContent())
                 .mbtiResultImg(mbtiSurveyResult.getMbtiResultImg())
+                .totalSubject(mbtiSurveyResult.getTotalSubject())
+                .subject(mbtiSurveyResult.getSubject())
                 .build();
-        return mbtiResult;
+
+        RespMbtiStatusAndResultDto statusAndResult = RespMbtiStatusAndResultDto.builder()
+                .mbtiResultStatus(mbtiSurveyResult.getMbtiResultStatus())
+                .mbtiResult(mbtiResult)
+                .build();
+
+        return statusAndResult;
     }
 
     private int caculateMbtiResult(ReqMbtiAnswerDto dto) {
@@ -183,7 +193,7 @@ public class MbtiService {
         String mbtiResultName = "";
         for(int i = 0; i < mbtiResultType.size(); i++) {
             String resultType = mbtiResultType.get(i);
-            mbtiResultName.concat(resultType);
+            mbtiResultName = mbtiResultName.concat(resultType);
         }
         int mbtiResultId = mbtiMapper.getMbtiResultId(mbtiResultName);
 
