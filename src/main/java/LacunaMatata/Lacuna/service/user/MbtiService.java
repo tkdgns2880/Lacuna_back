@@ -44,8 +44,15 @@ public class MbtiService {
 
     // mbti 설문 답안 등록
     public int submitMbti(ReqMbtiAnswerDto dto, HttpServletRequest request) {
-        PrincipalUser principalUser =
-                (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PrincipalUser principalUser = null;
+
+        if(principal.getClass().getName() == "PrincipalUser") {
+            principalUser = (PrincipalUser) principal;
+        } else {
+            System.out.println("Principal User" + principal.getClass().getName());
+            System.out.println("Principal User" + principal);
+        }
 
         int gender = dto.getGender();
         Date birthDate = dto.getBirth();
@@ -56,9 +63,10 @@ public class MbtiService {
 
         List<MbtiResponse> mbtiResponseList = new ArrayList<>();
 
-        if(principalUser == null) {
+        if(principal == "UseranonymousUser") {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
+            System.out.println("Session ID" + sessionId);
 
             for(ReqMbtiSurveyDto surveyDto : dto.getMbtiResult()) {
                 int mbtiCategoryId = surveyDto.getMbtiCategoryId();

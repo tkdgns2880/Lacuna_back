@@ -47,17 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
-        http.authorizeRequests()
-                .antMatchers("/api/v1/mbti/survey/submit")
-                .authenticated()
-                        .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-
         http.exceptionHandling().authenticationEntryPoint(inAccountExceptionHandler);
 
         http.authorizeRequests()
-                .antMatchers("/api/v1/mbti/survey/submit") // 이 요청에서만 세션 생성
-                .authenticated()
+                .antMatchers("/api/v1/mbti/survey/submit").permitAll() // 이 요청에서만 세션 생성
                 .antMatchers(
                         "/test/**",
                         "/auth/**",
@@ -70,7 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
