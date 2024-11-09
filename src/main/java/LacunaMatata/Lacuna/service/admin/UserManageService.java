@@ -47,14 +47,10 @@ public class UserManageService {
                     .userId(user.getUserId())
                     .roleName(user.getRoleName())
                     .username(user.getUsername())
-                    .password(user.getPassword())
                     .name(user.getName())
                     .gender(user.getUserOptionalInfo().getGender())
                     .birthDate(user.getUserOptionalInfo().getBirthDate())
                     .createdDate(user.getCreateDate())
-                    .loginTime(user.getLastLoginDate())
-                    .loginIp(user.getLoginIp())
-                    .email(user.getEmail())
                     .inactive(user.getInactive())
                     .build();
             respGetUserListDtos.add(respGetUserListDto);
@@ -72,6 +68,8 @@ public class UserManageService {
     // 사용자 등록
     @Transactional(rollbackFor = Exception.class)
     public void registUser(ReqRegistUserDto dto) {
+
+
         User user = User.builder()
                 .username(dto.getUsername())
                 .email(dto.getEmail())
@@ -97,20 +95,6 @@ public class UserManageService {
                 "roleIdList", roleIdList
         );
         userManageMapper.saveUserRoleMet(params);
-    }
-
-    // 사용자 항목 출력
-    public RespUserDetailDto getUserDetail(int userId) {
-        User user = userManageMapper.findUserById(userId);
-        RespUserDetailDto respUserDetailDto = RespUserDetailDto.builder()
-                .userId(user.getUserId())
-                .username(user.getUsername())
-                .roleName(user.getRoleName())
-                .email(user.getEmail())
-                .name(user.getName())
-                .inactiveFlag(user.getInactive())
-                .build();
-        return respUserDetailDto;
     }
 
     // 사용자 권한 목록 출력(필터)
@@ -144,9 +128,12 @@ public class UserManageService {
                 .roleId(user.getRoleId())
                 .roleName(user.getRoleName())
                 .username(user.getUsername())
+                .gender(user.getUserOptionalInfo().getGender())
+                .birthDate(user.getUserOptionalInfo().getBirthDate())
                 .email(user.getEmail())
                 .inactive(user.getInactive())
                 .name(user.getName())
+                .loginIp(user.getLoginIp())
                 .userRoleList(userRoleList)
                 .build();
         return modifyUserModal;

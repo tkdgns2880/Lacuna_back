@@ -9,6 +9,7 @@
         <result property="productLowerCategoryId" column="p_product_lower_category_id" />
         <result property="productCode" column="product_code" />
         <result property="productName" column="product_name" />
+        <result property="subtitle" column="subtitle" />
         <result property="price" column="price" />
         <result property="promotionPrice" column="promotion_price" />
         <result property="createDate" column="create_date" />
@@ -115,6 +116,7 @@
             #{productLowerCategoryId},
             #{productCode},
             #{productName},
+            #{subtitle},
             #{price},
             #{promotionPrice},
             #{productImg},
@@ -173,6 +175,7 @@
             product_lower_category_id = #{productLowerCategoryId},
             product_code = #{productCode},
             product_name = #{productName},
+            subtitle = #{subtitle},
             price = #{price},
             promotion_price = #{promotionPrice},
             product_img = #{productImg},
@@ -353,6 +356,7 @@
             p.product_lower_category_id as p_product_lower_category_id,
             p.product_name,
             p.product_code,
+            p.subtitle,
             p.price,
             p.promotion_price,
             p.product_register_id,
@@ -404,6 +408,7 @@
             p.product_lower_category_id,
             p.product_code,
             p.product_name,
+            p.subtitle,
             p.price,
             p.promotion_price,
             p.description,

@@ -11,6 +11,7 @@ public class ReqRegistProductDto {
     private int productLowerCategoryId;
     private String productCode;
     private String productName;
+    private String subtitle;
     private int price;
     private int promotionPrice;
     private String description;

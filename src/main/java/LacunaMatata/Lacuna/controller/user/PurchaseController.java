@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.controller.user;
 
 import LacunaMatata.Lacuna.dto.request.user.purchase.ReqOrderConsultingProductDto;
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductDetail.RespConsultingProductDetailDto;
+import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespConsultingListDto;
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductUpperCategoryDto;
 import LacunaMatata.Lacuna.service.user.PurchaseService;
 import io.swagger.annotations.Api;
@@ -9,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -22,8 +25,8 @@ public class PurchaseController {
     @GetMapping("/product/consulting")
     @ApiOperation(value = "getProductListApi")
     public ResponseEntity<?> getConsultingProductList() {
-        RespProductUpperCategoryDto productUpperCategory = purchaseService.getConsultingProductList();
-        return ResponseEntity.ok().body(productUpperCategory);
+        List<RespConsultingListDto> consultingProduct = purchaseService.getConsultingProductList();
+        return ResponseEntity.ok().body(consultingProduct);
     }
 
     // 회원 컨설팅 상품 상세 보기 - 회원만 가능

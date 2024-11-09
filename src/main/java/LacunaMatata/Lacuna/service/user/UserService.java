@@ -41,6 +41,8 @@ public class UserService {
 
         User user = userMapper.findUserByUserId(userId);
         RespMyProfileHeaderDto myProfileHeader = RespMyProfileHeaderDto.builder()
+                .name(user.getName())
+                .username(user.getUsername())
                 .roleName(user.getRoleName())
                 .profileImg(user.getUserOptionalInfo().getProfileImg())
                 .build();

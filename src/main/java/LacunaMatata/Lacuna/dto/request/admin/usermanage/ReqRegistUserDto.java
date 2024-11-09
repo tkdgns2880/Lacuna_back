@@ -12,6 +12,7 @@ public class ReqRegistUserDto {
     private String email;
     private String name;
     private String password;
+    private String checkPassword;
     private Date birthDate;
     private int gender;
     private String phoneNumber;

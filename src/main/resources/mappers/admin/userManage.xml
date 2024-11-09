@@ -210,6 +210,13 @@
                 limit 1 )) as roleName,
             case when (datediff(now(), u.last_login_date)) > 365
             then "휴면 계정" else "활성화 계정" end as inactive,
+            (select lh.login_ip
+            from tb_login_history lh
+            where lh.login_user_id = #{userId}
+            order by lh.login_time desc
+            limit 1) as loginIp,
+            uoi.gender,
+            uoi.birth_date,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,
@@ -218,8 +225,9 @@
         from
             tb_user u
             left outer join tb_user_role_met urm on u.user_id = urm.role_user_id
+            left outer join tb_user_optional_info uoi on uoi.user_id = u.user_id
         where
-            user_id = #{userId}
+            u.user_id = #{userId}
     </select>
     <select id="getUserRole" resultMap="userRoleResultMap">
         select

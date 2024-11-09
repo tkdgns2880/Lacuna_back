@@ -3,6 +3,9 @@ package LacunaMatata.Lacuna.service.user;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqAuthEmailDto;
 import LacunaMatata.Lacuna.dto.request.user.purchase.ReqOrderConsultingProductDto;
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductDetail.RespConsultingProductDetailDto;
+import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespConsultingListDto;
+import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespConsultingProductDto;
+import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductLowerCategoryDto;
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductUpperCategoryDto;
 import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.OrderItem;
@@ -17,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,9 +39,24 @@ public class PurchaseService {
     private PurchaseMapper purchaseMapper;
 
     // 회원 컨설팅 상품 목록 출력
-    public RespProductUpperCategoryDto getConsultingProductList() {
+    public List<RespConsultingListDto> getConsultingProductList() {
         RespProductUpperCategoryDto productUpperCategory = purchaseMapper.getConsultingProductList();
-        return productUpperCategory;
+        List<RespConsultingListDto> consultingProductList = new ArrayList<>();
+        for(RespProductLowerCategoryDto resp : productUpperCategory.getProductLowerCategory()) {
+            for(RespConsultingProductDto consulting : resp.getConsultingProduct()) {
+                RespConsultingListDto consultingProduct = RespConsultingListDto.builder()
+                        .productId(consulting.getProductId())
+                        .productName(consulting.getProductName())
+                        .subtitle(consulting.getSubtitle())
+                        .price(consulting.getPrice())
+                        .promotionPrice(consulting.getPromotionPrice())
+                        .description(consulting.getDescription())
+                        .build();
+                consultingProductList.add(consultingProduct);
+            }
+        }
+
+        return consultingProductList;
     }
 
     // 회원 컨설팅 상품 항목 자세히 보기

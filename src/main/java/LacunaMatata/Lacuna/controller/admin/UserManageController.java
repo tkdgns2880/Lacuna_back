@@ -48,14 +48,6 @@ public class UserManageController {
         return ResponseEntity.ok().body(true);
     }
 
-    // 사용자 항목 출력
-    @GetMapping("/{userId}")
-    @ApiOperation(value = "getUserDetailApi") // test 완료
-    public ResponseEntity<?> getUserDetail(@PathVariable int userId) {
-        RespUserDetailDto userDetail = userManageService.getUserDetail(userId);
-        return ResponseEntity.ok().body(userDetail);
-    }
-
     // 사용자 권한 목록 출력(필터)
     @GetMapping("/role/list/filter")
     @ApiOperation(value = "getUserRoleListApi") // test 완료
@@ -65,7 +57,7 @@ public class UserManageController {
     }
 
     // 사용자 수정창 모달 출력
-    @GetMapping("/modify/modal/{userId}")
+    @GetMapping("/modify/{userId}")
     @ApiOperation(value = "getModifyModalApi")
     public ResponseEntity<?> getModifyModal(@PathVariable int userId) {
         RespGetModifyUserModalDto modifyUserModal = userManageService.getUserModifyModal(userId);

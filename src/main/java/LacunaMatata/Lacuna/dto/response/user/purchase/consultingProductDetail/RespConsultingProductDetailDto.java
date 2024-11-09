@@ -20,6 +20,7 @@ public class RespConsultingProductDetailDto {
 
     private String productCode;
     private String productName;
+    private String subtitle;
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String description;
