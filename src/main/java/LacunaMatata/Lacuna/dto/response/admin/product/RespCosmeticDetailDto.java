@@ -15,6 +15,7 @@ public class RespCosmeticDetailDto {
     private String productLowerCategoryName;
     private String productCode;
     private String productName;
+    private String subtitle;
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String productImg;
