@@ -136,6 +136,7 @@ public class MbtiManageController {
     @ApiOperation(value = "deleteMbtiQuestionListApi")
     @DeleteMapping("/question/delete")
     public ResponseEntity<?> deleteMbtiQuestionList(@RequestBody ReqDeleteMbtiQuestionDto dto) {
+        System.out.println(dto);
         mbtiManageService.deleteMbtiQuestionList(dto);
         return ResponseEntity.ok().body(true);
     }

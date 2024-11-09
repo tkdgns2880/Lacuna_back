@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.controller.user;
 
 import LacunaMatata.Lacuna.dto.request.user.mbti.ReqMbtiAnswerDto;
+import LacunaMatata.Lacuna.dto.response.user.mbti.RespMbtiStatusAndResultDto;
 import LacunaMatata.Lacuna.dto.response.user.mbti.RespMbtiSurveyResultDto;
 import LacunaMatata.Lacuna.service.user.MbtiService;
 import io.swagger.annotations.Api;
@@ -37,15 +38,18 @@ public class MbtiController {
     @PostMapping("/submit")
     @ApiOperation(value = "submitMbtiApi")
     public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto, HttpServletRequest request) {
-        mbtiService.submitMbti(dto, request);
-        return ResponseEntity.ok().body(true);
+        int mbtiResultId = mbtiService.submitMbti(dto, request);
+        return ResponseEntity.ok().body(mbtiResultId);
     }
 
     // mbti 설문 결과 출력
     @GetMapping("/result/{resultId}")
     @ApiOperation(value = "getMbtiResultApi")
     public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
-        RespMbtiSurveyResultDto mbtiResult = mbtiService.getMbtiResult(resultId);
-        return ResponseEntity.ok().body(mbtiResult);
+        RespMbtiStatusAndResultDto mbtiResult = mbtiService.getMbtiResult(resultId);
+        if(mbtiResult.getMbtiResultStatus() == 2) {
+            return ResponseEntity.ok().body(null);
+        }
+        return ResponseEntity.ok().body(mbtiResult.getMbtiResult());
     }
 }

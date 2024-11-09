@@ -37,6 +37,8 @@
         <result property="mbtiResultContent" column="mbti_result_content" />
         <result property="mbtiResultImg" column="mbti_result_img" />
         <result property="mbtiResultStatus" column="mbti_result_status" />
+        <result property="totalSubject" column="totalSubject" />
+        <result property="subject" column="subject" />
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
     </resultMap>
@@ -138,6 +140,19 @@
             mbti_result_content,
             mbti_result_img,
             mbti_result_status,
+            (select count(*)
+            from (
+                select count(*)
+                from tb_mbti_response mr
+                group by mbti_response_user_id)
+                as group_total) as totalSubject,
+            (select count(*)
+            from (
+                select count(*)
+                from tb_mbti_response mr
+                where mr.mbti_result_id = #{mbtiResultId}
+                group by mbti_response_user_id)
+                as person_total) as subject,
             create_date,
             update_date
         from
@@ -156,12 +171,13 @@
             tb_mbti m
             left outer join tb_mbti_option mo on mo.mbti_id = m.mbti_id
         where
-            <foreach item="mbtiCategory" collection="mbtiCategoryIdList">
-                m.mbti_category_id = #{mbtiCategory.mbtiCategoryId}
-                <foreach item="mbtiIdOptionId" collection="mbti">
-                    and mo.mbti_id = #{mbtiIdOptionId.mbtiId}
-                    and mo.mbti_option_id = #{mbtiIdOptionId.optionId}
+            <foreach item="mbtiCategory" collection="mbtiCategoryIdList" separator="or">
+                (m.mbti_category_id = #{mbtiCategory.mbtiCategoryId} and
+                <foreach item="mbti" collection="mbtiCategory.mbti" separator="or">
+                    mo.mbti_id = #{mbti.mbtiId}
+                    and mo.mbti_option_id = #{mbti.optionId}
                 </foreach>
+                )
             </foreach>
     </select>
     <select id="getMbtiResultId" resultType="java.lang.Integer">

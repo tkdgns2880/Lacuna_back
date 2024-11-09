@@ -8,7 +8,8 @@ import java.util.List;
 @Data
 public class ReqMbtiAnswerDto {
     private int gender;
-    private Date birthDate;
-    private List<Integer> mbtiSkinConcernIdList;
+    private Date birth;
+    private int skinProblemOne;
+    private int skinProblemTwo;
     private List<ReqMbtiSurveyDto> mbtiResult;
 }
