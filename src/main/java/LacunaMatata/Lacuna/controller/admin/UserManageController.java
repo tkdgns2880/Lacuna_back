@@ -65,7 +65,7 @@ public class UserManageController {
     }
 
     // 사용자 수정창 모달 출력
-    @GetMapping("/modify/modal/{userId}")
+    @GetMapping("/modify/{userId}")
     @ApiOperation(value = "getModifyModalApi")
     public ResponseEntity<?> getModifyModal(@PathVariable int userId) {
         RespGetModifyUserModalDto modifyUserModal = userManageService.getUserModifyModal(userId);
