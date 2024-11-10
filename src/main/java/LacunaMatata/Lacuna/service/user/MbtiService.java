@@ -46,6 +46,7 @@ public class MbtiService {
     public int submitMbti(ReqMbtiAnswerDto dto, HttpServletRequest request) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         PrincipalUser principalUser = null;
+        System.out.println(principal.getClass().getName());
 
         if(principal.getClass().getName() == "PrincipalUser") {
             principalUser = (PrincipalUser) principal;

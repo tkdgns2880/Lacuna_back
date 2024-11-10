@@ -44,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         http.authorizeRequests()
-                .antMatchers("/api/v1/mbti/survey/submit").permitAll() // 이 요청에서만 세션 생성
+                .antMatchers(
+                        "/api/v1/mbti/survey/submit",
+                        "/api/v1/mbti/survey"
+                ).permitAll() // 이 요청에서만 세션 생성
                 .antMatchers(
                         "/test/**",
                         "/auth/**",
