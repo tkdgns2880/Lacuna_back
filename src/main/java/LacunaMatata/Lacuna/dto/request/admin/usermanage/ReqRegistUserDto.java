@@ -9,11 +9,12 @@ import java.util.Date;
 public class ReqRegistUserDto {
     private int roleId;
     private String username;
-    private String email;
-    private String name;
     private String password;
     private String checkPassword;
+    private String email;
+    private String name;
     private Date birthDate;
     private int gender;
     private String phoneNumber;
+    private String profileImg;
 }

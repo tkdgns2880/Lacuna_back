@@ -17,6 +17,8 @@ public class RespGetModifyUserModalDto {
     private String inactive;
     private String username;
     private String email;
+    private String phoneNumber;
+    private String profileImg;
     private String name;
     private String loginIp;
     private List<RespUserRoleFilterDto> userRoleList;

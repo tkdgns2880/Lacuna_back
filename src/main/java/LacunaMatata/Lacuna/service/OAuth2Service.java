@@ -32,6 +32,7 @@ public class OAuth2Service implements OAuth2UserService {
         switch (userRequest.getClientRegistration().getClientName()) {
             case "Google":
                 oAuth2Attributes.put("socialId", attributes.get("sub").toString());
+                oAuth2Attributes.put("email", attributes.get("email").toString());
                 break;
             case "Naver":
                 // 네이버는 Attribue에서 response꺼내서 다시 attribute로 설정
@@ -40,7 +41,9 @@ public class OAuth2Service implements OAuth2UserService {
                 oAuth2Attributes.put("email", attributes.get("email").toString());
                 break;
             case "Kakao":
+                attributes = (Map<String, Object>) attributes.get("kakao_account");
                 oAuth2Attributes.put("socialId", attributes.get("id").toString());
+                oAuth2Attributes.put("email", attributes.get("email").toString());
                 break;
         }
 
