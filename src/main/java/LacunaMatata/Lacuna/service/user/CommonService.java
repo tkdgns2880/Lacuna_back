@@ -15,6 +15,9 @@ public class CommonService {
     @Autowired
     private CommonMapper commonMapper;
 
+    @Autowired
+    private StatisticService statisticService;
+
     // 설정(약관 email, phone, sns 주소 등) 정보 출력
     public List<RespSettingInfoDto> getSettingInfo() {
         List<Setting> settings = commonMapper.getSettingInfoList();
@@ -28,5 +31,10 @@ public class CommonService {
             respSettingInfo.add(respSettingInfoDto);
         }
         return respSettingInfo;
+    }
+
+    // 페이지 정보 눌렀을 때 1증가
+    public void getCountIntroPage() {
+        statisticService.plusServiceCount("index");
     }
 }
