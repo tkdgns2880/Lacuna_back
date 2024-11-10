@@ -35,6 +35,6 @@ public class CommonService {
 
     // 페이지 정보 눌렀을 때 1증가
     public void getCountIntroPage() {
-        statisticService.plusServiceCount("index");
+        statisticService.plusServiceCount("intro");
     }
 }
