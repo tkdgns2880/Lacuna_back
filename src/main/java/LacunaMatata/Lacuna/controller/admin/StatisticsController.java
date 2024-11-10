@@ -1,6 +1,8 @@
 package LacunaMatata.Lacuna.controller.admin;
 
+import LacunaMatata.Lacuna.dto.request.admin.statistic.ReqGetUseCountDto;
 import LacunaMatata.Lacuna.dto.request.admin.statistic.ReqMbtiStatisticDto;
+import LacunaMatata.Lacuna.dto.response.admin.statistic.RespTotalAndUseCountDto;
 import LacunaMatata.Lacuna.service.admin.StatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,8 +18,11 @@ public class StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
 
-    @PostMapping("/service/statistic")
-    public ResponseEntity<?> registCounting() {return ResponseEntity.ok().body(null);
+    @ApiOperation(value = "getUseCountingApi")
+    @GetMapping("/service/statistic")
+    public ResponseEntity<?> getUseCounting(ReqGetUseCountDto dto) {
+        RespTotalAndUseCountDto useCount = statisticsService.getUseCount(dto);
+        return ResponseEntity.ok().body(useCount);
     }
 
     @ApiOperation(value = "mbtiStatisticApi")
@@ -25,4 +30,6 @@ public class StatisticsController {
     public ResponseEntity<?> mbtiStatistic(ReqMbtiStatisticDto dto) {
         return ResponseEntity.ok().body(statisticsService.respAllCountDto(dto));
     }
+
+
 }

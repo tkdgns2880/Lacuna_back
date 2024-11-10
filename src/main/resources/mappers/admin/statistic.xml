@@ -3,6 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="LacunaMatata.Lacuna.repository.admin.StatisticsMapper">
+    <resultMap id="userCountResultMap" type="LacunaMatata.Lacuna.entity.user.UserCount">
+        <id property="userCountId" column="user_count_id" />
+        <result property="serviceName" column="service_name" />
+        <result property="serviceCount" column="service_count" />
+        <result property="userDate" column="user_date" />
+        <result property="userHour" column="user_hour" />
+        <result property="sumServiceCount" column="sumServiceCount" />
+    </resultMap>
+
+    <select id="getUseCountByDate" resultMap="userCountResultMap">
+        select
+            sum(service_count) as sumServiceCount,
+            service_name,
+            user_date
+        from
+            lacoma_db.tb_user_count
+        where
+            user_date between #{startDate} and #{endDate}
+        group by
+            service_name;
+    </select>
+
     <select id="userStatistic" resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespUserStatisticCountDto">
         select
             count(*) as userCount,
