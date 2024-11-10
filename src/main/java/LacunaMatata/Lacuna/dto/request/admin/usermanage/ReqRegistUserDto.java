@@ -10,7 +10,7 @@ public class ReqRegistUserDto {
     private int roleId;
     private String username;
     private String password;
-    private String checkPassword;
+    private String passwordCheck;
     private String email;
     private String name;
     private Date birthDate;

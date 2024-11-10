@@ -68,7 +68,7 @@ public class UserManageService {
     // 사용자 등록
     @Transactional(rollbackFor = Exception.class)
     public void registUser(ReqRegistUserDto dto) throws Exception {
-        if(!dto.getPassword().equals(dto.getCheckPassword())) {
+        if(!dto.getPassword().equals(dto.getPasswordCheck())) {
             throw new Exception("비밀번호 오류");
         }
 
