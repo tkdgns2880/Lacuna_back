@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.repository.user;
 
 import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
+import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.user.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -46,6 +47,8 @@ public interface UserMapper {
     int deleteOauthInfo(int userId);
     // 9. 마이페이지 - MBTI 결과_2024.11.05
     MbtiResult getMyMbtiResult(int usertId);
+    // 10. 마이페이지 - 주문 정보
+    List<Order> getMyOrderInfo(Map<String, Object> params);
 
     /** 공통으로 사용할 userMapper */
     // 1. userId로 User 정보 찾기

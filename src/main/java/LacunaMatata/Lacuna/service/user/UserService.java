@@ -2,10 +2,10 @@ package LacunaMatata.Lacuna.service.user;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqAuthEmailDto;
 import LacunaMatata.Lacuna.dto.request.user.user.*;
-import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
-import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileDto;
-import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileHeaderDto;
+import LacunaMatata.Lacuna.dto.response.user.user.*;
 import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
+import LacunaMatata.Lacuna.entity.order.Order;
+import LacunaMatata.Lacuna.entity.order.OrderItem;
 import LacunaMatata.Lacuna.entity.user.PasswordHistory;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
@@ -23,6 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -211,5 +215,39 @@ public class UserService {
                 .mbtiResultImg(mbtiResult.getMbtiResultImg())
                 .build();
         return myMbtiResultDto;
+    }
+
+    // 마이페이지 - 주문 정보 출력
+    public List<RespMyOrderInfoDto> getMyOrderInfo(ReqGetMyOrderInfoDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = principalUser.getId();
+
+        Map<String, Object> params = Map.of(
+                "userId", userId,
+                "startDate", dto.getStartDate() == null ? "1900-01-01" : dto.getStartDate(),
+                "endDate", dto.getEndDate() == null ? "2200-12-31" : dto.getEndDate(),
+                "searchValue", dto.getSearchValue() == null ? "" : dto.getSearchValue()
+        );
+        List<Order> myOrderList = userMapper.getMyOrderInfo(params);
+        List<RespMyOrderInfoDto> orderList = new ArrayList<>();
+
+        for(Order order : myOrderList) {
+            RespMyOrderInfoDto resp = RespMyOrderInfoDto.builder()
+                    .orderId(order.getOrderId())
+                    .create_date(order.getCreatedDate())
+                    .productUpperCategoryName(order.getProductUpperCategoryName())
+                    .productName(order.getOrderItemList().getProduct().getProductName())
+                    .status(order.getStatus())
+                    .quantity(order.getOrderItemList().getQuantity())
+                    .priceAtPurchase(order.getOrderItemList().getPriceAtPurchase())
+                    .build();
+            orderList.add(resp);
+        }
+        return orderList;
+    }
+
+    // 프로필 페이지 - 결제 취소 (시스템 결제)
+    public void cancelSystemPay() {
+        
     }
 }

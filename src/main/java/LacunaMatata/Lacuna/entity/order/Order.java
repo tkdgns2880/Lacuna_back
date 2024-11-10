@@ -30,4 +30,7 @@ public class Order {
     private String paymentMethod;
     private String productName;
     private OrderItem orderItemList;
+    private String productUpperCategoryName;
+
+
 }

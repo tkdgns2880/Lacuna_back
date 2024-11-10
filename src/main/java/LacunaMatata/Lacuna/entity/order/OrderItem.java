@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.entity.order;
 
+import LacunaMatata.Lacuna.entity.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,6 @@ public class OrderItem {
 
     // 조인용
     private String productName;
+
+    private Product product;
 }

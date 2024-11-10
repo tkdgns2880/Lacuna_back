@@ -102,4 +102,18 @@ public class UserController {
         RespMyMbtiResultDto myMbtiResult = userService.getMbtiResult();
         return ResponseEntity.ok().body(myMbtiResult);
     }
+
+    // 프로필 페이지 - 주문 내역 정보
+    @GetMapping("/user/order/mypage")
+    @ApiOperation(value = "getMyOrderInfoApi")
+    public ResponseEntity<?> getMyOrderInfo(ReqGetMyOrderInfoDto dto) {
+        return ResponseEntity.ok().body(userService.getMyOrderInfo(dto));
+    }
+
+    // 프로필 페이지 - 주문 취소 - 시스템 결제
+    @PutMapping("/user/cancel/payment/{orderId}")
+    public ResponseEntity<?> cancelSystemPay(@PathVariable int orderId) {
+        
+        return ResponseEntity.ok().body(true);
+    }
 }

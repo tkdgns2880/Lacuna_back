@@ -62,6 +62,24 @@
     <resultMap id="kakaoResultMap" type="java.lang.String">
         <result property="value" column="value" />
     </resultMap>
+    <resultMap id="orderResultMap" type="LacunaMatata.Lacuna.entity.order.Order">
+        <id property="orderId" column="order_id" />
+        <result property="createdDate" column="created_date" />
+        <result property="productUpperCategoryName" column="productUpperCategoryName" />
+        <result property="status" column="status" />
+        <association property="orderItemList" resultMap="orderItemResultMap" />
+    </resultMap>
+    <resultMap id="orderItemResultMap" type="LacunaMatata.Lacuna.entity.order.OrderItem">
+        <id property="orderItemId" column="order_item_id" />
+        <result property="quantity" column="quantity" />
+        <result property="priceAtPurchase" column="price_at_purchase" />
+        <association property="product" resultMap="productResultMap" />
+    </resultMap>
+    <resultMap id="productResultMap" type="LacunaMatata.Lacuna.entity.product.Product">
+        <id property="productId" column="product_id" />
+        <result property="productName" column="product_name" />
+    </resultMap>
+
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
         values(
@@ -383,5 +401,33 @@
             tb_setting
         where
             data_type = "Kakao Plus"
+    </select>
+    <select id="getMyOrderInfo" resultMap="orderResultMap">
+        select
+            o.order_id,
+            o.created_date,
+            (select puc.productUpperCategoryName
+            from tb_product_upper_category puc
+            where puc.product_upper_category_id = (select p.product_product_upper_category_id
+                from tb_product p
+                where p.product_id = (select oi.order_product_id
+                    from tb_order_item oi
+                    where oi.order_id = o.order_id))) as productUpperCategoryName,
+            p.product_name,
+            oi.quantity,
+            oi.price_at_purchase,
+            o.status
+        from
+            tb_order o
+            left outer join tb_order_item oi on (oi.order_id = o.order_id)
+            left outer join tb_product p on (p.product_id = oi.order_product_id)
+        where
+            o.order_user_id = #{userId}
+            and
+            o.created_date between #{startDate} and #{endDate}
+            and
+            <if test="searchValue != null and searchValue != ''">
+                p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
+            </if>
     </select>
 </mapper>
