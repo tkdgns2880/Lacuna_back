@@ -1,9 +1,7 @@
 package LacunaMatata.Lacuna.service.user;
 
-import LacunaMatata.Lacuna.dto.request.user.user.ReqChangePhoneNumberDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqModifyProfileImgDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
+import LacunaMatata.Lacuna.dto.request.user.auth.ReqAuthEmailDto;
+import LacunaMatata.Lacuna.dto.request.user.user.*;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileHeaderDto;
@@ -11,9 +9,12 @@ import LacunaMatata.Lacuna.entity.mbti.MbtiResult;
 import LacunaMatata.Lacuna.entity.user.PasswordHistory;
 import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
+import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
+import LacunaMatata.Lacuna.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,20 @@ public class UserService {
     @Value("${file.path}")
     private String filePath;
 
+    @Value("${spring.mail.username}")
+    private String fromEmail;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private AuthService authService;
 
     // 프로필 정보 (헤더부분) 출력
     public RespMyProfileHeaderDto getMyProfileHeader() {
@@ -63,11 +76,15 @@ public class UserService {
         int userId = principalUser.getId();
 
         User user = userMapper.findUserByUserId(userId);
+        String kakaoUrl = userMapper.getKakaoAddress();
+
         RespMyProfileDto respMyProfileDto = RespMyProfileDto.builder()
                 .name(user.getName())
                 .phoneNumber(user.getUserOptionalInfo().getPhoneNumber())
                 .email(user.getEmail())
                 .profileImg(user.getUserOptionalInfo().getProfileImg())
+                .marketingReceiveAgreement(user.getUserOptionalInfo().getMarketingReceiveAgreement())
+                .kakaoAddress(kakaoUrl)
                 .build();
         return respMyProfileDto;
     }
@@ -117,6 +134,47 @@ public class UserService {
         );
 
         userMapper.modifyPhoneNumber(params);
+    }
+
+    // 프로필 페이지 - 내 이메일 주소 변경하기 (메일 인증)
+    public Boolean changeMyEmail(ReqChangeMyEmailDto dto) {
+        String toEmail = dto.getEmail();
+
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
+                + "width:400px'>");
+        htmlContent.append("<h2>Lacuna 메일 주소 변경 이메일 인증 입니다.</h2>");
+        htmlContent.append("<h3>아래 인증하기 버튼을 클릭해주세요</h3>");
+        htmlContent.append("<a target='_blank' href='http://localhost:8080/api/v1/auth/email?emailtoken=");
+        htmlContent.append(jwtProvider.generateEmailValidToken(toEmail));
+        htmlContent.append("'>인증하기</a>");
+        htmlContent.append("</div>");
+
+        return authService.send(toEmail, "Lacuna 메일 주소 변경 이메일 인증 ", htmlContent.toString());
+    }
+
+    // 프로필 페이지 - 내 이메일 주소 변경하기 (수정)
+    public void changeMyEmail2(ReqChangeMyEmailDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = principalUser.getId();
+        String email = dto.getEmail();
+        Map<String, Object> params = Map.of(
+                "userId", userId,
+                "email", email
+        );
+        userMapper.modifyMyEmail(params);
+    }
+
+    // 프로필 페이지 - 마케팅 동의 설정 바꾸기
+    public void changeMarketingAgreement(ReqChangeMarketingDto dto) {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = principalUser.getId();
+        int marketingReceiveAgreement = dto.getMarketingReceiveAgreement();
+        Map<String, Object> params = Map.of(
+                "userId", userId,
+                "marketingReceiveAgreement", marketingReceiveAgreement
+        );
+        userMapper.changeMarketingAgreement(params);
     }
 
     // 프로필페이지 - 회원 탈퇴

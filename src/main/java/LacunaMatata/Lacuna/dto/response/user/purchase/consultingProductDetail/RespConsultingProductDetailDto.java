@@ -15,17 +15,10 @@ import java.util.List;
 @Data
 public class RespConsultingProductDetailDto {
     private int productId;
-    private int productLowerCategoryId;
-    private String productLowerCategoryName;
-
-    private String productCode;
     private String productName;
     private String subtitle;
     private BigDecimal price;
     private BigDecimal promotionPrice;
     private String description;
-    private String etc;
     private String productImg;
-
-    private List<RespConsultingDetailProductDto> consultingDetail;
 }

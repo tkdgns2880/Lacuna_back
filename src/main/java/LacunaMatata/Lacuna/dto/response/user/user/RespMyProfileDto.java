@@ -10,4 +10,6 @@ public class RespMyProfileDto {
     private String phoneNumber;
     private String email;
     private String profileImg;
+    private int marketingReceiveAgreement;
+    private String kakaoAddress;
 }
