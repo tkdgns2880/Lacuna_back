@@ -59,6 +59,9 @@
         <result property="mbtiResultContent" column="mbti_result_content" />
         <result property="mbtiResultImg" column="mbti_result_img" />
     </resultMap>
+    <resultMap id="kakaoResultMap" type="java.lang.String">
+        <result property="value" column="value" />
+    </resultMap>
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
         values(
@@ -153,6 +156,21 @@
         where
             user_id = #{userId}
     </update>
+    <update id="modifyMyEmail">
+        update tb_user
+        set
+            email = #{email}
+        where
+            user_id = #{userId}
+    </update>
+    <update id="changeMarketingAgreement">
+        update tb_optional_info
+        set
+            marketing_receive_agreement = #{marketingReceiveAgreement}
+        where
+            user_id = #{userId}
+    </update>
+
     <delete id="deleteUser">
         delete
         from
@@ -357,5 +375,13 @@
                 where mbti_response_user_id = #{userId}
                 order by create_date desc
                 limit 1)
+    </select>
+    <select id="getKakaoAddress" resultMap="kakaoResultMap">
+        select
+            value
+        from
+            tb_setting
+        where
+            data_type = "Kakao Plus"
     </select>
 </mapper>

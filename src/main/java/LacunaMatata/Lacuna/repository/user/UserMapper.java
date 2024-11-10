@@ -32,15 +32,19 @@ public interface UserMapper {
     int savePasswordHistory(PasswordHistory passwordHistory);
     // 5. 마이페이지 - 폰 번호 변경하기
     int modifyPhoneNumber(Map<String, Object> params);
-    // 6-1. 마이페이지 - 회원 탈퇴(User)_2024.11.05
+    // 6. 마이페이지 - 이메일 변경(수정)
+    int modifyMyEmail(Map<String, Object> params);
+    // 7. 마이페이지 - 마케팅 정보 변경
+    int changeMarketingAgreement(Map<String, Object> params);
+    // 8-1. 마이페이지 - 회원 탈퇴(User)_2024.11.05
     int deleteUser(int userId);
-    // 6-2. 마이페이지 - 회원 탈퇴(UserOptionalInfo)_2024.11.05
+    // 8-2. 마이페이지 - 회원 탈퇴(UserOptionalInfo)_2024.11.05
     int deleteUserOptionalInfo(int userId);
-    // 6-3. 마이페이지 - 회원 탈퇴(UserRoleMet)_2024.11.05
+    // 8-3. 마이페이지 - 회원 탈퇴(UserRoleMet)_2024.11.05
     int deleteUserRoleMet(int userId);
-    // 6-4. 마이페이지 - 회원 탈퇴(SocialLogin)_2024.11.05
+    // 8-4. 마이페이지 - 회원 탈퇴(SocialLogin)_2024.11.05
     int deleteOauthInfo(int userId);
-    // 7. 마이페이지 - MBTI 결과_2024.11.05
+    // 9. 마이페이지 - MBTI 결과_2024.11.05
     MbtiResult getMyMbtiResult(int usertId);
 
     /** 공통으로 사용할 userMapper */
@@ -56,4 +60,6 @@ public interface UserMapper {
     List<LoginHistory> findLoginHistoryByUserId(int userId);
     // 6. oAuth2Name(고유값)으로 사용자 찾기
     User findUserBySocialId(String socialId);
+    // 7. 관리자 카카오 주소(문의용) 가져오기
+    String getKakaoAddress();
 }

@@ -1,9 +1,6 @@
 package LacunaMatata.Lacuna.controller.user;
 
-import LacunaMatata.Lacuna.dto.request.user.user.ReqChangePhoneNumberDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqModifyProfileImgDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqPasswordChangeDto;
-import LacunaMatata.Lacuna.dto.request.user.user.ReqWithdrawUserDto;
+import LacunaMatata.Lacuna.dto.request.user.user.*;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyMbtiResultDto;
 import LacunaMatata.Lacuna.dto.response.user.user.RespMyProfileDto;
 import LacunaMatata.Lacuna.repository.user.UserMapper;
@@ -64,6 +61,31 @@ public class UserController {
         userService.changePhoneNumber(dto);
         return ResponseEntity.ok().body(true);
     }
+
+    // 프로필페이지 - 내 이메일 주소 바꾸기 (메일 인증)
+    @PostMapping("/user/change/email")
+    @ApiOperation(value = "changeMyEmailApi1")
+    public ResponseEntity<?> changeMyEmail(@RequestBody ReqChangeMyEmailDto dto) {
+        Boolean success = userService.changeMyEmail(dto);
+        return ResponseEntity.ok().body(true);
+    }
+
+    // 프로필페이지 - 내 이메일 주소 바꾸기2
+    @PutMapping("/user/change/email")
+    @ApiOperation(value = "changeMyEmailApi2")
+    public ResponseEntity<?> changeMyEmail2(@RequestBody ReqChangeMyEmailDto dto) {
+        userService.changeMyEmail2(dto);
+        return ResponseEntity.ok().body(true);
+    }
+
+    // 프로필페이지 - 마케팅 수신 동의 바꾸기
+    @PutMapping("/user/change/marketing")
+    @ApiOperation(value = "changeMarketingAgreementApi")
+    public ResponseEntity<?> changeMarketingAgreement(@RequestBody ReqChangeMarketingDto dto) {
+        userService.changeMarketingAgreement(dto);
+        return ResponseEntity.ok().body(true);
+    }
+
 
     // 프로필 페이지 - 회원 탈퇴
     @DeleteMapping("/user/delete")
