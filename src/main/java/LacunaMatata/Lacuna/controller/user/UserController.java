@@ -110,10 +110,18 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getMyOrderInfo(dto));
     }
 
-    // 프로필 페이지 - 주문 취소 - 시스템 결제
+    // 프로필 페이지 - 결제 취소 공동
     @PutMapping("/user/cancel/payment/{orderId}")
-    public ResponseEntity<?> cancelSystemPay(@PathVariable int orderId) {
-        
+    @ApiOperation(value = "cancelSystemPayApi")
+    public ResponseEntity<?> cancelSystemPay(@PathVariable int orderId) throws Exception {
+        return ResponseEntity.ok().body(userService.cancelSystemPay(orderId));
+    }
+
+    // 프로필 페이지 - 주문 취소 - 계좌이체
+    @PutMapping("/user/cancel/order/{orderId}")
+    @ApiOperation(value = "cancelMyOrderApi")
+    public ResponseEntity<?> cancelMyOrder(@PathVariable int orderId) {
+        userService.cancelMyOrder(orderId);
         return ResponseEntity.ok().body(true);
     }
 }

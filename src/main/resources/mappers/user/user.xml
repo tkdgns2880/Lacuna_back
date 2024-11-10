@@ -79,6 +79,9 @@
         <id property="productId" column="product_id" />
         <result property="productName" column="product_name" />
     </resultMap>
+    <resultMap id="paymentResultMap" type="LacunaMatata.Lacuna.entity.order.Payment">
+        <id property="paymentId" column="payment_id" />
+    </resultMap>
 
     <insert id="saveUser" useGeneratedKeys="true" keyProperty="userId">
         insert into tb_user
@@ -187,6 +190,20 @@
             marketing_receive_agreement = #{marketingReceiveAgreement}
         where
             user_id = #{userId}
+    </update>
+    <update id="cancelSystemPay">
+        update tb_payment
+        set
+            payment_status = "failed"
+        where
+            payment_order_id = #{orderId}
+    </update>
+    <update id="cancelMyOrder">
+        update tb_order
+        set
+            status = "cancelled"
+        where
+            order_id = #{orderId}
     </update>
 
     <delete id="deleteUser">
@@ -429,5 +446,13 @@
             <if test="searchValue != null and searchValue != ''">
                 p.product_name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
             </if>
+    </select>
+    <select id="findPaymentByOrderId" resultMap="paymentResultMap">
+        select
+            payment_id
+        from
+            tb_payment
+        where
+            payment_order_id = #{orderId}
     </select>
 </mapper>
