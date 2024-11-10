@@ -17,4 +17,7 @@ public class UserCount {
     private int serviceCount;
     private LocalDateTime userDate;
     private int userHour;
+
+    // 계산용
+    private int sumServiceCount;
 }
