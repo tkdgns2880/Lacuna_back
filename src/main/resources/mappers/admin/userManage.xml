@@ -105,6 +105,24 @@
                 #{roleId}
             </foreach>
     </update>
+    <update id="modifyManagerInfo">
+        update
+            tb_user
+        set
+            password = #{password},
+            email = #{email}
+        where
+            user_id = #{userId}
+    </update>
+    <update id="modifyManageOptionalInfo">
+        update
+            tb_user_optional_info
+        set
+            phone_number = #{phoneNumber},
+            profile_img = #{profileImg}
+        where
+            user_id = #{userId}
+    </update>
     <delete id="deleteByUserId">
         delete
         from
@@ -217,6 +235,8 @@
             limit 1) as loginIp,
             uoi.gender,
             uoi.birth_date,
+            uoi.phone_number,
+            uoi.profile_img,
             urm.user_role_met_id,
             urm.role_user_id,
             urm.role_id,

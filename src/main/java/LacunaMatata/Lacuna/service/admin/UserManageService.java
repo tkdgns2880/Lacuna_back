@@ -67,8 +67,10 @@ public class UserManageService {
 
     // 사용자 등록
     @Transactional(rollbackFor = Exception.class)
-    public void registUser(ReqRegistUserDto dto) {
-
+    public void registUser(ReqRegistUserDto dto) throws Exception {
+        if(!dto.getPassword().equals(dto.getCheckPassword())) {
+            throw new Exception("비밀번호 오류");
+        }
 
         User user = User.builder()
                 .username(dto.getUsername())
@@ -133,6 +135,8 @@ public class UserManageService {
                 .email(user.getEmail())
                 .inactive(user.getInactive())
                 .name(user.getName())
+                .phoneNumber(user.getUserOptionalInfo().getPhoneNumber())
+                .profileImg(user.getUserOptionalInfo().getProfileImg())
                 .loginIp(user.getLoginIp())
                 .userRoleList(userRoleList)
                 .build();
@@ -141,7 +145,7 @@ public class UserManageService {
 
     // 사용자 수정(권한)
     @Transactional(rollbackFor = Exception.class)
-    public void modifyUser(ReqModifyUserDto dto) {
+    public void modifyUser(ReqModifyUserDto dto) throws Exception {
         User user = userManageMapper.findUserById(dto.getUserId());
 
         int originalRoleId = user.getRoleId();
@@ -186,6 +190,24 @@ public class UserManageService {
                 "roleIdList", roleIdList
         );
         userManageMapper.modifyUserRoleMetDate(modifyParams);
+
+        if(modifyRoleId == 5) {
+            if(!dto.getPassword().equals(dto.getPasswordCheck())) {
+                throw new Exception("비밀번호 불일치");
+            }
+            Map<String, Object> params1 = Map.of(
+                    "userId", dto.getUserId(),
+                    "email", dto.getEmail(),
+                    "password", dto.getPassword()
+            );
+            userManageMapper.modifyManagerInfo(params1);
+            Map<String, Object> params2 = Map.of(
+                    "userId", dto.getUserId(),
+                    "phoneNumber", dto.getPhoneNumber(),
+                    "profileImg", dto.getProfileImg()
+            );
+            userManageMapper.modifyManageOptionalInfo(params2);
+        }
     }
 
     // 사용자 삭제

@@ -43,7 +43,7 @@ public class UserManageController {
     // 사용자 등록
     @PostMapping("/regist")
     @ApiOperation(value = "registerUserApi") // test 완료
-    public ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) {
+    public ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) throws Exception {
         userManageService.registUser(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -67,7 +67,7 @@ public class UserManageController {
     // 사용자 수정(권한, 활성화)
     @PutMapping("/modify/{userId}")
     @ApiOperation(value = "modifyUserApi") // test 완료
-    public ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) {
+    public ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) throws Exception {
         userManageService.modifyUser(dto);
         return ResponseEntity.ok().body(true);
     }

@@ -6,4 +6,9 @@ import lombok.Data;
 public class ReqModifyUserDto {
     private int userId;
     private int roleId;
+    private String email;
+    private String password;
+    private String passwordCheck;
+    private String phoneNumber;
+    private String profileImg;
 }

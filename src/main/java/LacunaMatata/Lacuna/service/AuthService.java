@@ -138,7 +138,7 @@ public class AuthService {
                 .password(dto.getPassword())
                 .name(dto.getName())
                 .build();
-        int userId = userMapper.saveUser(user);
+        userMapper.saveUser(user);
 
         int useConditionAgreement = 0;
         int marketingReceiveAgreement = 0;
@@ -161,7 +161,7 @@ public class AuthService {
         }
 
         UserOptionalInfo userOptionalInfo = UserOptionalInfo.builder()
-                .userId(userId)
+                .userId(user.getUserId())
                 .birthDate(dto.getBirthDate())
                 .gender(dto.getGender())
                 .phoneNumber(dto.getPhoneNumber())
@@ -173,7 +173,7 @@ public class AuthService {
         userMapper.saveUserOptionalInfo(userOptionalInfo);
 
         SocialLogin socialLogin = SocialLogin.builder()
-                .socialUserId(userId)
+                .socialUserId(user.getUserId())
                 .socialId(dto.getSocialId())
                 .provider(dto.getProvider())
                 .build();

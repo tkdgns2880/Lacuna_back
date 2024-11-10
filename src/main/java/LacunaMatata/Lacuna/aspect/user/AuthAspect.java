@@ -2,6 +2,7 @@ package LacunaMatata.Lacuna.aspect.user;
 
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSigninDto;
 import LacunaMatata.Lacuna.dto.request.user.auth.ReqGeneralSignupDto;
+import LacunaMatata.Lacuna.dto.request.user.auth.ReqOauthSignupDto;
 import LacunaMatata.Lacuna.service.AuthService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -75,6 +76,32 @@ public class AuthAspect {
                         if(authService.isDifferentPassword(dto)){
                             FieldError fieldError
                                     = new FieldError("password", "password", "비밀번호가 일치하지 않습니다.");
+                            bindingResult.addError(fieldError);
+                        }
+                        break;
+                    }
+                }
+                break;
+
+            case "oauthSignup":
+                for(Object arg : args) {
+                    // 나중에 username과 password 둘다 같은 메세지로 설정
+                    if(arg.getClass() == ReqOauthSignupDto.class) {
+                        ReqOauthSignupDto dto = (ReqOauthSignupDto) arg;
+                        if(!authService.isNonUserByUsername(dto.getUsername())) {
+                            FieldError fieldError
+                                    = new FieldError("username", "username", "존재하지 않는 계정입니다");
+                            bindingResult.addError(fieldError);
+                            break;
+                        }
+                        if(!authService.isDuplicateEmail(dto.getEmail())) {
+                            FieldError fieldError
+                                    = new FieldError("email", "email", "이미 존재하는 이메일 주소입니다.");
+                            bindingResult.addError(fieldError);
+                        }
+                        if(!dto.getPassword().equals(dto.getCheckPassword())) {
+                            FieldError fieldError
+                                    = new FieldError("checkPassword", "checkPassword", "비밀번호가 일치하지 않습니다.");
                             bindingResult.addError(fieldError);
                         }
                         break;
