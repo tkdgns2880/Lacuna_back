@@ -14,6 +14,7 @@ import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +36,14 @@ public class UserService {
 
     // 프로필 정보 (헤더부분) 출력
     public RespMyProfileHeaderDto getMyProfileHeader() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // authentication이 null이거나, principal이 PrincipalUser 인스턴스가 아닐 경우 비회원으로 간주하고 null 반환
+        if (authentication == null || !(authentication.getPrincipal() instanceof PrincipalUser)) {
+            return null;
+        }
         PrincipalUser principalUser
-                = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                = (PrincipalUser) authentication.getPrincipal();
         int userId = principalUser.getId();
 
         User user = userMapper.findUserByUserId(userId);

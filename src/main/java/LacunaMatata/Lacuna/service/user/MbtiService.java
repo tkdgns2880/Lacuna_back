@@ -10,6 +10,7 @@ import LacunaMatata.Lacuna.entity.mbti.MbtiSkinConcern;
 import LacunaMatata.Lacuna.repository.user.MbtiMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -44,16 +45,7 @@ public class MbtiService {
 
     // mbti 설문 답안 등록
     public int submitMbti(ReqMbtiAnswerDto dto, HttpServletRequest request) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        PrincipalUser principalUser = null;
-        System.out.println(principal.getClass().getName());
-
-        if(principal.getClass().getName() == "PrincipalUser") {
-            principalUser = (PrincipalUser) principal;
-        } else {
-            System.out.println("Principal User" + principal.getClass().getName());
-            System.out.println("Principal User" + principal);
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         int gender = dto.getGender();
         Date birthDate = dto.getBirth();
@@ -64,7 +56,8 @@ public class MbtiService {
 
         List<MbtiResponse> mbtiResponseList = new ArrayList<>();
 
-        if(principal == "UseranonymousUser") {
+        // authentication이 null이거나, principal이 PrincipalUser 인스턴스가 아닐 경우 비회원으로 간주하고 null 반환
+        if (authentication == null || !(authentication.getPrincipal() instanceof PrincipalUser)) {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
             System.out.println("Session ID" + sessionId);
@@ -91,6 +84,8 @@ public class MbtiService {
             mbtiMapper.saveNonUserMbtiSurvey(mbtiResponseList);
             return mbtiResultId;
         }
+
+        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         for(ReqMbtiSurveyDto surveyDto : dto.getMbtiResult()) {
             int mbtiCategoryId = surveyDto.getMbtiCategoryId();

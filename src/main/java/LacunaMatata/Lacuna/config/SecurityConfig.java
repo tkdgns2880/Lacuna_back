@@ -45,8 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(
-                        "/api/v1/mbti/survey/submit",
-                        "/api/v1/mbti/survey"
+                        "/api/v1/mbti/survey/**",
+                        "/api/v1/mbti/survey",
+                        "/api/v1/profile/header"
                 ).permitAll() // 이 요청에서만 세션 생성
                 .antMatchers(
                         "/test/**",
