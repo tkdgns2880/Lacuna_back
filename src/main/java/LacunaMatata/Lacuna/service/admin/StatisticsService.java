@@ -17,6 +17,47 @@ public class StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
 
+    // 첫 페이지 렌더링 초기 데이터
+    public RespInitAllDataDto getInitData() {
+        List<UserCount> userCountList = statisticsMapper.getInitData();
+
+        List<RespServiceCountDto> respServiceCountDtoList = new ArrayList<>();
+        int totalCount = 0;
+        for(UserCount userCount : userCountList) {
+            totalCount += userCount.getSumServiceCount();
+            RespServiceCountDto resp = RespServiceCountDto.builder()
+                    .serviceName(userCount.getServiceName())
+                    .serviceCount(userCount.getSumServiceCount())
+                    .build();
+            respServiceCountDtoList.add(resp);
+        }
+
+        RespTotalAndUseCountDto useCount = RespTotalAndUseCountDto.builder()
+                .totalCount(totalCount)
+                .serviceCount(respServiceCountDtoList)
+                .build();
+
+        RespUserStatisticCountDto respUserStatisticCountDto = null;
+        RespMbtiStatisticCountDto respMbtiStatisticCountDto = null;
+        List<RespUserProblemStatisticCount> respUserProblemStatisticCounts = null;
+
+        respUserStatisticCountDto = statisticsMapper.getInitUseCount();
+        respMbtiStatisticCountDto = statisticsMapper.mbtiInitStatistic();
+        respUserProblemStatisticCounts = statisticsMapper.problemInitStatistic();
+
+        RespAllCountDto allCount = RespAllCountDto.builder()
+                .respUserStatisticCountDto(respUserStatisticCountDto)
+                .respMbtiStatisticCountDto(respMbtiStatisticCountDto)
+                .respUserProblemStatisticCount(respUserProblemStatisticCounts)
+                .build();
+
+        RespInitAllDataDto initAllData = RespInitAllDataDto.builder()
+                .initAllStatisticData(useCount)
+                .initAllCount(allCount)
+                .build();
+        return initAllData;
+    }
+
     // 날짜에 따라 이용통계 데이터 주기
     public RespTotalAndUseCountDto getUseCount(ReqGetUseCountDto dto) {
         List<UserCount> userCountList = statisticsMapper.getUseCountByDate(dto);
