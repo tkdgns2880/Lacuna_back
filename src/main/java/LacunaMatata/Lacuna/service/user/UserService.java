@@ -246,8 +246,20 @@ public class UserService {
         return orderList;
     }
 
-    // 프로필 페이지 - 결제 취소 (시스템 결제)
-    public void cancelSystemPay() {
-        
+    // 프로필 페이지 - 결제 취소 공동
+    public int cancelSystemPay(int orderId) throws Exception {
+        PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principalUser == null) {
+            throw new Exception("권한이 없습니다");
+        }
+
+        userMapper.cancelSystemPay(orderId);
+        int paymentId = userMapper.findPaymentByOrderId(orderId);
+        return paymentId;
+    }
+
+    // 프로필 페이지 - 주문 취소 (계좌이체)
+    public void cancelMyOrder(int orderId) {
+
     }
 }

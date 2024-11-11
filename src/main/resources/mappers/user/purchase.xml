@@ -77,6 +77,18 @@
             #{priceAtPurchase}
         )
     </insert>
+    <insert id="savePayment" useGeneratedKeys="true" keyProperty="paymentId">
+        insert into tb_payment
+        values(
+            default,
+            #{paymentOrderId},
+            #{paymentApproveId},
+            #{paymentMethod},
+            #{amount},
+            #{paymentStatus},
+            now()
+        )
+    </insert>
 
     <select id="getConsultingProductList" resultMap="productUpperResultMap">
         select
