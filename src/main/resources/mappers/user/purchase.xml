@@ -192,7 +192,7 @@
                 from tb_user_role_met urm
                 where urm.role_user_id = #{userId}
                 order by role_id desc
-                limit 1)) as roleName,
+                limit 1)) as roleName
         from
             tb_user
         where

@@ -140,7 +140,7 @@
                 where o.order_user_id = urm.role_user_id
                 order by urm.role_id desc
                 limit 1)) as roleName,
-            (select payment_id
+            (select p.payment_id
             from tb_payment p
             where p.payment_order_id = o.order_id) as paymentId
         from
