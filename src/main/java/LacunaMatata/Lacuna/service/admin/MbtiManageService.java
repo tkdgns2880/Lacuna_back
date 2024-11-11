@@ -520,7 +520,7 @@ public class MbtiManageService {
         File file = new File(filePath + dirName + imgName);
         img.transferTo(file);
 
-        return filePath + dirName + imgName;
+        return dirName + imgName;
     }
 
     public void deleteImgUrl(String imgUrl) {
