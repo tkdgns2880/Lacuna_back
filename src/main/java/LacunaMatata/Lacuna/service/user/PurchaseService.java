@@ -68,7 +68,7 @@ public class PurchaseService {
         return consultingProduct;
     }
 
-    // 회원 컨설팅 상품 구매하기 누르기
+    // 회원 컨설팅 상품 구매하기 누르기 - 시스템 결제 계좌이체 동일
     public void orderConsultingProduct(ReqOrderConsultingProductDto dto) {
         PrincipalUser principalUser =
                 (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -97,11 +97,6 @@ public class PurchaseService {
 
         LocalDateTime now = LocalDateTime.now();
         String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-
-        //
-        if(dto.getPaymentMethod() == "계좌이체") {
-
-        }
 
         Payment payment = Payment.builder()
                 .paymentOrderId(order.getOrderId())
