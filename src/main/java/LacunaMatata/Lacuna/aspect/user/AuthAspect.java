@@ -111,7 +111,7 @@ public class AuthAspect {
         }
 
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors());
+            throw new Exception("유효성 검사 오류");
         }
 
         return proceedingJoinPoint.proceed();
