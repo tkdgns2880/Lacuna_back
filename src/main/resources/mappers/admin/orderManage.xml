@@ -235,4 +235,14 @@
             left tb_payment pay on o.order_id = pay.payment_order_id
             left tb_product p on oi.order_product_id = p.product_id
     </select>
+    <select id="getPaymentAmount" resultMap="paymentResultMap">
+        select
+            payment_id,
+            payment_order_id,
+            amount
+        from
+            tb_payment
+        where
+            payment_order_id = #{orderId}
+    </select>
 </mapper>

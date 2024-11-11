@@ -43,5 +43,7 @@ public interface OrderManageMapper {
     RespGetOrderDetailDto findOrderById(int orderId);
     // 주문 관리 모달창 데이터
     Order getOrder (int orderId);
+    // 지불 금액 가져오기
+    Payment getPaymentAmount(int orderId);
 
 }

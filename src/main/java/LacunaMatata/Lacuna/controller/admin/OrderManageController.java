@@ -89,7 +89,7 @@ public class OrderManageController {
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
     @PostMapping("/management/transfer/approve")
     @ApiOperation(value = "approveAccountPaymentApi") // test 완료
-    public ResponseEntity<?> approveAccountPayment(@RequestBody ReqApprovePaymentAccountDto dto) {
+    public ResponseEntity<?> approveAccountPayment(@RequestBody ReqApprovePaymentAccountDto dto) throws Exception {
         orderManageService.approveAccountOrder(dto);
         return ResponseEntity.ok().body(true);
     }

@@ -118,10 +118,16 @@ public class OrderManageService {
 //    }
 
     // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
-    public void approveAccountOrder(ReqApprovePaymentAccountDto dto) {
+    public void approveAccountOrder(ReqApprovePaymentAccountDto dto) throws Exception {
         int orderId = dto.getOrderId();
+        BigDecimal amount = dto.getAmount();
 //        LocalDateTime now = LocalDateTime.now();
 //        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Payment payment = orderManageMapper.getPaymentAmount(orderId);
+
+        if(!payment.getAmount().equals(amount)) {
+            throw new Exception("결제 금액이 맞지 않습니다.");
+        }
 
         orderManageMapper.approveAccountPayment(orderId);
         orderManageMapper.approveAccountOrder(orderId);
