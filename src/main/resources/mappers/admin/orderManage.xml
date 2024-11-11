@@ -16,6 +16,8 @@
         <result property="paymentMethod" column="paymentMethod" />
         <result property="productName" column="productName" />
         <association property="orderItemList" resultMap="orderItemResultMap" />
+        <collection property="orderItem" javaType="java.util.ArrayList" resultMap="orderItemResultMap" />
+
     </resultMap>
     <resultMap id="orderItemResultMap" type="LacunaMatata.Lacuna.entity.order.OrderItem">
         <id property="orderItemId" column="order_item_id" />
@@ -166,6 +168,10 @@
                     and u.name like concat('%', trim(ifnull(#{searchValue}, '')), '%')
                 </if>
             </if>
+        group by
+            o.order_id
+        limit
+            #{startIndex}, #{limit}
     </select>
     <select id="getOrderStatusFilter" resultMap="orderResultMap">
         select
@@ -173,6 +179,8 @@
             status
         from
             tb_order
+        group by
+            status
     </select>
 
     <select id="findOrderById" resultMap="orderResultMap2">

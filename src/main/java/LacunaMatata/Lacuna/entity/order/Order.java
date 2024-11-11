@@ -32,5 +32,5 @@ public class Order {
     private OrderItem orderItemList;
     private String productUpperCategoryName;
 
-
+    private List<OrderItem> orderItem;
 }
