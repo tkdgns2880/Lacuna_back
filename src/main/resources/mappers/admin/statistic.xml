@@ -22,44 +22,10 @@
         group by
             service_name;
     </select>
-    <select id="getInitUseCount" resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespUserStatisticCountDto">
-        select
-            count(*) as userCount,
-            sum(if(gender = 1, 1, 0)) as manCount,
-            sum(if(gender = 2, 1, 0)) as womanCount,
-            sum(if(year(birth) between year(date_add(now(), interval -18 year)) and year(date_add(now(), interval -9 year)), 1, 0)) as teenager,
-            sum(if(year(birth) between year(date_add(now(), interval -28 year)) and year(date_add(now(), interval -19 year)), 1, 0)) as twenties,
-            sum(if(year(birth) between year(date_add(now(), interval -38 year)) and year(date_add(now(), interval -29 year)), 1, 0)) as thirties,
-            sum(if(year(birth) between year(date_add(now(), interval -48 year)) and year(date_add(now(), interval -39 year)), 1, 0)) as forties,
-            sum(if(year(birth) between year(date_add(now(), interval -58 year)) and year(date_add(now(), interval -49 year)), 1, 0)) as fifties,
-            sum(if(year(birth) between year(date_add(now(), interval -8 year)) and year(date_add(now(), interval -0 year)), 1,
-            if(year(birth) between year(date_add(now(), interval -200 year)) and year(date_add(now(), interval -59 year)), 1, 0))) as andOther
-        from
-            tb_mbti_response
-    </select>
-    <select id="mbtiInitStatistic" resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticCountDto">
-        select
-            sum(if(mbti_result_id = 1, 1, 0)) as DRNT,
-            sum(if(mbti_result_id = 2, 1, 0)) as DRNW,
-            sum(if(mbti_result_id = 3, 1, 0)) as DRPT,
-            sum(if(mbti_result_id = 4, 1, 0)) as DRPW,
-            sum(if(mbti_result_id = 5, 1, 0)) as DSNT,
-            sum(if(mbti_result_id = 6, 1, 0)) as DSNW,
-            sum(if(mbti_result_id = 7, 1, 0)) as DSPT,
-            sum(if(mbti_result_id = 8, 1, 0)) as DSPW,
-            sum(if(mbti_result_id = 9, 1, 0)) as ORNT,
-            sum(if(mbti_result_id = 10, 1, 0)) as ORNW,
-            sum(if(mbti_result_id = 11, 1, 0)) as ORPT,
-            sum(if(mbti_result_id = 12, 1, 0)) as ORPW,
-            sum(if(mbti_result_id = 13, 1, 0)) as OSNT,
-            sum(if(mbti_result_id = 14, 1, 0)) as OSNW,
-            sum(if(mbti_result_id = 15, 1, 0)) as OSPT,
-            sum(if(mbti_result_id = 16, 1, 0)) as OSPW
-        from
-            tb_mbti_response
-    </select>
+
+
     <select id="problemInitStatistic"
-            resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespUserProblemStatisticCount">
+            resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticRankDto">
         select
             row_number() over(partition by skinProblemType order by skinProblemCount desc, mbtiSkinConcernId) as rankNumber,
             skinProblemType,
@@ -107,49 +73,88 @@
             service_name;
     </select>
 
-    <select id="userStatistic" resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespUserStatisticCountDto">
+    <select id="getStatisticCountByStartDateAndEndDate" resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticCountDto">
+        with mbti_response_group as (
+            select
+                *
+            from
+                tb_mbti_response
+            where
+                date(create_date) between #{startDate} and #{endDate}
+            group by
+                mbti_response_user_id,
+                session_id,
+                create_date
+        )
+
         select
-            count(*) as userCount,
-            sum(if(gender = 1, 1, 0)) as manCount,
-            sum(if(gender = 2, 1, 0)) as womanCount,
-            sum(if(year(birth) between year(date_add(now(), interval -18 year)) and year(date_add(now(), interval -9 year)), 1, 0)) as teenager,
-            sum(if(year(birth) between year(date_add(now(), interval -28 year)) and year(date_add(now(), interval -19 year)), 1, 0)) as twenties,
-            sum(if(year(birth) between year(date_add(now(), interval -38 year)) and year(date_add(now(), interval -29 year)), 1, 0)) as thirties,
-            sum(if(year(birth) between year(date_add(now(), interval -48 year)) and year(date_add(now(), interval -39 year)), 1, 0)) as forties,
-            sum(if(year(birth) between year(date_add(now(), interval -58 year)) and year(date_add(now(), interval -49 year)), 1, 0)) as fifties,
-            sum(if(year(birth) between year(date_add(now(), interval -8 year)) and year(date_add(now(), interval -0 year)), 1,
-            if(year(birth) between year(date_add(now(), interval -200 year)) and year(date_add(now(), interval -59 year)), 1, 0))) as andOther
+            'totalCount' as count_type,
+            'TOTAL' as count_code,
+            count(*) as count
         from
-            tb_mbti_response
-        where
-            create_date between #{startDate} and #{endDate}
-    </select>
-    <select id="mbtiStatistic"
-            resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticCountDto">
+            mbti_response_group
+
+        union all
+
         select
-            sum(if(mbti_result_id = 1, 1, 0)) as DRNT,
-            sum(if(mbti_result_id = 2, 1, 0)) as DRNW,
-            sum(if(mbti_result_id = 3, 1, 0)) as DRPT,
-            sum(if(mbti_result_id = 4, 1, 0)) as DRPW,
-            sum(if(mbti_result_id = 5, 1, 0)) as DSNT,
-            sum(if(mbti_result_id = 6, 1, 0)) as DSNW,
-            sum(if(mbti_result_id = 7, 1, 0)) as DSPT,
-            sum(if(mbti_result_id = 8, 1, 0)) as DSPW,
-            sum(if(mbti_result_id = 9, 1, 0)) as ORNT,
-            sum(if(mbti_result_id = 10, 1, 0)) as ORNW,
-            sum(if(mbti_result_id = 11, 1, 0)) as ORPT,
-            sum(if(mbti_result_id = 12, 1, 0)) as ORPW,
-            sum(if(mbti_result_id = 13, 1, 0)) as OSNT,
-            sum(if(mbti_result_id = 14, 1, 0)) as OSNW,
-            sum(if(mbti_result_id = 15, 1, 0)) as OSPT,
-            sum(if(mbti_result_id = 16, 1, 0)) as OSPW
+            'genderCount' as count_type,
+            gender_codes.gender_code,
+            count(mresp.gender) as count
         from
-            tb_mbti_response
-        where
-            create_date between #{startDate} and #{endDate}
+            (select '1' as gender_code union select '2') as gender_codes
+            left outer join mbti_response_group mresp on(mresp.gender = gender_codes.gender_code)
+        group by
+            gender_codes.gender_code
+
+        union all
+
+        select
+            'ageCount' as count_type,
+            age_codes.age_code,
+            ifnull(age_counts.count, 0)
+        from
+            (select '10' as age_code union select '20' union select '30' union select '40' union select '50' union select 'etc') as age_codes
+            left outer join (
+                select
+                    case
+                        when year(birth) between year(date_add(now(), interval -18 year)) and year(date_add(now(), interval -9 year)) then '10'
+                        when year(birth) between year(date_add(now(), interval -28 year)) and year(date_add(now(), interval -19 year)) then '20'
+                        when year(birth) between year(date_add(now(), interval -38 year)) and year(date_add(now(), interval -29 year)) then '30'
+                        when year(birth) between year(date_add(now(), interval -48 year)) and year(date_add(now(), interval -39 year)) then '40'
+                        when year(birth) between year(date_add(now(), interval -58 year)) and year(date_add(now(), interval -49 year)) then '50'
+                        else 'etc'
+                    end as age_code,
+                    count(gender) as count
+                from
+                    mbti_response_group
+                group by
+                    case
+                        when year(birth) between year(date_add(now(), interval -18 year)) and year(date_add(now(), interval -9 year)) then '10'
+                        when year(birth) between year(date_add(now(), interval -28 year)) and year(date_add(now(), interval -19 year)) then '20'
+                        when year(birth) between year(date_add(now(), interval -38 year)) and year(date_add(now(), interval -29 year)) then '30'
+                        when year(birth) between year(date_add(now(), interval -48 year)) and year(date_add(now(), interval -39 year)) then '40'
+                        when year(birth) between year(date_add(now(), interval -58 year)) and year(date_add(now(), interval -49 year)) then '50'
+                        else '기타'
+                    end
+            ) as age_counts on(age_counts.age_code = age_codes.age_code)
+
+        union all
+
+        select
+            'mbtiCount' as count_type,
+            mrst.mbti_result_category_name,
+            count(mresp.mbti_result_id) as mbti_result_count
+        from
+            tb_mbti_result mrst
+            left outer join mbti_response_group mresp on(mresp.mbti_result_id = mrst.mbti_result_id)
+        group by
+            mrst.mbti_result_category_name
+        order by
+            count_type,
+            count_code
     </select>
     <select id="problemStatistic"
-            resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespUserProblemStatisticCount">
+            resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticRankDto">
         select
             row_number() over(partition by skinProblemType order by skinProblemCount desc, mbtiSkinConcernId) as rankNumber,
             skinProblemType,

@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 public class RespInitAllDataDto {
     RespTotalAndUseCountDto initAllStatisticData;
-    RespAllCountDto initAllCount;
+    RespMbtiStatisticCountAndRankDto initAllCount;
 }

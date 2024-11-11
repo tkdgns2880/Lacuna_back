@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class RespUserProblemStatisticCount {
+public class RespMbtiStatisticRankDto {
     private Integer rankNumber;
     private Integer skinProblemType;
     private Integer mbtiSkinConcernId;
