@@ -34,6 +34,7 @@
         <result property="name" column="name" />
         <result property="createdDate" column="created_date" />
         <result property="paymentMethod" column="paymentMethod" />
+        <result property="paymentId" column="paymentId" />
         <collection property="orderDetailItem" javaType="java.util.ArrayList" resultMap="orderItemResultMap2" />
     </resultMap>
     <resultMap id="orderItemResultMap2" type="LacunaMatata.Lacuna.dto.response.admin.order.RespGetOrderItemDetailDto">
@@ -196,7 +197,10 @@
             oi.price_at_purchase,
             (select product_name
             from tb_product p
-            where p.product_id = oi.order_product_id) as productName
+            where p.product_id = oi.order_product_id) as productName,
+            (select p.payment_id
+            from tb_payment p
+            where p.payment_order_id = o.order_id) as paymentId
         from
             tb_order o
             left outer join tb_order_item oi on oi.order_id = o.order_id

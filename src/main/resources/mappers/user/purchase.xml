@@ -185,7 +185,7 @@
             from tb_user_role_met urm
             where urm.role_user_id = #{userId}
             order by role_id desc
-            limit 1)) as maxRoleId,
+            limit 1) as maxRoleId,
             (select role_name
             from tb_user_role ur
             where ur.role_id = (select urm.role_id

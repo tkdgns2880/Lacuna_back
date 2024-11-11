@@ -16,6 +16,7 @@ import java.util.Set;
 @Data
 public class RespGetOrderDetailDto {
     private int orderId;
+    private int paymentId;
     private String name;
     private BigDecimal totalAmount;
     private String paymentMethod;
