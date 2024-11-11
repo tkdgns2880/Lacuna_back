@@ -82,7 +82,7 @@ public class PurchaseService {
         Order order = Order.builder()
                 .orderUserId(userId)
                 .totalAmount(price)
-                .status("pending")
+                .status(dto.getPaymentStatus())
                 .build();
 
         purchaseMapper.saveOrder(order);
