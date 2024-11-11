@@ -484,6 +484,8 @@ public class MbtiManageService {
             finalImgPath = registerImgUrl(insertImgs.get(0), "mbti/mbtiResult/");
         }
 
+        
+
         MbtiResult mbtiResult = MbtiResult.builder()
                 .mbtiResultId(dto.getMbtiResultId())
                 .mbtiResultRegisterId(registerId)
@@ -491,6 +493,7 @@ public class MbtiManageService {
                 .mbtiResultTitle(dto.getMbtiResultTitle())
                 .mbtiResultSummary(dto.getMbtiResultSummary())
                 .mbtiResultContent(dto.getMbtiResultContent())
+                .mbtiResultStatus(dto.getMbtiResultStatus())
                 .mbtiResultImg(finalImgPath)
                 .build();
 

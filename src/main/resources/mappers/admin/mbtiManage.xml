@@ -154,6 +154,7 @@
             mbti_result_img = #{mbtiResultImg},
             mbti_result_summary = #{mbtiResultSummary},
             mbti_result_content = #{mbtiResultContent},
+            mbti_result_status = #{mbtiResultStatus},
             update_date = now()
         where
             mbti_result_id = #{mbtiResultId}
