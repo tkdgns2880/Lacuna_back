@@ -118,6 +118,7 @@ public class OrderManageService {
 //    }
 
     // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
+    @Transactional(rollbackFor = Exception.class)
     public void approveAccountOrder(ReqApprovePaymentAccountDto dto) throws Exception {
         int orderId = dto.getOrderId();
         BigDecimal amount = dto.getAmount();
