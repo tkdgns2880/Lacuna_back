@@ -190,7 +190,11 @@
                 and 1 = 1
             </if>
             <if test="filter != null and filter != ''">
-                and ur.role_id = #{filter}
+                and (select urm.role_id
+                from tb_user_role_met urm
+                where urm.role_user_id = u.user_id
+                order by urm.role_id desc
+                limit 1) = #{filter}
             </if>
             <if test="option == 0">
                 <if test="searchValue != null and searchValue != ''">
