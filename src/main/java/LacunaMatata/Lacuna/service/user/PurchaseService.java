@@ -98,6 +98,11 @@ public class PurchaseService {
         LocalDateTime now = LocalDateTime.now();
         String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
+        //
+        if(dto.getPaymentMethod() == "계좌이체") {
+
+        }
+
         Payment payment = Payment.builder()
                 .paymentOrderId(order.getOrderId())
                 .paymentApproveId(paymentApproveId)
@@ -105,6 +110,8 @@ public class PurchaseService {
                 .paymentStatus(dto.getPaymentStatus())
                 .amount(price)
                 .build();
+
+        // 결제 등급 수정
 
         String toEmail = dto.getEmail();
 
@@ -122,7 +129,4 @@ public class PurchaseService {
 
         authService.send(toEmail, "Lacuna 컨설팅 주문 정보 이메일 발송 ", htmlContent.toString());
     }
-
-    // 결제하기 - 카카오페이 (아직 안배움) - 결제 후 등급 수정
-
 }

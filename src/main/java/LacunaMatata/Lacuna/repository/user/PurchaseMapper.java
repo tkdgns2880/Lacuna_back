@@ -23,6 +23,8 @@ public interface PurchaseMapper {
     int saveOrderItem(OrderItem orderItem);
     // 3-3. 컨설팅 상품 지불 데이터 추가
     int savePayment(Payment payment);
+    // 4. 컨설팅 상품 구매 (계좌 이체)_2024.11.11
+    int savePaymentAccount();
 
     /** 공통으로 사용할 Mapper */
     // 1. 상품 ID로 상품 찾기

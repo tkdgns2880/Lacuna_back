@@ -44,6 +44,4 @@ public class PurchaseController {
         return ResponseEntity.ok().body(true);
     }
 
-    // 회원 계좌이체하기 버튼 누르기 - 주문 항목 생성 (계좌이체)
-
 }
