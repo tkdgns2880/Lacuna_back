@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StatisticsService {
@@ -20,7 +21,14 @@ public class StatisticsService {
 
     // 날짜에 따라 이용통계 데이터 주기
     public RespTotalAndUseCountDto getUseCount(ReqGetUseCountDto dto) {
-        List<UserCount> userCountList = statisticsMapper.getUseCountByDate(dto);
+        String startDate = dto.getStartDate() == null || dto.getStartDate() == "" ? "1900-01-01" : dto.getStartDate();
+        String endDate = dto.getEndDate() == null || dto.getEndDate() == "" ? "2100-12-12" : dto.getStartDate();
+        Map<String, Object> params = Map.of(
+            "startDate", startDate,
+            "endDate", endDate
+        );
+
+        List<UserCount> userCountList = statisticsMapper.getUseCountByDate(params);
 
         List<RespServiceCountDto> respServiceCountDtoList = new ArrayList<>();
         int totalCount = 0;

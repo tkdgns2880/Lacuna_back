@@ -151,6 +151,10 @@ public class UserManageService {
         int originalRoleId = user.getRoleId();
         int modifyRoleId = dto.getRoleId();
 
+        if(originalRoleId == modifyRoleId) {
+            return;
+        }
+
         if(originalRoleId > modifyRoleId) {
             List<Integer> roleIdList = new ArrayList<>();
             for(int i = originalRoleId; i > modifyRoleId; i--) {
@@ -175,10 +179,6 @@ public class UserManageService {
                     "roleIdList", roleIdList
             );
             userManageMapper.saveUserRoleMet(params);
-        }
-
-        if(originalRoleId == modifyRoleId) {
-            return;
         }
 
         List<Integer> roleIdList = new ArrayList<>();

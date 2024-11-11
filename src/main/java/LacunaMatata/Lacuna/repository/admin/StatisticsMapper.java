@@ -8,6 +8,7 @@ import LacunaMatata.Lacuna.entity.user.UserCount;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface StatisticsMapper {
@@ -21,7 +22,7 @@ public interface StatisticsMapper {
     // 1-4. 처음 초기 데이터 불러오기(MBTI 정보1)
     List<RespMbtiStatisticRankDto> problemInitStatistic();
     // 2. 날짜에 따른 이용통계 정보
-    List<UserCount> getUseCountByDate(ReqGetUseCountDto dto);
+    List<UserCount> getUseCountByDate(Map<String, Object> params);
     // 3-1. 날짜에 따른 MBTI 정보 관련 ???
     List<RespMbtiStatisticCountDto> getStatisticCountByStartDateAndEndDate(ReqGetStatisticCountsDto dto);
     // 3-2. 날짜에 따른 MBTI 정보 관련 ???

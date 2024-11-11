@@ -11,6 +11,7 @@ import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.OrderItem;
 import LacunaMatata.Lacuna.entity.order.Payment;
 import LacunaMatata.Lacuna.entity.product.Product;
+import LacunaMatata.Lacuna.entity.user.User;
 import LacunaMatata.Lacuna.repository.user.PurchaseMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import LacunaMatata.Lacuna.service.AuthService;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -69,6 +71,7 @@ public class PurchaseService {
     }
 
     // 회원 컨설팅 상품 구매하기 누르기 - 시스템 결제 계좌이체 동일
+    @Transactional(rollbackFor = Exception.class)
     public void orderConsultingProduct(ReqOrderConsultingProductDto dto) {
         PrincipalUser principalUser =
                 (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -105,8 +108,33 @@ public class PurchaseService {
                 .paymentStatus(dto.getPaymentStatus())
                 .amount(price)
                 .build();
+        purchaseMapper.savePayment(payment);
 
         // 결제 등급 수정
+        User user = purchaseMapper.findUserByUserId(userId);
+
+        if(user.getMaxRoleId() < 4) {
+            List<Integer> roleIdList = new ArrayList<>();
+            if(user.getMaxRoleId() == 2) {
+                for(int i = 3; i < 5; i++) {
+                    roleIdList.add(i);
+                }
+                Map<String, Object> params = Map.of(
+                        "userId", userId,
+                        "roleIdList", roleIdList
+                );
+                purchaseMapper.saveUserRoleMet(params);
+                purchaseMapper.modifyUserRoleMet(params);
+            } else {
+                roleIdList.add(4);
+                Map<String, Object> params = Map.of(
+                        "userId", userId,
+                        "roleIdList", roleIdList
+                );
+                purchaseMapper.saveUserRoleMet(params);
+                purchaseMapper.modifyUserRoleMet(params);
+            }
+        }
 
         String toEmail = dto.getEmail();
 

@@ -6,6 +6,7 @@ import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.OrderItem;
 import LacunaMatata.Lacuna.entity.order.Payment;
 import LacunaMatata.Lacuna.entity.product.Product;
+import LacunaMatata.Lacuna.entity.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Map;
@@ -29,4 +30,10 @@ public interface PurchaseMapper {
     /** 공통으로 사용할 Mapper */
     // 1. 상품 ID로 상품 찾기
     Product findProductByProductId(int productId);
+    // 2-1. 권한 수정용_user 권한 정보 찾기
+    User findUserByUserId(int userId);
+    // 2-2. 권한 증가
+    int saveUserRoleMet(Map<String, Object> params);
+    // 2-3. 권한 수정
+    int modifyUserRoleMet(Map<String, Object> params);
 }

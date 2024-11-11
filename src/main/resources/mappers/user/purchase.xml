@@ -56,6 +56,11 @@
         <result property="createDate" column="create_date" />
         <result property="updateDate" column="update_date" />
     </resultMap>
+    <resultMap id="userResultMap" type="LacunaMatata.Lacuna.entity.user.User">
+        <id property="userId" column="user_id" />
+        <result property="maxRoleId" column="maxRoleId" />
+        <result property="roleName" column="roleName" />
+    </resultMap>
 
     <insert id="saveOrder" useGeneratedKeys="true" keyProperty="orderId">
         insert into tb_order
@@ -89,6 +94,25 @@
             now()
         )
     </insert>
+    <insert id="saveUserRoleMet" useGeneratedKeys="true" keyProperty="userRoleMetId">
+        insert into tb_user_role_met
+        values
+        <foreach item="roleId" collection="roleIdList" separator=",">
+            ( default, #{userId}, #{roleId}, now(), now())
+        </foreach>
+    </insert>
+
+    <update id="modifyUserRoleMet">
+        update tb_user_role_met
+        set
+            update_date = now()
+        where
+            role_user_id = #{userId} and
+            role_id not in
+            <foreach item="roleId" collection="roleIdList" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+    </update>
 
     <select id="getConsultingProductList" resultMap="productUpperResultMap">
         select
@@ -153,5 +177,25 @@
             tb_product
         where
             product_id = #{productId}
+    </select>
+    <select id="findUserByUserId" resultMap="userResultMap">
+        select
+            user_id,
+            (select urm.role_id
+            from tb_user_role_met urm
+            where urm.role_user_id = #{userId}
+            order by role_id desc
+            limit 1)) as maxRoleId,
+            (select role_name
+            from tb_user_role ur
+            where ur.role_id = (select urm.role_id
+                from tb_user_role_met urm
+                where urm.role_user_id = #{userId}
+                order by role_id desc
+                limit 1)) as roleName,
+        from
+            tb_user
+        where
+            user_id = #{userId}
     </select>
 </mapper>

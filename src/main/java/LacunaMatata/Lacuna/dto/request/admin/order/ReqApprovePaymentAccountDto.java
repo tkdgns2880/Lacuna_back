@@ -7,5 +7,4 @@ import java.math.BigDecimal;
 @Data
 public class ReqApprovePaymentAccountDto {
     private int orderId;
-    private BigDecimal amount;
 }

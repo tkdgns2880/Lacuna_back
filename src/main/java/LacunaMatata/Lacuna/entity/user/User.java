@@ -37,6 +37,7 @@ public class User {
     private int totalCount;
     private String inactive;
     private String loginIp;
+    private int maxRoleId;
 
     // 매핑 목적
     private Set<UserRoleMet> userRoleMets;

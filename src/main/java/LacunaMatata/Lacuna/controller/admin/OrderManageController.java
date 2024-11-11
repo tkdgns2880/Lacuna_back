@@ -61,7 +61,7 @@ public class OrderManageController {
         return ResponseEntity.ok().body(paymentDetail);
     }
 
-    // 회원 결제 취소하기(결제 시스템)
+    // 회원 결제 취소하기(결제 시스템) - 계좌, 시스템 공통
     @PutMapping("/payment/cancel/{paymentId}")
     @ApiOperation(value = "cancelSystemPaymentApi") // test 완료
     public ResponseEntity<?> cancelSystemPayment(@PathVariable int paymentId) {
@@ -78,13 +78,13 @@ public class OrderManageController {
 //        return ResponseEntity.ok().body(null);
 //    }
 
-    // 주문 수정 - 회원 결제 취소하기(계좌 이체)
-    @PostMapping("/management/transfer/cancel")
-    @ApiOperation(value = "cancelAccountPaymentApi") // test 완료
-    public ResponseEntity<?> cancelAccountPayment(@RequestBody ReqCancelOrderAccountDto dto) {
-        orderManageService.cancelAccountOrder(dto);
-        return ResponseEntity.ok().body(true);
-    }
+//    // 주문 수정 - 회원 결제 취소하기(계좌 이체)
+//    @PostMapping("/management/transfer/cancel")
+//    @ApiOperation(value = "cancelAccountPaymentApi") // test 완료
+//    public ResponseEntity<?> cancelAccountPayment(@RequestBody ReqCancelOrderAccountDto dto) {
+//        orderManageService.cancelAccountOrder(dto);
+//        return ResponseEntity.ok().body(true);
+//    }
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
     @PostMapping("/management/transfer/approve")

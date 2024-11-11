@@ -260,6 +260,6 @@ public class UserService {
 
     // 프로필 페이지 - 주문 취소 (계좌이체)
     public void cancelMyOrder(int orderId) {
-
+        userMapper.cancelMyOrder(orderId);
     }
 }

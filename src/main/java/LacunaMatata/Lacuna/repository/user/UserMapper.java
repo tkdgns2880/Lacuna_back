@@ -51,7 +51,7 @@ public interface UserMapper {
     List<Order> getMyOrderInfo(Map<String, Object> params);
     // 11. 마이페이지 - 결제 취소 공동
     int cancelSystemPay(int orderId);
-    // 12. 마이페이지 - 주문 취소
+    // 12. 마이페이지 - 주문 취소 (계좌이체)
     int cancelMyOrder(int orderId);
 
     /** 공통으로 사용할 userMapper */

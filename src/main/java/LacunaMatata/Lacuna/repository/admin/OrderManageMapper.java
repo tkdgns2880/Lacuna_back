@@ -27,8 +27,10 @@ public interface OrderManageMapper {
     int cancelAccountPayment(Map<String, Object> params);
     // 5-2. 회원 주문 취소(계좌이체)_2024.11.01 - put
     int cancelAccountOrder(int orderId);
-    // 6-1. 회원 결제 승인(계좌이체)_2024.11.01
-    int approveAccountPayment(Map<String, Object> params);
+    // 6-1. 회원 결제 승인(계좌이체)_2024.11.01 // 없앰
+//    int approveAccountPayment(Map<String, Object> params);
+    // 6-1. 회원 결제 승인 (계좌이체)_2024.11.11
+    int approveAccountPayment(int orderId);
     // 6-2. 회원 결제 승인 -> 주문 정보 수정(pending -> complete)_2024.11.01
     int approveAccountOrder(int orderId);
     // 7. 주문 항목 단일 삭제_2024.11.01

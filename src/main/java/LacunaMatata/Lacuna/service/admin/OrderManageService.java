@@ -95,40 +95,35 @@ public class OrderManageService {
         return respGetPaymentDetailDto;
     }
 
-    // 회원 결제 취소하기 (결제 취소하기)
+    // 회원 결제 취소하기 (결제 취소하기) - 계좌 시스템 공통
     @Transactional(rollbackFor = Exception.class)
     public void cancelSystemOrder(int paymentId) {
         orderManageMapper.cancelSystemPayment(paymentId);
-        orderManageMapper.cancelSystemOrder(paymentId);
+//        orderManageMapper.cancelSystemOrder(paymentId); // 빼기로함
     }
 
-    // 주문 수정 - 회원 결제 취소하기 (계좌 이체)
-    @Transactional(rollbackFor = Exception.class)
-    public void cancelAccountOrder(ReqCancelOrderAccountDto dto) {
-        int orderId = dto.getOrderId();
-        LocalDateTime now = LocalDateTime.now();
-        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Map<String, Object> params = Map.of(
-                "orderId", orderId,
-                "paymentApproveId", paymentApproveId
-        );
-        orderManageMapper.cancelAccountPayment(params);
-        orderManageMapper.cancelAccountOrder(orderId);
-    }
+//    // 주문 수정 - 회원 결제 취소하기 (계좌 이체)    // 시스템 결제와 동일
+//    @Transactional(rollbackFor = Exception.class)
+//    public void cancelAccountOrder(ReqCancelOrderAccountDto dto) {
+//        int orderId = dto.getOrderId();
+//        LocalDateTime now = LocalDateTime.now();
+//        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+//        Map<String, Object> params = Map.of(
+//                "orderId", orderId,
+//                "paymentApproveId", paymentApproveId
+//        );
+////        orderManageMapper.cancelAccountPayment(params); // 없애기로함
+////        orderManageMapper.cancelAccountOrder(orderId); // 없애기로함
+//        orderManageMapper.cancelSystemPayment(orderId);
+//    }
 
     // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
     public void approveAccountOrder(ReqApprovePaymentAccountDto dto) {
         int orderId = dto.getOrderId();
-        BigDecimal amount = dto.getAmount();
-        LocalDateTime now = LocalDateTime.now();
-        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+//        LocalDateTime now = LocalDateTime.now();
+//        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
-        Map<String, Object> params = Map.of(
-            "orderId", orderId,
-            "amount", amount,
-            "paymentApproveId", paymentApproveId
-        );
-        orderManageMapper.approveAccountPayment(params);
+        orderManageMapper.approveAccountPayment(orderId);
         orderManageMapper.approveAccountOrder(orderId);
     }
 
