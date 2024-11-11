@@ -37,10 +37,11 @@ public class PurchaseController {
         return ResponseEntity.ok().body(consultingProduct);
     }
 
-    // 회원 구매하기 버튼 누르기 - 주문 항목 생성
+    // 회원 구매하기 버튼 누르기 - 주문 항목 생성 (시스템 결제)
     @PostMapping("/user/product/order")
     public ResponseEntity<?> orderConsultingProduct(@RequestBody ReqOrderConsultingProductDto dto) {
         purchaseService.orderConsultingProduct(dto);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
+
 }

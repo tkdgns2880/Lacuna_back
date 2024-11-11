@@ -4,6 +4,7 @@ import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductDetail.Re
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductUpperCategoryDto;
 import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.OrderItem;
+import LacunaMatata.Lacuna.entity.order.Payment;
 import LacunaMatata.Lacuna.entity.product.Product;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,6 +21,11 @@ public interface PurchaseMapper {
     int saveOrder(Order order);
     // 3-2. 컨설팅 상품 주문하기(구매하기 버튼 클릭) - orderItem
     int saveOrderItem(OrderItem orderItem);
+    // 3-3. 컨설팅 상품 지불 데이터 추가
+    int savePayment(Payment payment);
+    // 4. 컨설팅 상품 구매 (계좌 이체)_2024.11.11
+    int savePaymentAccount();
+
     /** 공통으로 사용할 Mapper */
     // 1. 상품 ID로 상품 찾기
     Product findProductByProductId(int productId);

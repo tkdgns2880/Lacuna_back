@@ -9,6 +9,7 @@ import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.Resp
 import LacunaMatata.Lacuna.dto.response.user.purchase.consultingProductList.RespProductUpperCategoryDto;
 import LacunaMatata.Lacuna.entity.order.Order;
 import LacunaMatata.Lacuna.entity.order.OrderItem;
+import LacunaMatata.Lacuna.entity.order.Payment;
 import LacunaMatata.Lacuna.entity.product.Product;
 import LacunaMatata.Lacuna.repository.user.PurchaseMapper;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
@@ -20,6 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +68,7 @@ public class PurchaseService {
         return consultingProduct;
     }
 
-    // 회원 컨설팅 상품 구매하기 누르기
+    // 회원 컨설팅 상품 구매하기 누르기 - 시스템 결제 계좌이체 동일
     public void orderConsultingProduct(ReqOrderConsultingProductDto dto) {
         PrincipalUser principalUser =
                 (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -73,12 +76,13 @@ public class PurchaseService {
         int productId = dto.getProductId();
 
         Product product = purchaseMapper.findProductByProductId(productId);
-        BigDecimal price = product.getPrice();
+        BigDecimal itemPrice = product.getPrice();
+        BigDecimal price = itemPrice.multiply(BigDecimal.valueOf(dto.getAmount()));
 
         Order order = Order.builder()
                 .orderUserId(userId)
                 .totalAmount(price)
-                .status("pending")
+                .status(dto.getPaymentStatus())
                 .build();
 
         purchaseMapper.saveOrder(order);
@@ -86,24 +90,38 @@ public class PurchaseService {
         OrderItem orderItem = OrderItem.builder()
                 .orderId(order.getOrderId())
                 .orderProductId(productId)
-                .quantity(1)
+                .quantity(dto.getAmount())
                 .priceAtPurchase(price)
                 .build();
         purchaseMapper.saveOrderItem(orderItem);
 
-        // 결제정보 이메일로 발송 -> 카카오페이 배우고 하기
-//        String toEmail = dto.getEmail();
-//
-//        StringBuilder htmlContent = new StringBuilder();
-//        htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
-//                + "width:400px'>");
-//        htmlContent.append("<h2>Lacuna 회원님이 주문하신 상품의 정보 입니다.</h2>");
-//        htmlContent.append("<h3>주문 상품</h3>");
-//        htmlContent.append("</div>");
-//
-//        authService.send(toEmail, "Lacuna 컨설팅 주문 정보 이메일 발송 ", htmlContent.toString());
+        LocalDateTime now = LocalDateTime.now();
+        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        Payment payment = Payment.builder()
+                .paymentOrderId(order.getOrderId())
+                .paymentApproveId(paymentApproveId)
+                .paymentMethod(dto.getPaymentMethod())
+                .paymentStatus(dto.getPaymentStatus())
+                .amount(price)
+                .build();
+
+        // 결제 등급 수정
+
+        String toEmail = dto.getEmail();
+
+        if(toEmail == null) {
+            return;
+        }
+
+        // 이메일
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<div style='display:flex;justify-content:center;align-items:center;flex-direction:column;"
+                + "width:400px'>");
+        htmlContent.append("<h2>Lacuna 회원님이 주문하신 상품의 정보 입니다.</h2>");
+        htmlContent.append("<h3>주문 상품</h3>");
+        htmlContent.append("</div>");
+
+        authService.send(toEmail, "Lacuna 컨설팅 주문 정보 이메일 발송 ", htmlContent.toString());
     }
-
-    // 결제하기 - 카카오페이 (아직 안배움) - 결제 후 등급 수정
-
 }

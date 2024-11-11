@@ -18,10 +18,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /************************************
  * version: 1.0.5                   *
@@ -48,7 +45,6 @@ public class AuthService {
     // 일반 회원 가입
     @Transactional(rollbackFor = Exception.class)
     public void signup(ReqGeneralSignupDto dto) {
-        System.out.println(dto);
 
         User user = User.builder()
                 .username(dto.getUsername())
@@ -97,7 +93,6 @@ public class AuthService {
                 "userId", user.getUserId(),
                 "roleIdList", roleIdList
         );
-        System.out.println(params);
         userMapper.saveUserRoleMet(params);
     }
 

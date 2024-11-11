@@ -1,6 +1,7 @@
 package LacunaMatata.Lacuna.dto.request.user.auth;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 

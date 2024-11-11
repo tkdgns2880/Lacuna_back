@@ -49,6 +49,10 @@ public interface UserMapper {
     MbtiResult getMyMbtiResult(int usertId);
     // 10. 마이페이지 - 주문 정보
     List<Order> getMyOrderInfo(Map<String, Object> params);
+    // 11. 마이페이지 - 결제 취소 공동
+    int cancelSystemPay(int orderId);
+    // 12. 마이페이지 - 주문 취소
+    int cancelMyOrder(int orderId);
 
     /** 공통으로 사용할 userMapper */
     // 1. userId로 User 정보 찾기
@@ -65,4 +69,6 @@ public interface UserMapper {
     User findUserBySocialId(String socialId);
     // 7. 관리자 카카오 주소(문의용) 가져오기
     String getKakaoAddress();
+    // 8. 주문 번호로 지불 정보 찾기
+    int findPaymentByOrderId(int orderId);
 }
