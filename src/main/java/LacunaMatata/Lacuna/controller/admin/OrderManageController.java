@@ -87,15 +87,15 @@ public class OrderManageController {
 //    }
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
-    @PutMapping("/management/transfer/approve")
+    @PutMapping("/management/transfer/approve/{orderId}")
     @ApiOperation(value = "approveAccountPaymentApi") // test 완료
-    public ResponseEntity<?> approveAccountPayment(@RequestBody ReqApprovePaymentAccountDto dto) throws Exception {
-        orderManageService.approveAccountOrder(dto);
+    public ResponseEntity<?> approveAccountPayment(@PathVariable int orderId ,@RequestBody ReqApprovePaymentAccountDto dto) throws Exception {
+        orderManageService.approveAccountOrder(orderId, dto);
         return ResponseEntity.ok().body(true);
     }
 
     // 회원 주문 항목 삭제
-    @DeleteMapping("/order/delete/{orderId}")
+    @DeleteMapping("/delete/{orderId}")
     @ApiOperation(value = "deleteOrderApi") // test 완료
     public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
         orderManageService.deleteOrder(orderId);
@@ -103,7 +103,7 @@ public class OrderManageController {
     }
 
     // 회원 주문 항목 복수개 삭제
-    @DeleteMapping("/order/delete")
+    @DeleteMapping("/delete")
     @ApiOperation(value = "deleteOrderListApi") // test 완료
     public ResponseEntity<?> deleteOrderList(@RequestBody ReqDeleteOrderListDto dto) {
         orderManageService.deleteOrderList(dto);

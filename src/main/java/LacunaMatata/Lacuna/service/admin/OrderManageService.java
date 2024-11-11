@@ -119,8 +119,7 @@ public class OrderManageService {
 
     // 주문 수정 - 회원 결제 승인하기 (계좌 이체)
     @Transactional(rollbackFor = Exception.class)
-    public void approveAccountOrder(ReqApprovePaymentAccountDto dto) throws Exception {
-        int orderId = dto.getOrderId();
+    public void approveAccountOrder(int orderId ,ReqApprovePaymentAccountDto dto) throws Exception {
         BigDecimal amount = dto.getAmount();
 //        LocalDateTime now = LocalDateTime.now();
 //        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
