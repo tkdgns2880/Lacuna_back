@@ -99,7 +99,7 @@ public class OrderManageService {
     @Transactional(rollbackFor = Exception.class)
     public void cancelSystemOrder(int paymentId) {
         orderManageMapper.cancelSystemPayment(paymentId);
-//        orderManageMapper.cancelSystemOrder(paymentId); // 빼기로함
+        orderManageMapper.cancelSystemOrder(paymentId);
     }
 
 //    // 주문 수정 - 회원 결제 취소하기 (계좌 이체)    // 시스템 결제와 동일
