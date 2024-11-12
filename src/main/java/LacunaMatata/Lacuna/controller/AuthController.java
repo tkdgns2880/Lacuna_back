@@ -83,7 +83,7 @@ public class AuthController {
     // 회원가입시 이메일 인증(토큰 받는곳) 2
     @GetMapping("/email")
     @ApiOperation(value = "emailValidApi")
-    public void emailValid(@RequestParam String emailtoken, HttpServletResponse response) throws Exception {
+    public Boolean emailValid(@RequestParam String emailtoken, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=utf-8");
         String validResult = authService.validToken(emailtoken);
 
@@ -92,6 +92,7 @@ public class AuthController {
             throw new Exception("인증 시간 만료");
         }
         response.getWriter().println(successView());
+        return true;
     }
 
     private String successView() {

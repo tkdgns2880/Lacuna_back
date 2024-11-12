@@ -73,7 +73,7 @@ public class UserController {
     // 프로필페이지 - 내 이메일 주소 바꾸기2
     @PutMapping("/user/change/email")
     @ApiOperation(value = "changeMyEmailApi2")
-    public ResponseEntity<?> changeMyEmail2(@RequestBody ReqChangeMyEmailDto dto) {
+    public ResponseEntity<?> changeMyEmail2(ReqMyEmailTokenDto dto) {
         userService.changeMyEmail2(dto);
         return ResponseEntity.ok().body(true);
     }
