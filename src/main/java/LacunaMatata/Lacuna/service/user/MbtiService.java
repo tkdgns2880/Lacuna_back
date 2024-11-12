@@ -60,7 +60,6 @@ public class MbtiService {
         if (authentication == null || !(authentication.getPrincipal() instanceof PrincipalUser)) {
             HttpSession session = request.getSession();
             String sessionId = session.getId();
-            System.out.println("Session ID" + sessionId);
 
             for(ReqMbtiSurveyDto surveyDto : dto.getMbtiResult()) {
                 int mbtiCategoryId = surveyDto.getMbtiCategoryId();
