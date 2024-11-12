@@ -60,6 +60,7 @@
         <id property="userId" column="user_id" />
         <result property="maxRoleId" column="maxRoleId" />
         <result property="roleName" column="roleName" />
+        <result property="name" column="name" />
     </resultMap>
 
     <insert id="saveOrder" useGeneratedKeys="true" keyProperty="orderId">
@@ -74,13 +75,16 @@
     </insert>
     <insert id="saveOrderItem" useGeneratedKeys="true" keyProperty="orderItemId">
         insert into tb_order_item
-        values(
-            default,
-            #{orderId},
-            #{orderProductId},
-            #{quantity},
-            #{priceAtPurchase}
-        )
+        values
+        <foreach item="orderItem" collection="orderItemList" separator=",">
+            (
+                default,
+                #{orderItem.orderId},
+                #{orderItem.orderProductId},
+                #{orderItem.quantity},
+                #{orderItem.priceAtPurchase}
+            )
+        </foreach>
     </insert>
     <insert id="savePayment" useGeneratedKeys="true" keyProperty="paymentId">
         insert into tb_payment
@@ -176,7 +180,10 @@
         from
             tb_product
         where
-            product_id = #{productId}
+            product_id in
+            <foreach item="productId" collection="productIdList" open="(" separator="," close=")">
+                #{productId}
+            </foreach>
     </select>
     <select id="findUserByUserId" resultMap="userResultMap">
         select
@@ -186,13 +193,14 @@
             where urm.role_user_id = #{userId}
             order by role_id desc
             limit 1) as maxRoleId,
-            (select role_name
+            (select ur.role_name
             from tb_user_role ur
             where ur.role_id = (select urm.role_id
                 from tb_user_role_met urm
                 where urm.role_user_id = #{userId}
                 order by role_id desc
-                limit 1)) as roleName
+                limit 1)) as roleName,
+            name
         from
             tb_user
         where

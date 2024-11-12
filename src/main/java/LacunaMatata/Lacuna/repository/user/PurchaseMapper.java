@@ -9,6 +9,7 @@ import LacunaMatata.Lacuna.entity.product.Product;
 import LacunaMatata.Lacuna.entity.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -21,7 +22,7 @@ public interface PurchaseMapper {
     // 3-1. 컨설팅 상품 주문하기(구매하기 버튼 클릭) - order_2024.11.06
     int saveOrder(Order order);
     // 3-2. 컨설팅 상품 주문하기(구매하기 버튼 클릭) - orderItem
-    int saveOrderItem(OrderItem orderItem);
+    int saveOrderItem(List<OrderItem> orderItemList);
     // 3-3. 컨설팅 상품 지불 데이터 추가
     int savePayment(Payment payment);
     // 4. 컨설팅 상품 구매 (계좌 이체)_2024.11.11
@@ -29,7 +30,7 @@ public interface PurchaseMapper {
 
     /** 공통으로 사용할 Mapper */
     // 1. 상품 ID로 상품 찾기
-    Product findProductByProductId(int productId);
+    List<Product> findProductByProductId(List<Integer> productIdList);
     // 2-1. 권한 수정용_user 권한 정보 찾기
     User findUserByUserId(int userId);
     // 2-2. 권한 증가
