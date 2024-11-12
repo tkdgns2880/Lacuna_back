@@ -12,18 +12,6 @@
         <result property="sumServiceCount" column="sumServiceCount" />
     </resultMap>
 
-    <select id="getInitData" resultMap="userCountResultMap">
-        select
-            sum(service_count) as sumServiceCount,
-            service_name,
-            user_date
-        from
-            tb_user_count
-        group by
-            service_name;
-    </select>
-
-
     <select id="problemInitStatistic"
             resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticRankDto">
         select
@@ -155,41 +143,46 @@
     </select>
     <select id="problemStatistic"
             resultType="LacunaMatata.Lacuna.dto.response.admin.statistic.RespMbtiStatisticRankDto">
+        with mbti_response_group as (
+            select
+                skin_problem_one,
+                skin_problem_two
+            from
+                tb_mbti_response
+            where
+                date(create_date) between '2024-09-01' and '2024-11-11'
+            group by
+                mbti_response_user_id,
+                session_id,
+                create_date
+        )
+
         select
-            row_number() over(partition by skinProblemType order by skinProblemCount desc, mbtiSkinConcernId) as rankNumber,
-            skinProblemType,
-            mbtiSkinConcernId,
-            mbtiSkinConcernName,
-            skinProblemCount
+            *
         from
             (
             select
-                1 as skinProblemType,
-                mr.skin_problem_one as mbtiSkinConcernId,
-                msc.mbti_skin_concern_name as mbtiSkinConcernName,
-                count(mr.skin_problem_one) as skinProblemCount
+                row_number() over(order by count(skin_problem_one) desc) as id,
+                rank() over(order by count(skin_problem_one) desc),
+                skin_problem_one,
+                count(skin_problem_one)
             from
-                tb_mbti_response mr
-                left outer join tb_mbti_skin_concern msc
-                on msc.mbti_skin_concern_id = mr.skin_problem_one
-            where
-                create_date between #{startDate} and #{endDate}
-                group by mr.skin_problem_one, msc.mbti_skin_concern_name
-
-            union all
-
-            select
-                2 as skinProblemType,
-                mr.skin_problem_two as mbtiSkinConcernId,
-                msc.mbti_skin_concern_name as mbtiSkinConcernName,
-                count(mr.skin_problem_two) as skinProblemCount
-            from
-                tb_mbti_response mr
-                left outer join tb_mbti_skin_concern msc
-                on msc.mbti_skin_concern_id = mr.skin_problem_two
-            where
-                create_date between #{startDate} and #{endDate}
-            group by mr.skin_problem_two, msc.mbti_skin_concern_name
-        ) as skinProblemRanks
+                mbti_response_group
+            group by
+                skin_problem_one
+            ) as a
+            left outer join (
+                select
+                    row_number() over(order by count(skin_problem_two)  desc) as id,
+                    rank() over(order by count(skin_problem_two) desc),
+                    skin_problem_two,
+                    count(skin_problem_two)
+                from
+                    mbti_response_group
+                group by
+                    skin_problem_two) as b on(a.id = b.id)
+        order by
+            a.id
     </select>
+
 </mapper>
