@@ -127,17 +127,28 @@ public class PurchaseService {
         purchaseMapper.saveOrderItem(orderItemList);
 
         // Payment 정보 저장
-        LocalDateTime now = LocalDateTime.now();
-        String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
-        Payment payment = Payment.builder()
-                .paymentOrderId(order.getOrderId())
-                .paymentApproveId(paymentApproveId)
-                .paymentMethod(dto.getPaymentMethod())
-                .paymentStatus(dto.getPaymentStatus())
-                .amount(dto.getTotalAmount())
-                .build();
-        purchaseMapper.savePayment(payment);
+        if(dto.getPaymentMethod().equals("transfer")) {
+            Payment payment = Payment.builder()
+                    .paymentOrderId(order.getOrderId())
+                    .paymentApproveId(dto.getPaymentApproveId())
+                    .paymentMethod(dto.getPaymentMethod())
+                    .paymentStatus(dto.getPaymentStatus())
+                    .amount(dto.getTotalAmount())
+                    .build();
+            purchaseMapper.savePayment(payment);
+        } else {
+            LocalDateTime now = LocalDateTime.now();
+            String paymentApproveId = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            Payment payment = Payment.builder()
+                    .paymentOrderId(order.getOrderId())
+                    .paymentApproveId(paymentApproveId)
+                    .paymentMethod(dto.getPaymentMethod())
+                    .paymentStatus(dto.getPaymentStatus())
+                    .amount(dto.getTotalAmount())
+                    .build();
+            purchaseMapper.savePayment(payment);
+        }
 
         // 결제 등급 수정
         User user = purchaseMapper.findUserByUserId(userId);
