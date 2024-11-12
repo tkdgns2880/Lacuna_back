@@ -12,21 +12,12 @@ import java.util.Map;
 
 @Mapper
 public interface StatisticsMapper {
-
-    // 1-1. 처음 초기 데이터 불러오기(이용통계)
-    List<UserCount> getInitData();
-    // 1-2. 처음 초기 데이터 불러오기(MBTI 정보1)
-//    RespStatisticCountDto getInitUseCount();      필요없음.
-    // 1-3. 처음 초기 데이터 불러오기(MBTI 정보1)
-//    RespMbtiStatisticCountDto mbtiInitStatistic();
-    // 1-4. 처음 초기 데이터 불러오기(MBTI 정보1)
-    List<RespMbtiStatisticRankDto> problemInitStatistic();
-    // 2. 날짜에 따른 이용통계 정보
+    // 1. 날짜에 따른 이용통계 정보
     List<UserCount> getUseCountByDate(Map<String, Object> params);
-    // 3-1. 날짜에 따른 MBTI 정보 관련 ???
+    // 2-1. 날짜에 따른 MBTI 정보 관련 ???
     List<RespMbtiStatisticCountDto> getStatisticCountByStartDateAndEndDate(ReqGetStatisticCountsDto dto);
-    // 3-2. 날짜에 따른 MBTI 정보 관련 ???
+    // 2-2. 날짜에 따른 MBTI 정보 관련 ???
 //    RespMbtiStatisticCountDto mbtiStatistic(ReqGetStatisticCountsDto dto);    필요없음.
-    // 3-3. 날짜에 따른 MBTI 정보 관련 ???
+    // 2-3. 날짜에 따른 MBTI 정보 관련 ???
     List<RespMbtiStatisticRankDto> problemStatistic(ReqGetStatisticCountsDto dto);
 }
