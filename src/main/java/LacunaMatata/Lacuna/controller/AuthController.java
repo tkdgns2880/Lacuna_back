@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  ***********************************/
 @Slf4j
 @RestController
-@Api(tags = "인증 - 인증 관련 컨트롤러")
+@Api(tags = "인증 - 인증 관련 컨트롤러(토큰, 로그인 등)")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
