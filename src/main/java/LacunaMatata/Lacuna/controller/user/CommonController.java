@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.controller.user;
 
+import LacunaMatata.Lacuna.dto.request.user.commoninfo.ReqServiceCountInfoDto;
 import LacunaMatata.Lacuna.dto.response.admin.settinginfo.RespSettingInfoDto;
 import LacunaMatata.Lacuna.service.user.CommonService;
 import io.swagger.annotations.Api;
@@ -30,10 +31,10 @@ public class CommonController {
     }
 
 
-    @GetMapping("/index")
+    @GetMapping("/service/counting")
     @ApiOperation(value = "getCountIndexApi")
-    public ResponseEntity<?> getCountIndex() {
-        commonService.getCountIntroPage();
+    public ResponseEntity<?> getCountIndex(@RequestBody ReqServiceCountInfoDto dto) {
+        commonService.getCountIntroPage(dto);
         return ResponseEntity.ok().body(true);
     }
 }

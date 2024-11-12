@@ -108,8 +108,6 @@ public class MbtiService {
 
         mbtiMapper.saveUserMbtiSurvey(mbtiResponseList);
 
-        statisticService.plusServiceCount("mbti"); // 이용통계 이용건수 증가
-
         // 등록 후 결과값 반환
         return mbtiResultId;
     }

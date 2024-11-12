@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.service.user;
 
+import LacunaMatata.Lacuna.dto.request.user.commoninfo.ReqServiceCountInfoDto;
 import LacunaMatata.Lacuna.entity.user.UserCount;
 import LacunaMatata.Lacuna.repository.user.StatisticMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,14 @@ public class StatisticService {
     private StatisticMapper statisticMapper;
 
     // 서비스 이용통계 생성 서비스
-    public void plusServiceCount(String serviceName) {
+    public void plusServiceCount(ReqServiceCountInfoDto dto) {
         Date now = new Date();
 
         LocalDate userDate = LocalDate.now();
         int userHour = now.getHours();
 
         Map<String, Object> params = Map.of(
-            "serviceName", serviceName,
+            "serviceName", dto.getServiceName(),
             "userDate", userDate,
             "userHour", userHour
         );

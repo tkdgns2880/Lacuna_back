@@ -1,5 +1,6 @@
 package LacunaMatata.Lacuna.service.user;
 
+import LacunaMatata.Lacuna.dto.request.user.commoninfo.ReqServiceCountInfoDto;
 import LacunaMatata.Lacuna.dto.response.admin.settinginfo.RespSettingInfoDto;
 import LacunaMatata.Lacuna.entity.Setting;
 import LacunaMatata.Lacuna.repository.user.CommonMapper;
@@ -34,7 +35,7 @@ public class CommonService {
     }
 
     // 페이지 정보 눌렀을 때 1증가
-    public void getCountIntroPage() {
-        statisticService.plusServiceCount("intro");
+    public void getCountIntroPage(ReqServiceCountInfoDto dto) {
+        statisticService.plusServiceCount(dto);
     }
 }

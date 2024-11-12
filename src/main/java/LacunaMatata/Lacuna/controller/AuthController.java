@@ -52,7 +52,6 @@ public class AuthController {
     public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto, BindingResult bindingResult) throws Exception {
         String accessToken = authService.signin(request, dto);
         String bearerToken = "Bearer ".concat(accessToken);
-        System.out.println(bindingResult);
 
         return ResponseEntity.ok().body(bearerToken);
     }
