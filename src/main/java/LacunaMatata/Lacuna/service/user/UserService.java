@@ -12,6 +12,7 @@ import LacunaMatata.Lacuna.repository.user.UserMapper;
 import LacunaMatata.Lacuna.security.jwt.JwtProvider;
 import LacunaMatata.Lacuna.security.principal.PrincipalUser;
 import LacunaMatata.Lacuna.service.AuthService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -115,10 +116,14 @@ public class UserService {
         User user = userMapper.findUserByUserId(userId);
 
         if(!user.getPassword().equals(dto.getCurrentPassword())) {
-            throw new Exception("현재 비밀번호 불일치");
+            throw new Exception("현재 사용하고 있는 비밀번호 불일치");
         }
 
-        String modifyPassword = dto.getModifyPassword();
+        if(!dto.getPassword().equals(dto.getPasswordCheck())) {
+            throw new Exception("비밀번호 체크 불일치");
+        }
+
+        String modifyPassword = dto.getPassword();
         userMapper.modifyPassword(userId, modifyPassword);
 
         PasswordHistory passwordHistory = PasswordHistory.builder()
@@ -149,7 +154,7 @@ public class UserService {
                 + "width:400px'>");
         htmlContent.append("<h2>Lacuna 메일 주소 변경 이메일 인증 입니다.</h2>");
         htmlContent.append("<h3>아래 인증하기 버튼을 클릭해주세요</h3>");
-        htmlContent.append("<a target='_blank' href='http://localhost:8080/api/v1/auth/email?emailtoken=");
+        htmlContent.append("<a target='_blank' href='http://localhost:8080/api/v1/user/change/email?emailtoken=");
         htmlContent.append(jwtProvider.generateEmailValidToken(toEmail));
         htmlContent.append("'>인증하기</a>");
         htmlContent.append("</div>");
@@ -158,10 +163,13 @@ public class UserService {
     }
 
     // 프로필 페이지 - 내 이메일 주소 변경하기 (수정)
-    public void changeMyEmail2(ReqChangeMyEmailDto dto) {
+    public void changeMyEmail2(ReqMyEmailTokenDto dto) {
         PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principalUser.getId();
-        String email = dto.getEmail();
+        String emailToken = dto.getEmailtoken();
+
+        Claims claims = jwtProvider.getClaim(emailToken);
+        String email = (String) claims.get("toEmail");
         Map<String, Object> params = Map.of(
                 "userId", userId,
                 "email", email
