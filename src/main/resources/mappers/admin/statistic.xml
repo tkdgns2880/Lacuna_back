@@ -150,7 +150,7 @@
             from
                 tb_mbti_response
             where
-                date(create_date) between '2024-09-01' and '2024-11-11'
+                date(create_date) between #{startDate} and #{endDate}
             group by
                 mbti_response_user_id,
                 session_id,
