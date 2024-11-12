@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin/consulting")
-@Api(tags = {"consultingManageController"})
+@Api(tags = {"관리자 - 컨설팅관리 컨트롤러 - 아직 미구현..(TBC)"})
 public class ConsultingManageController {
 
     @Autowired

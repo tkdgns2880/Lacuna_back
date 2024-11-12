@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
-@Api(tags = "CommonController")
+@Api(tags = "사용자 - 공용 컨트롤러(Setting 정보 출력, 이용 통계수 증가)")
 public class CommonController {
 
     @Autowired
@@ -21,15 +21,14 @@ public class CommonController {
 
     // 사용자 페이지에 Setting 정보 불러오기
     @GetMapping("/setting/info")
-    @ApiOperation(value = "getSettingInfoApi")
+    @ApiOperation(value = "세팅 - 세팅 정보 출력(이용약관, 연락처 등등)")
     public ResponseEntity<?> getSettingInfo() {
         List<RespSettingInfoDto> settingInfo = commonService.getSettingInfo();
         return ResponseEntity.ok().body(settingInfo);
     }
 
-
     @PostMapping("/service/counting")
-    @ApiOperation(value = "getCountIndexApi")
+    @ApiOperation(value = "통계 - 서비스 이용(조회)수 증가")
     public ResponseEntity<?> getCountIndex(@RequestBody ReqServiceCountInfoDto dto) {
         commonService.getCountIntroPage(dto);
         return ResponseEntity.ok().body(true);

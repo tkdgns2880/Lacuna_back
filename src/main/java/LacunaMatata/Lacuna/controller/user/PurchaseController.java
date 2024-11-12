@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
-@Api(tags = "PurchaseController")
+@Api(tags = "사용자 - 결제, 주문 컨트롤러")
 public class PurchaseController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class PurchaseController {
 
     // 컨설팅 상품 소개 페이지 - 컨설팅 상품 목록 출력 - 비회원도 가능
     @GetMapping("/product/consulting")
-    @ApiOperation(value = "getProductListApi")
+    @ApiOperation(value = "상품 - 컨설팅 상품 목록 출력")
     public ResponseEntity<?> getConsultingProductList() {
         List<RespConsultingListDto> consultingProduct = purchaseService.getConsultingProductList();
         return ResponseEntity.ok().body(consultingProduct);
@@ -31,7 +31,7 @@ public class PurchaseController {
 
     // 회원 컨설팅 상품 상세 보기 - 회원만 가능
     @GetMapping("/user/product/detail/{productId}")
-    @ApiOperation(value = "getConsultingProductDetailApi")
+    @ApiOperation(value = "상품 - 컨설팅 상품 항목 상세 출력")
     public ResponseEntity<?> getConsultingProductDetail(@PathVariable int productId) {
         RespConsultingProductDetailDto consultingProduct = purchaseService.getConsultingProductDetail(productId);
         return ResponseEntity.ok().body(consultingProduct);
@@ -39,7 +39,7 @@ public class PurchaseController {
 
     // 회원 구매하기 버튼 누르기 - 주문 항목 생성 (시스템 결제)
     @PostMapping("/user/product/order")
-    @ApiOperation(value = "orderConsultingProductApi")
+    @ApiOperation(value = "주문 - 컨설팅 상품 구매")
     public ResponseEntity<?> orderConsultingProduct(@RequestBody ReqOrderConsultingProductDto dto) throws Exception {
         purchaseService.orderConsultingProduct(dto);
         return ResponseEntity.ok().body(true);

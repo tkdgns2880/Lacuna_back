@@ -20,7 +20,7 @@ import java.util.List;
  ************************************************/
 @RestController
 @Api(tags = "SettingController")
-@RequestMapping("/api/v1/admin/settings")
+@RequestMapping("관리자 - 세팅 정보 관리 컨트롤러")
 public class SettingController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class SettingController {
 
     // 설정(약관 email, phone, sns 주소 등) 정보 불러오기
     @GetMapping("/")
-    @ApiOperation(value = "getSettingListApi")
+    @ApiOperation(value = "세팅 - 세팅 정보 목록 출력")
     public ResponseEntity<?> getSettingList() {
         List<RespSettingInfoDto> settingInfo = settingService.getSettingInfo();
         return ResponseEntity.ok().body(settingInfo);
@@ -36,7 +36,7 @@ public class SettingController {
 
     // 설정(약관 email, phone, sns 주소 등) 항목 수정
     @PutMapping("/modify/{settingId}")
-    @ApiOperation(value = "modifySettingApi")
+    @ApiOperation(value = "세팅 - 세팅 정보 수정(단일)")
     public ResponseEntity<?> modifySetting(@RequestBody ReqModifySettingInfoDto dto, @PathVariable int settingId) {
         settingService.modifySettingInfo(dto);
         return ResponseEntity.ok().body(true);

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/mbti/survey")
-@Api(tags = {"MbtiController"})
+@Api(tags = {"사용자 - MBTI 컨트롤러"})
 public class MbtiController {
 
     @Autowired
@@ -22,21 +22,21 @@ public class MbtiController {
 
     // mbti 설문지 기본 정보(피부고민 리스트) 출력
     @GetMapping("/question/skinproblem")
-    @ApiOperation(value = "getMbtiSkinProblemApi")
+    @ApiOperation(value = "MBTI 설문지 - 피부고민 리스트 출력")
     public ResponseEntity<?> getMbtiSkinProblem() {
         return ResponseEntity.ok().body(mbtiService.getMbtiSkinProblemList());
     }
 
     // mbti 설문지 출력
     @GetMapping("/question")
-    @ApiOperation(value = "getMbtiSurveyApi")
+    @ApiOperation(value = "MBTI 설문지 - MBTI 설문지 리스트 출력")
     public ResponseEntity<?> getMbtiSurvey() {
         return ResponseEntity.ok().body(mbtiService.getmbtiSurvey());
     }
 
     // mbti 설문 답안 등록
     @PostMapping("/submit")
-    @ApiOperation(value = "submitMbtiApi")
+    @ApiOperation(value = "MBTI 설문지 - 설문 응답 등록")
     public ResponseEntity<?> submitMbti(@RequestBody ReqMbtiAnswerDto dto, HttpServletRequest request) {
         int mbtiResultId = mbtiService.submitMbti(dto, request);
         return ResponseEntity.ok().body(mbtiResultId);
@@ -44,7 +44,7 @@ public class MbtiController {
 
     // mbti 설문 결과 출력
     @GetMapping("/result/{resultId}")
-    @ApiOperation(value = "getMbtiResultApi")
+    @ApiOperation(value = "MBTI 결과지 - MBTI 결과 출력")
     public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
         RespMbtiStatusAndResultDto mbtiResult = mbtiService.getMbtiResult(resultId);
         if(mbtiResult.getMbtiResultStatus() == 2) {

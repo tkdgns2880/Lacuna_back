@@ -22,7 +22,7 @@ import java.util.List;
  ************************************************/
 @RestController
 @RequestMapping("/api/v1/admin/mbti")
-@Api(tags = {"mbtiManageController"})
+@Api(tags = {"관리자 - MBTI 관리 컨트롤러"})
 @Slf4j
 public class MbtiManageController {
 
@@ -30,7 +30,7 @@ public class MbtiManageController {
     private MbtiManageService mbtiManageService;
 
     // MBTI 분류 카테고리 리스트 출력
-    @ApiOperation(value = "getMbtiCategoryListApi") // test 완료(이상 없음)
+    @ApiOperation(value = "MBTI 분류 카테고리 - 리스트 출력") // test 완료(이상 없음)
     @GetMapping("/survey/category/list")
     public ResponseEntity<?> getMbtiCategoryList() {
         RespCountAndMbtiCategoryDto respCountAndMbtiCategoryDto = mbtiManageService.getMbtiCategoryList();
@@ -38,7 +38,7 @@ public class MbtiManageController {
     }
 
     // MBTI 분류 카테고리 등록
-    @ApiOperation(value = "registMbtiCategoryApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 분류 카테고리 - 등록") // test 완료 (이상 없음)
     @PostMapping("/survey/category/regist")
     public ResponseEntity<?> registMbtiCategory(@ModelAttribute ReqRegistMbtiCategoryDto dto) throws IOException {
         mbtiManageService.registMbtiCategory(dto);
@@ -46,7 +46,7 @@ public class MbtiManageController {
     }
 
     //MBTI 분류 카테고리 수정 모달창 조회
-    @ApiOperation(value = "getMbtiCategoryApi")
+    @ApiOperation(value = "MBTI 분류 카테고리 - 수정 모달창 출력")
     @GetMapping("/survey/category/{categoryId}") // test 완료 (이상 없음)
     public ResponseEntity<?> getMbtiCategory(@PathVariable int categoryId) {
         RespMbtiCategoryDto mbtiCategory = mbtiManageService.getMbtiCategory(categoryId);
@@ -55,14 +55,14 @@ public class MbtiManageController {
 
     //MBTI 분류 카테고리 출력(필터용)
     @GetMapping("/survey/category/filter")
-    @ApiOperation(value = "getMbtiCategoryListFilterApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 분류 카테고리 - 필터 출력") // test 완료 (이상 없음)
     public ResponseEntity<?> getMbtiCategoryListFilter() {
         List<RespMbtiCategoryFilterDto> mbtiCategoryList = mbtiManageService.getMbtiCategoryFilterDto();
         return ResponseEntity.ok().body(mbtiCategoryList);
     }
 
     // MBTI 분류 카테고리 수정
-    @ApiOperation(value = "modifyMbtiCategoryApi")
+    @ApiOperation(value = "MBTI 분류 카테고리 - 수정")
     @PostMapping("/survey/category/modify/{categoryId}") // test 완료 (이상 없음)
     public ResponseEntity<?> modifyMbtiCategory(@ModelAttribute ReqModifyMbtiCategoryDto dto, @PathVariable int categoryId) throws IOException {
         mbtiManageService.modifyMbtiCategory(dto, categoryId);
@@ -70,7 +70,7 @@ public class MbtiManageController {
     }
 
     // MBTI 분류 카테고리 삭제
-    @ApiOperation(value = "deleteMbtiCategoryApi")
+    @ApiOperation(value = "MBTI 분류 카테고리 - 단일 삭제")
     @DeleteMapping("/survey/category/delete/{categoryId}") // test ㅇ놔료(이상 없음)
     public ResponseEntity<?> deleteMbtiCategory(@PathVariable int categoryId) {
         mbtiManageService.deleteMbtiCategory(categoryId);
@@ -78,7 +78,7 @@ public class MbtiManageController {
     }
 
     // MBTI 분류 카테고리 복수개 삭제
-    @ApiOperation(value = "deleteMbtiCategoryListApi")
+    @ApiOperation(value = "MBTI 분류 카테고리 - 복수 삭제")
     @DeleteMapping("/survey/category/delete")
     public ResponseEntity<?> deleteMbtiCategoryList(@RequestBody ReqDeleteMbtiCategoryListDto dto) {
         mbtiManageService.deleteMbtiCategoryList(dto);
@@ -86,7 +86,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 리스트 출력
-    @ApiOperation(value = "getMbtiQuestionListApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 설문지 - 리스트 출력") // test 완료 (이상 없음)
     @GetMapping("/question/list")
     public ResponseEntity<?> getMbtiQuestionList(ReqGetMbtiQuestionListDto dto) {
         RespCountAndMbtiQuestionDto respCountAndMbtiQuestionDto = mbtiManageService.getMbtiQuestionList(dto);
@@ -95,13 +95,13 @@ public class MbtiManageController {
 
     // MBTI 설문 등록 모달창 출력
     @GetMapping("/question/regist/modal")
-    @ApiOperation(value = "mbtiQuestionRegistModalApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 설문지 - 등록 모달창 출력") // test 완료 (이상 없음)
     public ResponseEntity<?> mbtiQuestionRegistModal() {
         return ResponseEntity.ok().body(mbtiManageService.mbtiQuestionRegistModal());
     }
 
     // MBTI 설문 항목 등록
-    @ApiOperation(value = "registMbtiQuestionApi") // 이싱 있음
+    @ApiOperation(value = "MBTI 설문지 - 등록") // 이싱 있음
     @PostMapping("/question/regist")
     public ResponseEntity<?> registMbtiQuestion(@ModelAttribute ReqRegistMbtiQuestionDto dto) throws IOException {
         mbtiManageService.registMbtiQuestion(dto);
@@ -109,7 +109,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 수정 모달창 출력
-    @ApiOperation(value = "getMbtiQuestionApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 설문지 - 수정 모달창 출력") // test 완료 (이상 없음)
     @GetMapping("/question/{mbtiId}")
     public ResponseEntity<?> getMbtiQuestion(@PathVariable int mbtiId) {
         RespMbtiQuestionDto mbtiQuestion = mbtiManageService.getMbtiQuestion(mbtiId);
@@ -117,7 +117,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 모달 수정
-    @ApiOperation(value = "modifyMbtiQuestionApi") // 이상 있음
+    @ApiOperation(value = "MBTI 설문지 - 수정") // 이상 있음
     @PostMapping("/question/modify/{mbtiId}")
     public ResponseEntity<?> modifyMbtiQuestion(@ModelAttribute ReqModifyMbtiQuestionDto dto, @PathVariable int mbtiId) throws IOException {
         mbtiManageService.modifyMbtiQuestion(dto, mbtiId);
@@ -125,7 +125,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 삭제
-    @ApiOperation(value = "deleteMbtiQuestionApi")
+    @ApiOperation(value = "MBTI 설문지 - 단일 삭제")
     @DeleteMapping("/question/delete/{mbtiId}")
     public ResponseEntity<?> deleteMbtiQuestion(@PathVariable int mbtiId) {
         mbtiManageService.deleteMbtiQuestion(mbtiId);
@@ -133,7 +133,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 항목 복수개 삭제
-    @ApiOperation(value = "deleteMbtiQuestionListApi")
+    @ApiOperation(value = "MBTI 설문지 - 복수 삭제")
     @DeleteMapping("/question/delete")
     public ResponseEntity<?> deleteMbtiQuestionList(@RequestBody ReqDeleteMbtiQuestionDto dto) {
         mbtiManageService.deleteMbtiQuestionList(dto);
@@ -141,7 +141,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 리스트 출력
-    @ApiOperation(value = "getMbtiResultListApi") // test 완료 (이상 없음)
+    @ApiOperation(value = "MBTI 결과지 - 리스트 출력") // test 완료 (이상 없음)
     @GetMapping("/result/list")
     public ResponseEntity<?> getMbtiResultList(ReqGetMbtiResultDto dto) {
         RespCountAndMbtiResultDto respCountAndMbtiResultDto = mbtiManageService.getMbtiResultList(dto);
@@ -149,7 +149,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 등록
-    @ApiOperation(value = "registMbtiResultApi")
+    @ApiOperation(value = "MBTI 결과지 - 등록")
     @PostMapping("/result/regist")
     public ResponseEntity<?> registMbtiResult(@ModelAttribute ReqRegistMbtiResultDto dto) throws IOException {
         mbtiManageService.registMbtiResult(dto);
@@ -157,7 +157,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 항목 수정 모달창 출력
-    @ApiOperation(value = "getMbtiResultApi")
+    @ApiOperation(value = "MBTI 결과지 -수정 모달창 출력")
     @GetMapping("/result/{resultId}")
     public ResponseEntity<?> getMbtiResult(@PathVariable int resultId) {
         RespGetMbtiResultDto mbtiResultDto = mbtiManageService.getMbtiResultDto(resultId);
@@ -165,7 +165,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 항목 수정
-    @ApiOperation(value = "modifyMbtiResultApi")
+    @ApiOperation(value = "MBTI 결과지 - 수정")
     @PostMapping("/result/modify/{resultId}")
     public ResponseEntity<?> modifyMbtiResult(@ModelAttribute ReqModifyMbtiResultDto dto, @PathVariable int resultId) throws IOException {
         mbtiManageService.modifyMbtiResult(dto);
@@ -173,7 +173,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 삭제
-    @ApiOperation(value = "deleteMbtiResultApi")
+    @ApiOperation(value = "MBTI 결과지 - 단일 삭제")
     @DeleteMapping("/result/delete/{resultId}")
     public ResponseEntity<?> deleteMbtiResult(@PathVariable int resultId) {
         mbtiManageService.deleteMbtiResult(resultId);
@@ -181,7 +181,7 @@ public class MbtiManageController {
     }
 
     // MBTI 설문 결과 복수개 삭제
-    @ApiOperation(value = "deleteMbtiResultListApi")
+    @ApiOperation(value = "MBTI 결과지 - 복수 삭제")
     @DeleteMapping("/result/delete")
     public ResponseEntity<?> deleteMbtiResultList(@RequestBody ReqDeleteMbtiResultListDto dto) {
         mbtiManageService.deleteMbtiResultList(dto);

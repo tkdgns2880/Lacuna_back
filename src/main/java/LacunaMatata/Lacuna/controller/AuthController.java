@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  ***********************************/
 @Slf4j
 @RestController
-@Api(tags = "AuthController")
+@Api(tags = "인증 - 인증 관련 컨트롤러")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
@@ -39,7 +39,7 @@ public class AuthController {
 
     // 토큰 인증 요청
     @GetMapping("/access")
-    @ApiOperation(value = "accessTokenApi")
+    @ApiOperation(value = "토큰 - 토큰 액세스 검증")
     public ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
         tokenService.isValidToken(dto.getAccessToken());
         return ResponseEntity.ok().body(true);
@@ -47,7 +47,7 @@ public class AuthController {
 
     // 일반 로그인
     @PostMapping("/signin")
-    @ApiOperation(value = "signinApi")
+    @ApiOperation(value = "로그인 - 일반 로그인")
     @AuthAop
     public ResponseEntity<?> signin(HttpServletRequest request, @RequestBody ReqGeneralSigninDto dto, BindingResult bindingResult) throws Exception {
         String accessToken = authService.signin(request, dto);
@@ -58,7 +58,7 @@ public class AuthController {
 
     // 일반 회원가입
     @PostMapping("/signup")
-    @ApiOperation(value = "signupApi")
+    @ApiOperation(value = "회원가입 - 일반 회원가입")
     @AuthAop
     public ResponseEntity<?> signup(@RequestBody ReqGeneralSignupDto dto, BindingResult bindingResult) {
         authService.signup(dto);
@@ -66,7 +66,7 @@ public class AuthController {
     }
 
     // 오어스 회원가입
-    @ApiOperation(value = "authSignupApi")
+    @ApiOperation(value = "회원가입 - oauth2 회원가입")
     @PostMapping("/oauth2user/signup")
     @AuthAop
     public ResponseEntity<?> oauthSignup(@RequestBody ReqOauthSignupDto dto, BindingResult bindingResult) {
@@ -77,7 +77,7 @@ public class AuthController {
 
     // 회원가입 시 이메일 인증(인증 메일 보내기) 1
     @PostMapping("/email")
-    @ApiOperation(value = "sendAuthEmailApi")
+    @ApiOperation(value = "인증 - (회원가입)이메일 인증1 (인증)")
     public ResponseEntity<?> sendAuthEmail(@RequestBody ReqAuthEmailDto dto) {
         authService.sendAuthEmail(dto);
         return ResponseEntity.ok().body(true);
@@ -85,7 +85,7 @@ public class AuthController {
 
     // 회원가입시 이메일 인증(토큰 받는곳) 2
     @GetMapping("/email")
-    @ApiOperation(value = "emailValidApi")
+    @ApiOperation(value = "인증 - (회원가입)이메일 인증2 (토큰)")
     public Boolean emailValid(@RequestParam String emailtoken, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=utf-8");
         String validResult = authService.validToken(emailtoken);
@@ -132,7 +132,7 @@ public class AuthController {
 
     // 사용자 아이디 찾기
     @PostMapping("/find/id")
-    @ApiOperation(value = "findUsernameApi")
+    @ApiOperation(value = "찾기 - 사용자 ID 찾기")
     public ResponseEntity<?> findUsername(@RequestBody ReqFindUsernameDto dto) throws Exception {
         authService.findUsername(dto);
         return ResponseEntity.ok().body(true);
@@ -140,7 +140,7 @@ public class AuthController {
 
     // 사용자 비밀번호 찾기
     @PostMapping("/find/password")
-    @ApiOperation(value = "findPasswordApi")
+    @ApiOperation(value = "찾기 - 사용자 PW 찾기")
     public ResponseEntity<?> findPassword(@RequestBody ReqFindPasswordDto dto) throws Exception {
         authService.findPassword(dto);
         return ResponseEntity.ok().body(true);

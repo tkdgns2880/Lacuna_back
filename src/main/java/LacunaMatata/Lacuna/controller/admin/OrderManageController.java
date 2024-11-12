@@ -23,7 +23,7 @@ import java.util.List;
  ************************************************/
 @RestController
 @RequestMapping("/api/v1/admin/order")
-@Api(tags = {"OrderManageController"})
+@Api(tags = {"관리자 - 주문 관리 컨트롤러"})
 public class OrderManageController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class OrderManageController {
 
     // 회원 주문 리스트 출력
     @GetMapping("/list")
-    @ApiOperation(value = "getOrderListApi")
+    @ApiOperation(value = "주문 - 리스트 출력")
     public ResponseEntity<?> getOrderList(ReqGetOrderListDto dto) {
         RespCountAndOderListDto respCountAndOderListDto = orderManageService.getOrderList(dto);
         return ResponseEntity.ok().body(respCountAndOderListDto);
@@ -39,7 +39,7 @@ public class OrderManageController {
 
     // 회원 주문 상태 목록 출력(필터)
     @GetMapping("/status/filter")
-    @ApiOperation(value = "getOrderStatusFilterApi") // test 완료
+    @ApiOperation(value = "주문 - 주문 상태 출력 (필터)") // test 완료
     public ResponseEntity<?> getOrderStatusFilter() {
         List<RespGetOrderStatusFilterDto> orderFilter = orderManageService.getOrderStatusFilter();
         return ResponseEntity.ok().body(orderFilter);
@@ -47,7 +47,7 @@ public class OrderManageController {
 
     // 회원 주문 항목 상세 출력
     @GetMapping("/order/detail/{orderId}")
-    @ApiOperation(value = "getOrderDetailApi") // test 완료
+    @ApiOperation(value = "주문 - 주문 항목 상세 출력") // test 완료
     public ResponseEntity<?> getOrderDetail(@PathVariable int orderId) {
         RespGetOrderDetailDto orderDetail = orderManageService.getOrderDetail(orderId);
         return ResponseEntity.ok().body(orderDetail);
@@ -55,7 +55,7 @@ public class OrderManageController {
 
     // 회원 결제 항목 상세 출력
     @GetMapping("/payment/detail/{paymentId}")
-    @ApiOperation(value = "getPaymentDetailApi") // test 완료
+    @ApiOperation(value = "결제 - 결제 항목 상세 출력") // test 완료
     public ResponseEntity<?> getPaymentDetail(@PathVariable int paymentId) {
         RespGetPaymentDetailDto paymentDetail = orderManageService.getPaymentDetail(paymentId);
         return ResponseEntity.ok().body(paymentDetail);
@@ -63,7 +63,7 @@ public class OrderManageController {
 
     // 회원 결제 취소하기(결제 시스템) - 계좌, 시스템 공통
     @PutMapping("/payment/cancel/{paymentId}")
-    @ApiOperation(value = "cancelSystemPaymentApi") // test 완료
+    @ApiOperation(value = "결제 - 결제 취소") // test 완료
     public ResponseEntity<?> cancelSystemPayment(@PathVariable int paymentId) {
         orderManageService.cancelSystemOrder(paymentId);
         return ResponseEntity.ok().body(true);
@@ -88,7 +88,7 @@ public class OrderManageController {
 
     // 주문 수정 - 회원 결제 승인하기(계좌 이체)
     @PutMapping("/management/transfer/approve/{orderId}")
-    @ApiOperation(value = "approveAccountPaymentApi") // test 완료
+    @ApiOperation(value = "결제 - 결제 승인") // test 완료
     public ResponseEntity<?> approveAccountPayment(@PathVariable int orderId ,@RequestBody ReqApprovePaymentAccountDto dto) throws Exception {
         orderManageService.approveAccountOrder(orderId, dto);
         return ResponseEntity.ok().body(true);
@@ -96,7 +96,7 @@ public class OrderManageController {
 
     // 회원 주문 항목 삭제
     @DeleteMapping("/delete/{orderId}")
-    @ApiOperation(value = "deleteOrderApi") // test 완료
+    @ApiOperation(value = "주문 - 주문 항목 단일 삭제") // test 완료
     public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
         orderManageService.deleteOrder(orderId);
         return ResponseEntity.ok().body(true);
@@ -104,7 +104,7 @@ public class OrderManageController {
 
     // 회원 주문 항목 복수개 삭제
     @DeleteMapping("/delete")
-    @ApiOperation(value = "deleteOrderListApi") // test 완료
+    @ApiOperation(value = "주문 - 주문 항목 복수 삭제") // test 완료
     public ResponseEntity<?> deleteOrderList(@RequestBody ReqDeleteOrderListDto dto) {
         orderManageService.deleteOrderList(dto);
         return ResponseEntity.ok().body(true);

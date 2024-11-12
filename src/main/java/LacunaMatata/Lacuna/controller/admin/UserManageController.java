@@ -26,7 +26,7 @@ import java.util.List;
  ************************************************/
 @RestController
 @RequestMapping("/api/v1/admin/user")
-@Api(tags = {"UserManageController"})
+@Api(tags = {"관리자 - 사용자 관리 컨트롤러"})
 public class UserManageController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class UserManageController {
 
     // 사용자 목록 출력
     @GetMapping("/list")
-    @ApiOperation(value = "getUserListApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 리스트 출력") // test 완료
     public ResponseEntity<?> getUserList(ReqGetUserListDto dto) {
         RespCountAndUserListDto respCountAndUserListDto = userManageService.getUserInfoList(dto);
         return ResponseEntity.ok().body(respCountAndUserListDto);
@@ -42,7 +42,7 @@ public class UserManageController {
 
     // 사용자 등록
     @PostMapping("/regist")
-    @ApiOperation(value = "registerUserApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 등록") // test 완료
     public ResponseEntity<?> registerUser(@RequestBody ReqRegistUserDto dto) throws Exception {
         userManageService.registUser(dto);
         return ResponseEntity.ok().body(true);
@@ -50,7 +50,7 @@ public class UserManageController {
 
     // 사용자 권한 목록 출력(필터)
     @GetMapping("/role/list/filter")
-    @ApiOperation(value = "getUserRoleListApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 권한 출력(필터)") // test 완료
     public ResponseEntity<?> getUserRoleList() {
         List<RespUserRoleFilterDto> userRoleList = userManageService.getUserRoleList();
         return ResponseEntity.ok().body(userRoleList);
@@ -58,7 +58,7 @@ public class UserManageController {
 
     // 사용자 수정창 모달 출력
     @GetMapping("/modify/{userId}")
-    @ApiOperation(value = "getModifyModalApi")
+    @ApiOperation(value = "사용자 - 사용자 수정 모달창 출력")
     public ResponseEntity<?> getModifyModal(@PathVariable int userId) {
         RespGetModifyUserModalDto modifyUserModal = userManageService.getUserModifyModal(userId);
         return ResponseEntity.ok().body(modifyUserModal);
@@ -66,7 +66,7 @@ public class UserManageController {
 
     // 사용자 수정(권한, 활성화)
     @PutMapping("/modify/{userId}")
-    @ApiOperation(value = "modifyUserApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 수정 권한") // test 완료
     public ResponseEntity<?> modifyUser(@RequestBody ReqModifyUserDto dto, @PathVariable int userId) throws Exception {
         userManageService.modifyUser(dto);
         return ResponseEntity.ok().body(true);
@@ -74,7 +74,7 @@ public class UserManageController {
 
     // 사용자 삭제
     @DeleteMapping("/delete/{userId}")
-    @ApiOperation(value = "deleteUserApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 단일 삭제") // test 완료
     public ResponseEntity<?> deleteUser(@PathVariable int userId) {
         userManageService.deleteUser(userId);
         return ResponseEntity.ok().body(true);
@@ -82,7 +82,7 @@ public class UserManageController {
 
     // 사용자 복수개 삭제
     @DeleteMapping("/delete")
-    @ApiOperation(value = "deleteUserListApi") // test 완료
+    @ApiOperation(value = "사용자 - 사용자 복수 삭제") // test 완료
     public ResponseEntity<?> deleteUserList(@RequestBody ReqDeleteUserListDto dto) {
         userManageService.deleteUserList(dto);
         return ResponseEntity.ok().body(true);
