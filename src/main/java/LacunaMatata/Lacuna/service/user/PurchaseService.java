@@ -186,6 +186,7 @@ public class PurchaseService {
         List<String> productNameList = products.stream().map(product -> product.getProductName()).collect(Collectors.toList());
 
         // 이메일
+        LocalDateTime now = LocalDateTime.now();
         StringBuilder htmlContent = new StringBuilder();
         htmlContent.append("<div style='display:flex;justify-content:flex-start;align-items:center;flex-direction:column;"
                 + "width:400px'>");
