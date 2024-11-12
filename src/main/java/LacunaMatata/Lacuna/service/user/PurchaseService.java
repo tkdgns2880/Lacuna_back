@@ -80,17 +80,23 @@ public class PurchaseService {
         PrincipalUser principalUser =
                 (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principalUser.getId();
-        List<Integer> productIdList = dto.getProducts().stream().map(product -> product.getId()).collect(Collectors.toList());
+
+        List<String> productStringIdList = dto.getProducts().stream().map(product -> product.getId()).collect(Collectors.toList());
+        List<Integer> productIdList = productStringIdList.stream().filter(productId -> productId != null && !productId.trim().isEmpty())
+                .map(productId -> productId.replace("\"", ""))
+                .map(Integer::parseInt).collect(Collectors.toList());
 
         List<Product> products = purchaseMapper.findProductByProductId(productIdList);
+
         List<ReqOrderConsultingProductItemDto> orderProductItemList = dto.getProducts();
         List<Integer> quantityList = orderProductItemList.stream().map(orderProduct -> orderProduct.getQuantity()).collect(Collectors.toList());
-        List<BigDecimal> priceList = products.stream().map(product -> product.getPrice()).collect(Collectors.toList());
+        List<BigDecimal> priceList = products.stream().map(product -> product.getPromotionPrice() == null ?  product.getPrice() : product.getPromotionPrice())
+                .collect(Collectors.toList());
         BigDecimal totalPrice = BigDecimal.ZERO;
 
-        for(int i = 0; i < orderProductItemList.size(); i++) {
+        for(int i = 0; i < priceList.size(); i++) {
             BigDecimal multiplyPrice = priceList.get(i).multiply(BigDecimal.valueOf(quantityList.get(i)));
-            totalPrice.add(multiplyPrice);
+            totalPrice = totalPrice.add(multiplyPrice);
         }
 
         // DB에 저장되어 있는 가격정보를 합한 값과 사용자가 주문한 가격이 다르면 오류
@@ -112,7 +118,7 @@ public class PurchaseService {
         for(ReqOrderConsultingProductItemDto item : orderProductItemList ) {
             OrderItem orderItem = OrderItem.builder()
                     .orderId(order.getOrderId())
-                    .orderProductId(item.getId())
+                    .orderProductId(Integer.parseInt(item.getId() != null && !item.getId().trim().isEmpty() ? item.getId().replace("\"", "") : "0"))
                     .quantity(item.getQuantity())
                     .priceAtPurchase(item.getAmount())
                     .build();
