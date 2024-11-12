@@ -128,7 +128,7 @@ public class PurchaseService {
 
         // Payment 정보 저장
 
-        if(dto.getPaymentMethod().equals("transfer")) {
+        if(!dto.getPaymentMethod().equals("transfer")) {
             Payment payment = Payment.builder()
                     .paymentOrderId(order.getOrderId())
                     .paymentApproveId(dto.getPaymentApproveId())
