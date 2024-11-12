@@ -125,6 +125,7 @@ public class AuthService {
         return accessToken;
     }
 
+    // 오어스 회원가입
     @Transactional(rollbackFor = Exception.class)
     public void oauthSignup(ReqOauthSignupDto dto) {
         User user = User.builder()

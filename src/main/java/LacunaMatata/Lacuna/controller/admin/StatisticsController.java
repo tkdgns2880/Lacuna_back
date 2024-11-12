@@ -40,5 +40,4 @@ public class StatisticsController {
         return ResponseEntity.ok().body(statisticsService.getMbtiStatisticCounts(dto));
     }
 
-
 }

@@ -39,9 +39,9 @@ public class PurchaseController {
 
     // 회원 구매하기 버튼 누르기 - 주문 항목 생성 (시스템 결제)
     @PostMapping("/user/product/order")
+    @ApiOperation(value = "orderConsultingProductApi")
     public ResponseEntity<?> orderConsultingProduct(@RequestBody ReqOrderConsultingProductDto dto) throws Exception {
         purchaseService.orderConsultingProduct(dto);
         return ResponseEntity.ok().body(true);
     }
-
 }

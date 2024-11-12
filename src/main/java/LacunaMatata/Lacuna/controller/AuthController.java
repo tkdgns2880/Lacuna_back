@@ -37,6 +37,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    // 토큰 인증 요청
     @GetMapping("/access")
     @ApiOperation(value = "accessTokenApi")
     public ResponseEntity<?> accessToken(ReqAccessTokenDto dto) {
@@ -44,6 +45,7 @@ public class AuthController {
         return ResponseEntity.ok().body(true);
     }
 
+    // 일반 로그인
     @PostMapping("/signin")
     @ApiOperation(value = "signinApi")
     @AuthAop
@@ -55,6 +57,7 @@ public class AuthController {
         return ResponseEntity.ok().body(bearerToken);
     }
 
+    // 일반 회원가입
     @PostMapping("/signup")
     @ApiOperation(value = "signupApi")
     @AuthAop
@@ -63,6 +66,7 @@ public class AuthController {
         return ResponseEntity.ok().body(true);
     }
 
+    // 오어스 회원가입
     @ApiOperation(value = "authSignupApi")
     @PostMapping("/oauth2user/signup")
     @AuthAop
@@ -135,6 +139,7 @@ public class AuthController {
         return ResponseEntity.ok().body(true);
     }
 
+    // 사용자 비밀번호 찾기
     @PostMapping("/find/password")
     @ApiOperation(value = "findPasswordApi")
     public ResponseEntity<?> findPassword(@RequestBody ReqFindPasswordDto dto) throws Exception {

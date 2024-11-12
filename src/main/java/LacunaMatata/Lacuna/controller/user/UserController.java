@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    // 상단 header 프로필 정보 출력
+    // 상단 header 프로필 정보 출력(헤더)
     @ApiOperation(value = "getMyProfileHeaderApi")
     @GetMapping("/profile/header")
     public ResponseEntity<?> getMyProfileHeader() {

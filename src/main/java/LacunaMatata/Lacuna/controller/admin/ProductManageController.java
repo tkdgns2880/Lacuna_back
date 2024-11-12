@@ -155,10 +155,8 @@ public class ProductManageController {
 
     // 상품 등록
     @PostMapping("/regist")
-    @Log
     @ApiOperation(value = "registProductApi")
     public ResponseEntity<?> registProduct(@ModelAttribute ReqRegistProductDto dto) throws Exception {
-        System.out.println("상품 데이터 요청"+ dto);
         productManageService.registProduct(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -175,7 +173,6 @@ public class ProductManageController {
     @PostMapping("/modify/{productId}")
     @ApiOperation(value = "modifyProductApi")
     public ResponseEntity<?> modifyProduct(@ModelAttribute ReqModifyProductDto dto, @PathVariable int productId) throws IOException {
-        System.out.println("상품 수정 dto: "+dto);
         productManageService.modifyProduct(dto);
         return ResponseEntity.ok().body(true);
     }
@@ -198,6 +195,7 @@ public class ProductManageController {
 
     // 상품 상위 분류 출력(필터용)
     @GetMapping("/upper/filter")
+    @ApiOperation(value = "getUpperProductFilterApi")
     public ResponseEntity<?> getUpperProductFilter() {
         List<RespUpperProductCategoryDto> upperFilter = productManageService.getUpperProductFilter();
         return ResponseEntity.ok().body(upperFilter);
@@ -205,6 +203,7 @@ public class ProductManageController {
 
     // 상품 하위 분류 출력(필터용)
     @GetMapping("/lower/filter/{upperId}")
+    @ApiOperation(value = "getLowerProductFilterApi")
     public ResponseEntity<?> getLowerProductFilter(@PathVariable int upperId) {
         List<RespLowerProductCategoryDto> lowerFilter = productManageService.getLowerProductFilter(upperId);
         return ResponseEntity.ok().body(lowerFilter);
