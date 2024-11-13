@@ -105,21 +105,21 @@ public class UserController {
 
     // 프로필 페이지 - 주문 내역 정보
     @GetMapping("/user/order/mypage")
-    @ApiOperation(value = "getMyOrderInfoApi")
+    @ApiOperation(value = "MyPage - 주문 내역 정보 리스트 출력")
     public ResponseEntity<?> getMyOrderInfo(ReqGetMyOrderInfoDto dto) {
         return ResponseEntity.ok().body(userService.getMyOrderInfo(dto));
     }
 
     // 프로필 페이지 - 결제 취소 공동
     @PutMapping("/user/cancel/payment/{orderId}")
-    @ApiOperation(value = "cancelSystemPayApi")
+    @ApiOperation(value = "MyPage - 결제 취소")
     public ResponseEntity<?> cancelSystemPay(@PathVariable int orderId) throws Exception {
         return ResponseEntity.ok().body(userService.cancelSystemPay(orderId));
     }
 
     // 프로필 페이지 - 주문 취소 - 계좌이체
     @PutMapping("/user/cancel/order/{orderId}")
-    @ApiOperation(value = "cancelMyOrderApi")
+    @ApiOperation(value = "MyPage - 주문 취소")
     public ResponseEntity<?> cancelMyOrder(@PathVariable int orderId) {
         userService.cancelMyOrder(orderId);
         return ResponseEntity.ok().body(true);

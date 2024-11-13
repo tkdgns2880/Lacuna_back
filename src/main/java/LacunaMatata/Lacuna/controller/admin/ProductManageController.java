@@ -24,8 +24,8 @@ import java.util.List;
  ************************************************/
 @RestController
 @Slf4j
-@Api(tags = "ProductManageController")
-@RequestMapping("관리자 - 상품 관리 컨트롤러")
+@Api(tags = "관리자 - 상품 관리 컨트롤러")
+@RequestMapping("/api/v1/admin/product")
 public class ProductManageController {
 
     @Autowired

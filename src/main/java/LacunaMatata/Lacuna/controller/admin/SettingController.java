@@ -19,8 +19,8 @@ import java.util.List;
  * updateDate: 2024-10-16                       *
  ************************************************/
 @RestController
-@Api(tags = "SettingController")
-@RequestMapping("관리자 - 세팅 정보 관리 컨트롤러")
+@Api(tags = "관리자 - 세팅 정보 관리 컨트롤러")
+@RequestMapping("/api/v1/admin/settings")
 public class SettingController {
 
     @Autowired
